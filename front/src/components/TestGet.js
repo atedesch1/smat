@@ -2,9 +2,13 @@ import { Fragment, useState, useEffect } from 'react'
 
 const TestGet = () => {
   const [tests, setTests] = useState([])
+  const [t, setT] = useState('')
 
   const getTests = async () => {
     try {
+      const rest = await fetch('/api/')
+      const jsonrest = await rest.json()
+      setT(jsonrest)
       const res = await fetch('/api/testget')
       const jsonData = await res.json()
       setTests(jsonData)
@@ -19,6 +23,7 @@ const TestGet = () => {
 
   return (
     <Fragment>
+      <h1>{t}</h1>
       <table>
         <thead>
           <tr>

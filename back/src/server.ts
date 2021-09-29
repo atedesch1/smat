@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import { Pool } from 'pg'
+import path from 'path'
 
 const app = express()
 
@@ -24,6 +25,20 @@ connectWithRetry()
 
 app.use(cors())
 app.use(express.json())
+
+app.use(express.static(path.join(__dirname, '../build')))
+
+app.get('/', function (req, res) {
+  res.sendFile(path.join(__dirname, '../build', 'index.html'))
+})
+
+app.get('/api/', async (req, res) => {
+  try {
+    res.json('Its working')
+  } catch (err) {
+    console.error(err.message)
+  }
+})
 
 app.post('/api/testpost', async (req, res) => {
   try {

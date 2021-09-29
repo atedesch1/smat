@@ -1,14 +1,19 @@
-FROM node:alpine
+FROM node:16
 
 WORKDIR /app
 
 COPY ./back/package*.json ./
 
-RUN npm install --only=production
+# Install prod dependencies + typescript
+RUN npm install --production
+RUN npm install typescript
 
-COPY ./back/dist .
+# Copies source files and tsconfig and transpiles code
+COPY ./back .
+RUN npm run build
 
-COPY ./front/build .
+# Copies react build directory
+COPY ./front/build ./build
 
 ENV PORT 3333
 
