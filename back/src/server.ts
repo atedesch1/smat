@@ -8,7 +8,8 @@ const app = express()
 const postgresString = process.env.DATABASE_URL || process.env.DB_URL
 
 const pool = new Pool({
-  connectionString: `${postgresString}?sslmode=require`
+  connectionString: postgresString,
+  ssl: { rejectUnauthorized: false }
 })
 
 const connectWithRetry = () => {
