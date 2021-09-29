@@ -1,14 +1,14 @@
 import express from 'express'
 import cors from 'cors'
-import { Client } from 'pg'
+import { Pool } from 'pg'
 import path from 'path'
 
 const app = express()
 
 const postgresString = process.env.DATABASE_URL || process.env.DB_URL
 
-const pool = new Client({
-  connectionString: postgresString
+const pool = new Pool({
+  connectionString: `${postgresString}?sslmode=require`
 })
 
 const connectWithRetry = () => {
@@ -16,7 +16,7 @@ const connectWithRetry = () => {
     .connect()
     .then(() => console.log('successfully connected to db'))
     .catch((e) => {
-      console.log(`Couldnt connect with: ${process.env.DATABASE_URL}`)
+      console.log(`Couldnt connect with: ${postgresString}?sslmode=require`)
       console.log('Couldnt connect to db, retrying in 5s...')
       console.log(e)
       setTimeout(connectWithRetry, 5000)

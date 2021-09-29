@@ -27,7 +27,7 @@ services:
     environment:
       - NODE_PORT=3333
       - NODE_ENV=development
-      - DB_URL=postgresql://postgres:postgres@postgres:5432/mydb
+      - DB_URL=postgres://fmjdaopfplolbs:5d4a2306e7d4e20bb486b644068dca550e056f59c1fd475ef36af6e91751520a@ec2-100-24-169-249.compute-1.amazonaws.com:5432/d5gsauuk2kb32e
     command: npm run dev
     depends_on:
       - postgres
