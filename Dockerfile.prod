@@ -1,0 +1,17 @@
+FROM node:alpine
+
+WORKDIR /app
+
+COPY ./back/package*.json ./
+
+RUN npm install --only=production
+
+COPY ./back/dist .
+
+COPY ./front/build .
+
+ENV PORT 3333
+
+EXPOSE $PORT
+
+CMD ["npm", "run", "prod"]

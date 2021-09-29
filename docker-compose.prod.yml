@@ -27,6 +27,7 @@ services:
       - DB_PASS=${DATABASE_PASSWORD}
       - DB_NAME=${DATABASE_NAME}
       - DB_PORT=${DATABASE_PORT}
+      - DB_URL=${DATABASE_URL}
     command: npm run prod
     depends_on:
       - postgres
