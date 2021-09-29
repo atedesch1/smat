@@ -1,13 +1,13 @@
 import express from 'express'
 import cors from 'cors'
-import { Pool } from 'pg'
+import { Client } from 'pg'
 import path from 'path'
 
 const app = express()
 
 const postgresString = process.env.DATABASE_URL || process.env.DB_URL
 
-const pool = new Pool({
+const pool = new Client({
   connectionString: postgresString
 })
 
