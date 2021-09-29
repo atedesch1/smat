@@ -16,6 +16,8 @@ const connectWithRetry = () => {
     .connect()
     .then(() => console.log('successfully connected to db'))
     .catch((e) => {
+      console.log(`Couldnt connect with: ${process.env.DATABASE_URL}`)
+      console.log('Couldnt connect to db, retrying in 5s...')
       console.log(e)
       setTimeout(connectWithRetry, 5000)
     })
@@ -59,7 +61,5 @@ app.get('/api/testget', async (req, res) => {
   }
 })
 
-app.get('/api/', (req, res) => { return res.json({ message: 'Api Working!' }) })
-
-const PORT = process.env.PORT || 80
+const PORT = process.env.PORT || 3333
 app.listen(PORT, () => { console.log(`NodeApp listening on http://localhost:${PORT}`) })
