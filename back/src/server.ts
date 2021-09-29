@@ -2,11 +2,9 @@ import express from 'express'
 import cors from 'cors'
 import { Pool } from 'pg'
 
-import { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_HOST, POSTGRES_PORT, POSTGRES_DB } from './config/config'
-
 const app = express()
 
-const postgresString = `postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@${POSTGRES_HOST}:${POSTGRES_PORT}/${POSTGRES_DB}`
+const postgresString = process.env.DATABASE_URL || process.env.DB_URL
 
 const pool = new Pool({
   connectionString: postgresString
@@ -48,5 +46,5 @@ app.get('/api/testget', async (req, res) => {
 
 app.get('/api/', (req, res) => { return res.json({ message: 'Api Working!' }) })
 
-const PORT = process.env.PORT || 3333
+const PORT = process.env.NODE_PORT || 3333
 app.listen(PORT, () => { console.log(`NodeApp listening on http://localhost:${PORT}`) })

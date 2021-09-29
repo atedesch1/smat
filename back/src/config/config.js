@@ -1,5 +1,5 @@
-export const POSTGRES_HOST = process.env.POSTGRES_HOST || 'postgres'
-export const POSTGRES_PORT = process.env.POSTGRES_PORT || 5432
-export const POSTGRES_USER = process.env.POSTGRES_USER
-export const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD
-export const POSTGRES_DB = process.env.POSTGRES_DB
+export const DB_HOST = process.env.DATABASE_HOST
+export const DB_USER = process.env.DATABASE_USER
+export const DB_PASS = process.env.DATABASE_PASSWORD
+export const DB_PORT = process.env.DATABASE_PORT
+export const DB_NAME = process.env.DATABASE_NAME
