@@ -5,7 +5,3 @@ setup:
 build:
   docker:
     web: Dockerfile.prod
-# release:
-#   image: web
-#   command:
-#     - python /app/backend/manage.py migrate
