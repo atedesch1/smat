@@ -1,0 +1,10 @@
+./back/node_modules
+./back/.dockerignore
+./back/.eslintrc.json
+./back/.git
+./back/.gitignore
+
+./front/node_modules
+./front/.gitignore
+./front/.git
+

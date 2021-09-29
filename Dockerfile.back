@@ -1,0 +1,19 @@
+FROM node:16
+
+WORKDIR /app/back
+
+COPY ./back/package*.json ./
+
+ARG NODE_ENV
+RUN if [ "$NODE_ENV" = "development" ]; \
+    then npm install; \
+    else npm install --only=production; \
+    fi
+
+COPY ./back/ .
+
+ENV PORT 3333
+
+EXPOSE $PORT
+
+CMD ["npm", "run", "dev"]

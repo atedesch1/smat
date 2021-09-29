@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  react:
+    build:
+      context: .
+      dockerfile: Dockerfile.front
+    ports:
+      - '3000:3000/tcp'
+    command: npm run start
+    depends_on:
+      - node
+    networks:
+      - smat
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile.back
+      args:
+        NODE_ENV: production
+    environment:
+      - PORT=3333
+      - NODE_ENV=production
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=mydb
+    command: npm run prod
+    depends_on:
+      - postgres
+    networks:
+      - smat
+
+  postgres:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: mydb
+    volumes:
+      - postgres-db:/var/lib/postgresql/data
+    networks:
+      - smat
+
+networks:
+  smat: {}
+
+volumes:
+  postgres-db:
