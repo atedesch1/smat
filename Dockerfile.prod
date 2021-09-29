@@ -15,8 +15,8 @@ RUN npm run build
 # Copies react build directory
 COPY ./front/build ./build
 
-ENV PORT 3333
+# ENV PORT 80
 
-EXPOSE $PORT
+# EXPOSE $PORT
 
 CMD ["npm", "run", "prod"]

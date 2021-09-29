@@ -61,5 +61,5 @@ app.get('/api/testget', async (req, res) => {
 
 app.get('/api/', (req, res) => { return res.json({ message: 'Api Working!' }) })
 
-const PORT = process.env.NODE_PORT || 3333
+const PORT = process.env.PORT || 80
 app.listen(PORT, () => { console.log(`NodeApp listening on http://localhost:${PORT}`) })
