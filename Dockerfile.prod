@@ -25,16 +25,15 @@ COPY ./front /app/front
 FROM development as builder
 
 # Transpiles code (BACK)
-RUN cd /app/back && npm run build && npx tsc ormconfig.ts
+RUN cd /app/back && npm run build
 # Builds static files (FRONT)
 RUN cd /app/front && npm run build
 
 # Release includes bare minimum required to run the app
 FROM base AS release
 
-# Copies back prod node_modules, transpiled code in /dist and ormconfig.js, static files in /build and back package.json
+# Copies back prod node_modules, transpiled code in /dist, static files in /build and back package.json
 COPY --from=builder /tmp/node_modules /app/node_modules
-COPY --from=builder /app/back/ormconfig.js /app
 COPY --from=builder /app/back/dist /app/dist
 COPY --from=builder /app/front/build /app/build
 COPY --from=builder /app/back/package.json /app/
