@@ -29,6 +29,7 @@ services:
       - PORT=3333
       - NODE_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/smatdb
+      - JWT_SECRET=secret_key
     depends_on:
       - postgres
     networks:
