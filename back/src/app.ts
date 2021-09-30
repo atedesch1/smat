@@ -3,14 +3,14 @@ import cors from 'cors'
 import path from 'path'
 import 'reflect-metadata'
 
-import router from './routes'
+import router from './routers/Router'
 import connectDatabase from './database/connect'
 
 const app = express()
 
 app.use(cors())
 app.use(express.json())
-app.use(router)
+app.use('/api', router)
 
 app.use(express.static(path.join(__dirname, '../build')))
 
