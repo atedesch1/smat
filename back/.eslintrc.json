@@ -93,7 +93,7 @@
         "error",
         { "before": true, "after": true }
       ],
-      "no-console": "warn"
+      "no-console": "off"
     }
   }
 
