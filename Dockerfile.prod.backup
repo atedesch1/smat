@@ -1,0 +1,20 @@
+FROM node:16-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV production
+
+COPY ./back/package*.json ./
+
+# Install prod dependencies
+RUN npm install
+
+# Copies source files and tsconfig and transpiles code
+COPY ./back .
+RUN npm run build
+
+# Copies react build directory to serve through node
+COPY ./front/build ./build
+
+# Runs javascript transpiled code
+CMD ["npm", "run", "prod"]
