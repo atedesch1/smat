@@ -9,15 +9,12 @@ export default async function connect () {
 
   const dir = process.env.NODE_ENV === 'production' ? 'dist' : 'src'
 
-  const sslObject = process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : null
-
   const connection = connectionManager.create({
     name: 'default',
     type: 'postgres',
     url: process.env.DATABASE_URL,
     entities: [`${dir}/models/**/*.*`],
     migrations: [`${dir}/database/migrations/**/*.*`],
-    ssl: sslObject,
     cli: {
       entitiesDir: `${dir}/models/**/*.*`,
       migrationsDir: `${dir}/database/migrations/**/*.*`
