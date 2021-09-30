@@ -1,5 +1,4 @@
 ./back/node_modules
-./back/.dockerignore
 ./back/.eslintrc.json
 ./back/.git
 ./back/.gitignore
