@@ -1,6 +1,8 @@
-FROM node:alpine
+FROM node:16-alpine
 
 WORKDIR /app
+
+ENV NODE_ENV production
 
 COPY ./back/package*.json ./
 
@@ -12,7 +14,8 @@ RUN npm install typescript
 COPY ./back .
 RUN npm run build
 
-# Copies react build directory
+# Copies react build directory to serve through node
 COPY ./front/build ./build
 
+# Runs javascript transpiled code
 CMD ["npm", "run", "prod"]

@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   react:
@@ -6,9 +6,12 @@ services:
       context: .
       dockerfile: Dockerfile.front
     ports:
-      - '3000:3000/tcp'
+      - '3000:3000'
+    environment:
+      - PORT=3000
     volumes:
-      - ./front/src:/app/front/src
+      - ./front/src:/react/src
+      - ./front/public:/react/public
     depends_on:
       - node
     networks:
@@ -18,29 +21,26 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.back
-      args:
-        NODE_ENV: development
     ports:
-      - '3333:3333/tcp'
+      - '3333:3333'
     volumes:
-      - ./back/src:/app/back/src
+      - ./back/src:/node/src
     environment:
-      - NODE_PORT=3333
+      - PORT=3333
       - NODE_ENV=development
-      - DB_URL=postgres://fmjdaopfplolbs:5d4a2306e7d4e20bb486b644068dca550e056f59c1fd475ef36af6e91751520a@ec2-100-24-169-249.compute-1.amazonaws.com:5432/d5gsauuk2kb32e
-    command: npm run dev
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/smatdb
     depends_on:
       - postgres
     networks:
       - smat
 
   postgres:
-    image: postgres
+    image: postgres:13
     restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: mydb
+      POSTGRES_DB: smatdb
     volumes:
       - postgres-db:/var/lib/postgresql/data
     networks:

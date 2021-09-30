@@ -5,22 +5,23 @@ import path from 'path'
 
 const app = express()
 
-const postgresString = process.env.DATABASE_URL || process.env.DB_URL
+const dbString = process.env.DATABASE_URL
+const sslObject = process.env.NODE_ENV === 'development' ? null : { rejectUnauthorized: false }
 
 const pool = new Pool({
-  connectionString: postgresString,
-  ssl: { rejectUnauthorized: false }
+  connectionString: dbString,
+  ssl: sslObject
 })
 
 const connectWithRetry = () => {
   pool
     .connect()
-    .then(() => console.log('successfully connected to db'))
+    .then(() => console.log('Successfully connected to DB'))
     .catch((e) => {
-      console.log(`Couldnt connect with: ${postgresString}?sslmode=require`)
-      console.log('Couldnt connect to db, retrying in 5s...')
+      console.log(`${process.env.NODE_ENV === 'development'}`)
+      console.log('Couldn\'t connect to DB, retrying in 5s...')
       console.log(e)
-      setTimeout(connectWithRetry, 5000)
+      setTimeout(connectWithRetry, 10000)
     })
 }
 
@@ -62,5 +63,5 @@ app.get('/api/testget', async (req, res) => {
   }
 })
 
-const PORT = process.env.PORT || 3333
+const PORT = process.env.PORT
 app.listen(PORT, () => { console.log(`NodeApp listening on http://localhost:${PORT}`) })

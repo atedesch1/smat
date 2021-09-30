@@ -1,15 +1,11 @@
 FROM node:16
 
-WORKDIR /app/front
+WORKDIR /react
 
 COPY ./front/package*.json ./
 
 RUN npm install
 
 COPY ./front/ .
-
-ENV PORT 3000
-
-EXPOSE $PORT
 
 CMD ["npm", "run", "start"]
