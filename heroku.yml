@@ -5,3 +5,4 @@ setup:
 build:
   docker:
     web: Dockerfile.prod
+  run: node ./node_modules/typeorm/cli.js migration:run

@@ -15,7 +15,7 @@ docker-compose up
 Run with `-d` flag to run in detached mode.<br/>
 Use `docker logs <container_name> -f` to get logs from a specific container.<br/>
 
-Node is running at `localhost:3333` and React is at `localhost:3000`
+React is running at `localhost:3000`, Node is at `localhost:3333` and Postgres is at `localhost:5433`
 
 Postgres INFO:<br/>
 host: postgres<br/>
