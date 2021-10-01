@@ -41,6 +41,24 @@ class UserController {
 
     return res.json({ user: { id: user.id, email: user.email }, token })
   }
+
+  async deleteCurrentUser(req: Request, res: Response) {
+    const repository = getRepository(User)
+    const userId = req.userId
+    const { password } = req.body
+
+    const currentUser = await repository.findOne({ where: { id: userId } })
+
+    if (!currentUser) { return res.sendStatus(401) }
+
+    const isValidPassword = await bcrypt.compare(password, currentUser.password)
+
+    if (!isValidPassword) { return res.sendStatus(401) }
+
+    await repository.delete({ id: userId })
+
+    return res.json(`User with email:${currentUser.email} was deleted!`)
+  }
 }
 
 export default new UserController()
