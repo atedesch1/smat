@@ -3,22 +3,21 @@ import { getRepository } from 'typeorm'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
-import User from '../models/User'
+import User from '@/models/User'
 class UserController {
   userSession(req: Request, res: Response) {
-    return res.send({ userID: req.userId })
+    return res.send({ userId: req.userId })
   }
 
   async signUp(req: Request, res: Response) {
     const repository = getRepository(User)
-    const { email, password } = req.body
+    const { email, password, name, nationality } = req.body
 
     const userExists = await repository.findOne({ where: { email } })
 
     if (userExists) { return res.sendStatus(409) }
 
-    const newUser = repository.create({ email, password })
-    await repository.save(newUser)
+    const newUser = await User.createNew(email, password, name, nationality)
 
     return res.json(newUser)
   }
@@ -55,7 +54,7 @@ class UserController {
 
     if (!isValidPassword) { return res.sendStatus(401) }
 
-    await repository.delete({ id: userId })
+    await User.delete(userId)
 
     return res.json(`User with email:${currentUser.email} was deleted!`)
   }
