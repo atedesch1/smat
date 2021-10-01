@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
 import jwt from 'jsonwebtoken'
 
+import Session from '@/models/Session'
 interface TokenPayLoad {
     id: string
     iat: number
     exp: number
 }
 
-export default function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
+export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers
 
   if (!authorization) { return res.sendStatus(401) }
@@ -21,10 +22,19 @@ export default function AuthMiddleware(req: Request, res: Response, next: NextFu
 
     const { id } = data as TokenPayLoad
 
-    req.userId = id
+    const session = await Session.findOne({ where: { token } })
+
+    if (session) {
+      req.userId = id
+      req.sessionId = session.id
+    }
 
     next()
-  } catch {
+  } catch (err) {
+    if (err.message === 'jwt expired') {
+      const session = await Session.findOne({ where: { token } })
+      if (session) { Session.deleteSession(session.id) }
+    }
     return res.sendStatus(401)
   }
 }
