@@ -25,7 +25,7 @@ export default class User extends BaseEntity {
     @Column({ nullable: true })
     bio?: string
 
-    @OneToMany(() => Post, post => post.user, { nullable: true })
+    @OneToMany(() => Post, post => post.user, { nullable: true, cascade: true })
     posts?: Post[]
 
     @OneToOne(() => Session, session => session.user, { nullable: true })

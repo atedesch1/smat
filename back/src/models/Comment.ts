@@ -13,10 +13,10 @@ export default class Comment extends BaseEntity {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date!: Date
 
-    @ManyToOne(() => Post, post => post.comments)
+    @ManyToOne(() => Post, post => post.comments, { onDelete: 'CASCADE' })
     post!: Post
 
-    @ManyToOne(() => User)
+    @ManyToOne(() => User, { eager: true })
     user!: User
 
     static async createNew({ body, post, user }:

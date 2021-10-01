@@ -28,10 +28,10 @@ export default class Post extends BaseEntity {
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date!: Date
 
-    @ManyToOne(() => User, user => user.posts)
+    @ManyToOne(() => User, user => user.posts, { eager: true })
     user!: User
 
-    @OneToMany(() => Comment, comment => comment.post, { nullable: true })
+    @OneToMany(() => Comment, comment => comment.post, { nullable: true, cascade: true })
     comments?: Comment[]
 
     static async createNew({ file, language, description, user, subject, instructor }:
@@ -48,7 +48,7 @@ export default class Post extends BaseEntity {
     }
 
     static async deletePost(id: Post['id']) {
-      await this.delete({ id })
+      await this.delete({ id },)
     }
 }
 
