@@ -35,7 +35,7 @@ export default class Post extends BaseEntity {
     comments?: Comment[]
 
     static async createNew({ file, language, description, user, subject, instructor }:
-        {file: Post['file'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor']}) {
+        { file: Post['file'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
       const newPost = this.create({ file, language, description, user, subject, instructor })
   
       await this.save(newPost)
@@ -43,8 +43,12 @@ export default class Post extends BaseEntity {
       return newPost
     }
 
-    static async deletePost(postId: Post['id']) {
-      await this.delete({ id: postId })
+    static async updatePost(id: Post['id'], newProperties: Record<string, unknown>) {
+      await Post.update({ id }, newProperties)
+    }
+
+    static async deletePost(id: Post['id']) {
+      await this.delete({ id })
     }
 }
 

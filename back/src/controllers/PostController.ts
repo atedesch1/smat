@@ -4,34 +4,53 @@ import Post from '@/models/Post'
 import User from '@/models/User'
 
 class PostController {
-  async publish(req: Request, res: Response) {
+  async createPost(req: Request, res: Response) {
     const { file, language, description, subject, instructor } = req.body
-    const userId = req.userId
+    const id = req.userId
 
-    const user = await User.findOne({ where: { id: userId } })
+    const user = await User.findOne({ where: { id } })
 
-    if (!user) {return res.sendStatus(401)}
+    if (!user) { return res.sendStatus(401) }
 
     const newPost = await Post.createNew({ file, language, description, subject, instructor, user })
 
     return res.json(newPost)
   }
 
-  async deletePost(req: Request, res: Response) {
-    const { postId } = req.body
+  async updatePost(req: Request, res: Response) {
+    const { id } = req.params
+    const { file, language, description, user, subject, instructor }:
+    { file?: Post['file'], language?: Post['language'], description?: Post['description'], user?: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
     const userId = req.userId
 
-    const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
+    const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
 
-    if (!postExists) { return res.sendStatus(404)}
+    if (!postExists) { return res.sendStatus(404) }
 
     const isUsersPost = String(postExists.user) === userId
 
-    if (!isUsersPost) {return res.sendStatus(403)}
+    if (!isUsersPost) { return res.sendStatus(403) }
 
-    await Post.deletePost(postId)
+    await Post.updatePost(id, { file, language, description, user, subject, instructor })
 
-    return res.json('Post was deleted.')
+    return res.sendStatus(201)
+  }
+
+  async deletePost(req: Request, res: Response) {
+    const { id } = req.params
+    const userId = req.userId
+
+    const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
+
+    if (!postExists) { return res.sendStatus(404) }
+
+    const isUsersPost = String(postExists.user) === userId
+
+    if (!isUsersPost) { return res.sendStatus(403) }
+
+    await Post.deletePost(id)
+
+    return res.sendStatus(200)
   }
 
   async getAPost(req: Request, res: Response) {
@@ -39,9 +58,19 @@ class PostController {
 
     const post = await Post.findOne({ where: { id } } )
 
-    if (!post) {return res.sendStatus(404)}
+    if (!post) { return res.sendStatus(404) }
 
     return res.json(post)
+  }
+
+  async getPostComments(req: Request, res: Response) {
+    const { id } = req.params
+
+    const post = await Post.findOne({ where: { id }, relations: ['comments'] })
+
+    if (!post) { return res.sendStatus(404) }
+
+    return res.json(post.comments)
   }
 }
 
