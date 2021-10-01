@@ -60,7 +60,7 @@ class UserController {
 
     const user = await User.findOne({ where: { id } })
 
-    if (!user) {return res.sendStatus(404)}
+    if (!user) { return res.sendStatus(404) }
 
     return res.json(user)
   }
@@ -68,9 +68,11 @@ class UserController {
   async getUserPosts(req: Request, res: Response) {
     const { id } = req.params
 
-    const posts = await User.getUserPosts(id)
+    const user = await User.findOne({ where: { id }, relations: ['posts'] })
 
-    res.json(posts)
+    if (!user) { return res.sendStatus(404) }
+
+    return res.json(user.posts)
   }
 }
 

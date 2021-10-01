@@ -49,9 +49,4 @@ export default class User extends BaseEntity {
       const user = await this.findOne({ where: { email } })
       return user
     }
-
-    static async getUserPosts(userId: User['id']) {
-      const user = await this.findOne({ where: { id: userId }, relations: ['posts'] })
-      return user?.posts
-    }
 }
