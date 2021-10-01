@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, getRepository, BaseEntity } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity } from 'typeorm'
 import bcrypt from 'bcryptjs'
 import Post from '@/models/Post'
 @Entity('users')
@@ -43,5 +43,15 @@ export default class User extends BaseEntity {
 
     static async deleteUser(userId: User['id']) {
       await this.delete({ id: userId })
+    }
+
+    static async findByEmail(email: User['email']) {
+      const user = await this.findOne({ where: { email } })
+      return user
+    }
+
+    static async getUserPosts(userId: User['id']) {
+      const user = await this.findOne({ where: { id: userId }, relations: ['posts'] })
+      return user?.posts
     }
 }

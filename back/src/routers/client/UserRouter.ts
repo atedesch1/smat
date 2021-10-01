@@ -7,7 +7,9 @@ const router = Router()
 
 router.post('/sign-up', UserController.signUp)
 router.post('/sign-in', UserController.signIn)
-router.get('/session', AuthMiddleware, UserController.userSession)
-router.delete('/delete', AuthMiddleware, UserController.deleteCurrentUser)
+router.delete('/delete', AuthMiddleware, UserController.deleteUser)
+router.get('/session', AuthMiddleware, UserController.getSession)
+router.get('/:id', UserController.getAUser)
+router.get('/:id/posts', UserController.getUserPosts)
 
 export default router
