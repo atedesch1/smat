@@ -19,8 +19,8 @@ class PostController {
 
   async updatePost(req: Request, res: Response) {
     const { id } = req.params
-    const { file, language, description, user, subject, instructor }:
-    { file?: Post['file'], language?: Post['language'], description?: Post['description'], user?: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
+    const { file, language, description, subject, instructor }:
+    { file?: Post['file'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
     const userId = req.userId
 
     const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
@@ -31,7 +31,7 @@ class PostController {
 
     if (!isUsersPost) { return res.sendStatus(403) }
 
-    await Post.updatePost(id, { file, language, description, user, subject, instructor })
+    await Post.updatePost(id, { file, language, description, subject, instructor })
 
     return res.sendStatus(201)
   }
