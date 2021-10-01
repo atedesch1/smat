@@ -27,6 +27,10 @@ export default class Comment extends BaseEntity {
     
       return newComment
     }
+
+    static async updateComment(id: Comment['id'], newProperties: Record<string, unknown>) {
+      await this.update({ id }, newProperties)
+    }
   
     static async deleteComment(commentId: Comment['id']) {
       await this.delete({ id: commentId })

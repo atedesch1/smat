@@ -47,7 +47,7 @@ export default class User extends BaseEntity {
     }
 
     static async updateUser(id: User['id'], newProperties: Record<string, unknown>) {
-      await User.update({ id }, newProperties)
+      await this.update({ id }, newProperties)
     }
 
     static async deleteUser(id: User['id']) {

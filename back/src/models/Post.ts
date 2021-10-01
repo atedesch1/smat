@@ -44,7 +44,7 @@ export default class Post extends BaseEntity {
     }
 
     static async updatePost(id: Post['id'], newProperties: Record<string, unknown>) {
-      await Post.update({ id }, newProperties)
+      await this.update({ id }, newProperties)
     }
 
     static async deletePost(id: Post['id']) {
