@@ -22,7 +22,7 @@ export default class Post extends BaseEntity {
     @Column({ nullable: true })
     instructor?: string
 
-    @Column()
+    @Column({ default: 0 })
     like_count!: number
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
@@ -33,5 +33,18 @@ export default class Post extends BaseEntity {
 
     @OneToMany(() => Comment, comment => comment.post, { nullable: true })
     comments?: Comment[]
+
+    static async createNew({ file, language, description, user, subject, instructor }:
+        {file: Post['file'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor']}) {
+      const newPost = this.create({ file, language, description, user, subject, instructor })
+  
+      await this.save(newPost)
+  
+      return newPost
+    }
+
+    static async deletePost(postId: Post['id']) {
+      await this.delete({ id: postId })
+    }
 }
 
