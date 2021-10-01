@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity, OneToOne, JoinColumn } from 'typeorm'
 import bcrypt from 'bcryptjs'
 import Post from '@/models/Post'
+import Session from '@/models/Session'
 @Entity('users')
 export default class User extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
@@ -26,6 +27,10 @@ export default class User extends BaseEntity {
 
     @OneToMany(() => Post, post => post.user, { nullable: true })
     posts?: Post[]
+
+    @OneToOne(() => Session, session => session.user, { nullable: true })
+    @JoinColumn()
+    session?: Session
 
     @BeforeInsert()
     @BeforeUpdate()

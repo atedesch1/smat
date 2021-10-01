@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 import User from '@/models/User'
+import Session from '@/models/Session'
 class UserController {
   async signUp(req: Request, res: Response) {
     const { email, password, name, nationality }:
@@ -21,7 +22,7 @@ class UserController {
     const { email, password }:
       { email: User['email'], password: User['password'] } = req.body
 
-    const user = await User.findByEmail(email)
+    const user = await User.findOne({ where: { email }, relations: ['session'] })
 
     if (!user) { return res.sendStatus(401) }
 
@@ -29,11 +30,23 @@ class UserController {
 
     if (!isValidPassword) { return res.sendStatus(401) }
 
+    if (user.session) { Session.deleteSession(user.session.id) }
+
     const jwtSecret = process.env.JWT_SECRET || 'secret_key'
 
-    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1d' })
+    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '10s' })
+
+    await Session.createNew(user, token)
 
     return res.json({ user: { id: user.id, email: user.email }, token })
+  }
+
+  async signOut(req: Request, res: Response) {
+    const id = req.sessionId
+
+    await Session.deleteSession(id)
+
+    res.sendStatus(200)
   }
 
   async updateUser(req: Request, res: Response) {
