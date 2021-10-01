@@ -56,7 +56,7 @@ class PostController {
   async getAPost(req: Request, res: Response) {
     const { id } = req.params
 
-    const post = await Post.findOne({ where: { id } } )
+    const post = await Post.findOne({ where: { id }, relations: ['comments'] })
 
     if (!post) { return res.sendStatus(404) }
 
