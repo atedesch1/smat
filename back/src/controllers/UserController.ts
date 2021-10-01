@@ -34,7 +34,7 @@ class UserController {
 
     const jwtSecret = process.env.JWT_SECRET || 'secret_key'
 
-    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '10s' })
+    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1d' })
 
     await Session.createNew(user, token)
 
