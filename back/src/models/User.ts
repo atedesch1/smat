@@ -41,8 +41,12 @@ export default class User extends BaseEntity {
       return newUser
     }
 
-    static async deleteUser(userId: User['id']) {
-      await this.delete({ id: userId })
+    static async updateUser(id: User['id'], newProperties: Record<string, unknown>) {
+      await User.update({ id }, newProperties)
+    }
+
+    static async deleteUser(id: User['id']) {
+      await this.delete({ id })
     }
 
     static async findByEmail(email: User['email']) {

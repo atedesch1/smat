@@ -4,12 +4,9 @@ import jwt from 'jsonwebtoken'
 
 import User from '@/models/User'
 class UserController {
-  getSession(req: Request, res: Response) {
-    return res.send({ userId: req.userId })
-  }
-
   async signUp(req: Request, res: Response) {
-    const { email, password, name, nationality } = req.body
+    const { email, password, name, nationality }:
+      { email: User['email'], password: User['password'], name: User['name'], nationality: User['nationality'] } = req.body
 
     const userExists = await User.findByEmail(email)
 
@@ -21,7 +18,8 @@ class UserController {
   }
 
   async signIn(req: Request, res: Response) {
-    const { email, password } = req.body
+    const { email, password }:
+      { email: User['email'], password: User['password'] } = req.body
 
     const user = await User.findByEmail(email)
 
@@ -38,11 +36,25 @@ class UserController {
     return res.json({ user: { id: user.id, email: user.email }, token })
   }
 
-  async deleteUser(req: Request, res: Response) {
-    const userId = req.userId
-    const { password } = req.body
+  async updateUser(req: Request, res: Response) {
+    const id = req.userId
+    const { name, nationality, profilePicture, bio }:
+      { name?: User['name'], nationality?: User['nationality'], profilePicture?: User['profilePicture'], bio?: User['bio'] } = req.body
 
-    const currentUser = await User.findOne({ where: { id: userId } })
+    const currentUser = await User.findOne({ where: { id } })
+
+    if (!currentUser) { return res.sendStatus(401) }
+
+    await User.updateUser(id, { name, nationality, profilePicture, bio })
+
+    return res.sendStatus(201)
+  }
+
+  async deleteUser(req: Request, res: Response) {
+    const id = req.userId
+    const { password }: { password: User['password'] } = req.body
+
+    const currentUser = await User.findOne({ where: { id } })
 
     if (!currentUser) { return res.sendStatus(401) }
 
@@ -50,9 +62,19 @@ class UserController {
 
     if (!isValidPassword) { return res.sendStatus(401) }
 
-    await User.deleteUser(userId)
+    await User.deleteUser(id)
 
-    return res.json(`User with email:${currentUser.email} was deleted!`)
+    return res.sendStatus(200)
+  }
+
+  async getCurrentUser(req: Request, res: Response) {
+    const id = req.userId
+
+    const user = await User.findOne({ where: { id } })
+
+    if (!user) { return res.sendStatus(404) }
+
+    return res.json(user)
   }
 
   async getAUser(req: Request, res: Response) {
