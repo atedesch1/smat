@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 
 import Post from '@/models/Post'
 import User from '@/models/User'
+import { getConnection } from 'typeorm'
 
 class PostController {
   async createPost(req: Request, res: Response) {
@@ -95,6 +96,89 @@ class PostController {
       if (!post) { return res.sendStatus(404) }
   
       return res.json(post.comments)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
+      return res.sendStatus(500)
+    }
+  }
+
+  async likePost(req: Request, res: Response) {
+    const { id } = req.params
+    const userId = req.userId
+
+    try {
+      const post = await Post.findOne({ where: { id } })
+  
+      if (!post) { return res.sendStatus(404) }
+      
+      await getConnection()
+        .createQueryBuilder()
+        .insert()
+        .into('posts_users_liked_users')
+        .values([
+          { postsId: id, usersId: userId }
+        ])
+        .execute()
+
+      await Post.update({ id }, { like_count: post.like_count + 1 })
+
+      return res.sendStatus(200)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '23505') { return res.sendStatus(409) }
+      console.error(err.message)
+      return res.sendStatus(500)
+    }
+  }
+
+  async hasLikedPost(req: Request, res: Response) {
+    const { postId } = req.params
+    const userId = req.userId
+
+    try {
+      const post = await Post.findOne({ where: { id: postId } })
+  
+      if (!post) { return res.sendStatus(404) }
+      
+      const liked = await getConnection()
+        .createQueryBuilder()
+        .select()
+        .from('posts_users_liked_users', 'posts_users_liked_users')
+        .where({ postsId: postId, usersId: userId })
+        .execute()
+
+      if (liked.length === 0) { return res.json('false') }
+      
+      return res.json('true')
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
+      return res.sendStatus(500)
+    }
+  }
+
+  async unlikePost(req: Request, res: Response) {
+    const { id } = req.params
+    const userId = req.userId
+
+    try {
+      const post = await Post.findOne({ where: { id }, relations: ['usersLiked'] })
+  
+      if (!post) { return res.sendStatus(404) }
+
+      await getConnection()
+        .createQueryBuilder()
+        .delete()
+        .from('posts_users_liked_users')
+        .where({ postsId: id, usersId: userId })
+        .execute()
+
+      if (post.like_count > 0) {
+        await Post.update({ id }, { like_count: post.like_count - 1 })
+      }
+
+      return res.sendStatus(200)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
       console.error(err.message)

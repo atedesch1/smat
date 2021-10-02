@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import User from '@/models/User'
 import Post from '@/models/Post'
 
@@ -9,6 +9,13 @@ export default class Comment extends BaseEntity {
 
     @Column()
     body!: string
+
+    @Column({ default: 0 })
+    like_count!: number
+
+    @ManyToMany(() => User, { nullable: true })
+    @JoinTable()
+    usersLiked?: User[]
 
     @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
     date!: Date
