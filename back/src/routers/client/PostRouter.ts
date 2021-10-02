@@ -10,7 +10,7 @@ router.get('/:postId', PostController.getAPost)
 router.put('/:postId', AuthMiddleware, PostController.updatePost)
 router.put('/:postId/like', AuthMiddleware, PostController.likePost)
 router.get('/:postId/like', AuthMiddleware, PostController.hasLikedPost)
-router.put('/:postId/unlike', AuthMiddleware, PostController.unlikePost)
+router.delete('/:postId/like', AuthMiddleware, PostController.unlikePost)
 router.delete('/:postId', AuthMiddleware, PostController.deletePost)
 router.get('/:postId/comments', PostController.getPostComments)
 
