@@ -23,54 +23,74 @@ class PostController {
     { file?: Post['file'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
     const userId = req.userId
 
-    const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
-
-    if (!postExists) { return res.sendStatus(404) }
-
-    const isUsersPost = String(postExists.user) === userId
-
-    if (!isUsersPost) { return res.sendStatus(403) }
-
-    await Post.updatePost(id, { file, language, description, subject, instructor })
-
-    return res.sendStatus(201)
+    try {
+      const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
+  
+      if (!postExists) { return res.sendStatus(404) }
+  
+      const isUsersPost = String(postExists.user) === userId
+  
+      if (!isUsersPost) { return res.sendStatus(403) }
+  
+      await Post.updatePost(id, { file, language, description, subject, instructor })
+  
+      return res.sendStatus(201)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 
   async deletePost(req: Request, res: Response) {
     const { id } = req.params
     const userId = req.userId
-
-    const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
-
-    if (!postExists) { return res.sendStatus(404) }
-
-    const isUsersPost = String(postExists.user) === userId
-
-    if (!isUsersPost) { return res.sendStatus(403) }
-
-    await Post.deletePost(id)
-
-    return res.sendStatus(200)
+    
+    try {
+      const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
+  
+      if (!postExists) { return res.sendStatus(404) }
+  
+      const isUsersPost = String(postExists.user) === userId
+  
+      if (!isUsersPost) { return res.sendStatus(403) }
+  
+      await Post.deletePost(id)
+  
+      return res.sendStatus(200)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 
   async getAPost(req: Request, res: Response) {
     const { id } = req.params
 
-    const post = await Post.findOne({ where: { id }, relations: ['comments'] })
+    try {
+      const post = await Post.findOne({ where: { id }, relations: ['comments'] })
 
-    if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.sendStatus(404) }
 
-    return res.json(post)
+      return res.json(post)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 
   async getPostComments(req: Request, res: Response) {
     const { id } = req.params
 
-    const post = await Post.findOne({ where: { id }, relations: ['comments'] })
-
-    if (!post) { return res.sendStatus(404) }
-
-    return res.json(post.comments)
+    try {
+      const post = await Post.findOne({ where: { id }, relations: ['comments'] })
+  
+      if (!post) { return res.sendStatus(404) }
+  
+      return res.json(post.comments)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 }
 

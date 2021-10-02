@@ -34,7 +34,7 @@ class UserController {
 
     const jwtSecret = process.env.JWT_SECRET || 'secret_key'
 
-    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '1d' })
+    const token = jwt.sign({ id: user.id }, jwtSecret, { expiresIn: '7d' })
 
     await Session.createNew(user, token)
 
@@ -92,22 +92,30 @@ class UserController {
 
   async getAUser(req: Request, res: Response) {
     const { id } = req.params
-
-    const user = await User.findOne({ where: { id } })
-
-    if (!user) { return res.sendStatus(404) }
-
-    return res.json(user)
+    try {
+      const user = await User.findOne({ where: { id } })
+      
+      if (!user) { return res.sendStatus(404) }
+  
+      return res.json(user)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 
   async getUserPosts(req: Request, res: Response) {
     const { id } = req.params
-
-    const user = await User.findOne({ where: { id }, relations: ['posts'] })
-
-    if (!user) { return res.sendStatus(404) }
-
-    return res.json(user.posts)
+    try {
+      const user = await User.findOne({ where: { id }, relations: ['posts'] })
+  
+      if (!user) { return res.sendStatus(404) }
+  
+      return res.json(user.posts)
+    } catch (err) {
+      if (err.code === '22P02') { return res.sendStatus(404) }
+      return res.sendStatus(500)
+    }
   }
 }
 
