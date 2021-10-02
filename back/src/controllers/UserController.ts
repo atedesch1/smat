@@ -121,9 +121,10 @@ class UserController {
   }
 
   async getAUser(req: Request, res: Response) {
-    const { id } = req.params
+    const { userId } = req.params
+
     try {
-      const user = await User.findOne({ where: { id } })
+      const user = await User.findOne({ where: { id: userId } })
       
       if (!user) { return res.sendStatus(404) }
   
@@ -136,9 +137,10 @@ class UserController {
   }
 
   async getUserPosts(req: Request, res: Response) {
-    const { id } = req.params
+    const { userId } = req.params
+    
     try {
-      const user = await User.findOne({ where: { id }, relations: ['posts'] })
+      const user = await User.findOne({ where: { id: userId }, relations: ['posts'] })
   
       if (!user) { return res.sendStatus(404) }
   

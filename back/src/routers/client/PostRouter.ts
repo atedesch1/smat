@@ -6,12 +6,12 @@ import AuthMiddleware from '@/middlewares/AuthMiddleware'
 const router = Router()
 
 router.post('/create', AuthMiddleware, PostController.createPost)
-router.get('/:id', PostController.getAPost)
-router.put('/:id', AuthMiddleware, PostController.updatePost)
-router.put('/:id/like', AuthMiddleware, PostController.likePost)
-router.get('/:id/like', AuthMiddleware, PostController.hasLikedPost)
-router.put('/:id/unlike', AuthMiddleware, PostController.unlikePost)
-router.delete('/:id', AuthMiddleware, PostController.deletePost)
-router.get('/:id/comments', PostController.getPostComments)
+router.get('/:postId', PostController.getAPost)
+router.put('/:postId', AuthMiddleware, PostController.updatePost)
+router.put('/:postId/like', AuthMiddleware, PostController.likePost)
+router.get('/:postId/like', AuthMiddleware, PostController.hasLikedPost)
+router.put('/:postId/unlike', AuthMiddleware, PostController.unlikePost)
+router.delete('/:postId', AuthMiddleware, PostController.deletePost)
+router.get('/:postId/comments', PostController.getPostComments)
 
 export default router

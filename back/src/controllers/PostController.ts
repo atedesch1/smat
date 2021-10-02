@@ -24,13 +24,13 @@ class PostController {
   }
 
   async updatePost(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
     const { file, language, description, subject, instructor }:
     { file?: Post['file'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
     const userId = req.userId
 
     try {
-      const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
+      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
       if (!postExists) { return res.sendStatus(404) }
   
@@ -38,7 +38,7 @@ class PostController {
   
       if (!isUsersPost) { return res.sendStatus(403) }
   
-      await Post.updatePost(id, { file, language, description, subject, instructor })
+      await Post.updatePost(postId, { file, language, description, subject, instructor })
   
       return res.sendStatus(201)
     } catch (err) {
@@ -49,11 +49,11 @@ class PostController {
   }
 
   async deletePost(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
     const userId = req.userId
     
     try {
-      const postExists = await Post.findOne({ where: { id }, loadRelationIds: true } )
+      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
       if (!postExists) { return res.sendStatus(404) }
   
@@ -61,7 +61,7 @@ class PostController {
   
       if (!isUsersPost) { return res.sendStatus(403) }
   
-      await Post.deletePost(id)
+      await Post.deletePost(postId)
   
       return res.sendStatus(200)
     } catch (err) {
@@ -72,10 +72,10 @@ class PostController {
   }
 
   async getAPost(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
 
     try {
-      const post = await Post.findOne({ where: { id }, relations: ['comments'] })
+      const post = await Post.findOne({ where: { id: postId }, relations: ['comments'] })
 
       if (!post) { return res.sendStatus(404) }
 
@@ -88,10 +88,10 @@ class PostController {
   }
 
   async getPostComments(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
 
     try {
-      const post = await Post.findOne({ where: { id }, relations: ['comments'] })
+      const post = await Post.findOne({ where: { id: postId }, relations: ['comments'] })
   
       if (!post) { return res.sendStatus(404) }
   
@@ -104,11 +104,11 @@ class PostController {
   }
 
   async likePost(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
     const userId = req.userId
 
     try {
-      const post = await Post.findOne({ where: { id } })
+      const post = await Post.findOne({ where: { id: postId } })
   
       if (!post) { return res.sendStatus(404) }
       
@@ -117,11 +117,11 @@ class PostController {
         .insert()
         .into('posts_users_liked_users')
         .values([
-          { postsId: id, usersId: userId }
+          { postsId: postId, usersId: userId }
         ])
         .execute()
 
-      await Post.update({ id }, { like_count: post.like_count + 1 })
+      await Post.update({ id: postId }, { like_count: post.like_count + 1 })
 
       return res.sendStatus(200)
     } catch (err) {
@@ -159,11 +159,11 @@ class PostController {
   }
 
   async unlikePost(req: Request, res: Response) {
-    const { id } = req.params
+    const { postId } = req.params
     const userId = req.userId
 
     try {
-      const post = await Post.findOne({ where: { id }, relations: ['usersLiked'] })
+      const post = await Post.findOne({ where: { id: postId }, relations: ['usersLiked'] })
   
       if (!post) { return res.sendStatus(404) }
 
@@ -171,11 +171,11 @@ class PostController {
         .createQueryBuilder()
         .delete()
         .from('posts_users_liked_users')
-        .where({ postsId: id, usersId: userId })
+        .where({ postsId: postId, usersId: userId })
         .execute()
 
       if (post.like_count > 0) {
-        await Post.update({ id }, { like_count: post.like_count - 1 })
+        await Post.update({ id: postId }, { like_count: post.like_count - 1 })
       }
 
       return res.sendStatus(200)

@@ -11,7 +11,7 @@ router.post('/sign-out', AuthMiddleware, UserController.signOut)
 router.put('/update', AuthMiddleware, UserController.updateUser)
 router.delete('/delete', AuthMiddleware, UserController.deleteUser)
 router.get('/session', AuthMiddleware, UserController.getCurrentUser)
-router.get('/:id', UserController.getAUser)
-router.get('/:id/posts', UserController.getUserPosts)
+router.get('/:userId', UserController.getAUser)
+router.get('/:userId/posts', UserController.getUserPosts)
 
 export default router
