@@ -167,6 +167,15 @@ class PostController {
   
       if (!post) { return res.sendStatus(404) }
 
+      const liked = await getConnection()
+        .createQueryBuilder()
+        .select()
+        .from('posts_users_liked_users', 'posts_users_liked_users')
+        .where({ postsId: postId, usersId: userId })
+        .execute()
+
+      if (liked.length === 0) { return res.sendStatus(400) }
+
       await getConnection()
         .createQueryBuilder()
         .delete()
