@@ -8,13 +8,18 @@ class PostController {
     const { file, language, description, subject, instructor } = req.body
     const id = req.userId
 
-    const user = await User.findOne({ where: { id } })
-
-    if (!user) { return res.sendStatus(401) }
-
-    const newPost = await Post.createNew({ file, language, description, subject, instructor, user })
-
-    return res.json(newPost)
+    try {
+      const user = await User.findOne({ where: { id } })
+  
+      if (!user) { return res.sendStatus(401) }
+  
+      const newPost = await Post.createNew({ file, language, description, subject, instructor, user })
+  
+      return res.json(newPost)
+    } catch (err) {
+      console.error(err.message)
+      return res.sendStatus(500)
+    }
   }
 
   async updatePost(req: Request, res: Response) {
@@ -37,6 +42,7 @@ class PostController {
       return res.sendStatus(201)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -59,6 +65,7 @@ class PostController {
       return res.sendStatus(200)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -74,6 +81,7 @@ class PostController {
       return res.json(post)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -89,6 +97,7 @@ class PostController {
       return res.json(post.comments)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }

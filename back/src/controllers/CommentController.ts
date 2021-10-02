@@ -24,6 +24,7 @@ class CommentController {
       return res.json(newComment)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -47,6 +48,7 @@ class CommentController {
       return res.sendStatus(200)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -69,6 +71,7 @@ class CommentController {
       return res.sendStatus(200)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
@@ -84,6 +87,7 @@ class CommentController {
       return res.json(comment)
     } catch (err) {
       if (err.code === '22P02') { return res.sendStatus(404) }
+      console.error(err.message)
       return res.sendStatus(500)
     }
   }
