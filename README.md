@@ -12,23 +12,25 @@ By running the command bellow docker-compose will spin up 3 containers: React, N
 docker-compose up
 ```
 
-Run with `-d` flag to run in detached mode.<br/>
-Use `docker logs <container_name> -f` to get logs from a specific container.<br/>
+## Creating the smatdb
 
-React is running at `localhost:3000` and Node is at `localhost:3333`.<br/>
+Once up, you'll get an error because the database isn't created, so, follow the steps:
 
-Postgres is only accessible when inside containers.<br/>
+```bash
+docker exec -it smat_postgres_1 bash
+```
+Now you're inside postgres container's terminal
 
-Use `docker exec -it <container_name> bash` to connect to specified container's bash.<br/>
+```bash
+psql -U postgres
+```
 
-Postgres INFO:<br/>
-host: postgres<br/>
-user: postgres<br/>
-password: postgres<br/>
-database: smatdb
+Now you can run commands againt the database
 
-## Production
+```sql
+CREATE DATABASE smatdb;
+```
 
-Heroku pulls github repo and builds node image in Dockerfile.prod. <br/>
-This image contains node application that serves react aswell as the backend server.<br/>
-Finally, postgres is managed by heroku and doesn't have to be built.
+Don't forget the dot-komma at the end of the line before pressing enter.
+
+## Run migrations
