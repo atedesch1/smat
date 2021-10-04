@@ -1,5 +1,4 @@
-import { NextFunction, Request, Response } from 'express'
-import { v4 as uuidv4 } from 'uuid'
+import { Request, Response } from 'express'
 
 import Post from '@/models/Post'
 import User from '@/models/User'
@@ -7,7 +6,7 @@ import { getConnection } from 'typeorm'
 import CloudStorageService from '@/services/CloudStorageService'
 
 class PostController {
-  async createPost(req: Request, res: Response, next: NextFunction) {
+  async createPost(req: Request, res: Response) {
     const file = req.file
     const id = req.userId
     const { language, title, description, subject, instructor }:
@@ -22,19 +21,10 @@ class PostController {
 
       if (!file) { return res.status(400).json('Missing file attached') }
 
-      const bucket = CloudStorageService.bucket
-
-      const fileId: string = uuidv4()
-      const blob = bucket.file(file.originalname + fileId)
-      const blobStream = blob.createWriteStream()
-  
-      blobStream.on('error', err => {
-        next(err)
+      const fileURL = await CloudStorageService.uploadFile(file, {
+        resumable: false,
+        gzip: true
       })
-        
-      blobStream.end(file.buffer)
-
-      const fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       
       const newPost = await Post.createNew({ fileURL, language, title, description, subject, instructor, user })
   
@@ -45,7 +35,7 @@ class PostController {
     }
   }
 
-  async updatePost(req: Request, res: Response, next: NextFunction) {
+  async updatePost(req: Request, res: Response) {
     const { postId } = req.params
     const file = req.file
     const userId = req.userId
@@ -53,33 +43,23 @@ class PostController {
       { language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
-      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
+      const post = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
-      if (!postExists) { return res.status(404).json('Post not found') }
+      if (!post) { return res.status(404).json('Post not found') }
   
-      const isUsersPost = String(postExists.user) === userId
+      const isUsersPost = String(post.user) === userId
   
       if (!isUsersPost) { return res.status(403).json('Post is not user\'s') }
 
       let fileURL: string | undefined = undefined
       
       if (file) {
-        const bucket = CloudStorageService.bucket
+        if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
 
-        const oldBlob = bucket.file(postExists.fileURL.slice(42))
-        await oldBlob.delete()
-
-        const fileId: string = uuidv4()
-        const blob = bucket.file(file.originalname + fileId)
-        const blobStream = blob.createWriteStream()
-  
-        blobStream.on('error', err => {
-          next(err)
+        fileURL = await CloudStorageService.uploadFile(file, {
+          resumable: false,
+          gzip: true
         })
-        
-        blobStream.end(file.buffer)
-
-        fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       }
 
       await Post.updatePost(postId, { fileURL, language, title, description, subject, instructor })
@@ -97,18 +77,15 @@ class PostController {
     const userId = req.userId
     
     try {
-      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
+      const post = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
-      if (!postExists) { return res.status(404).json('Post not found') }
+      if (!post) { return res.status(404).json('Post not found') }
   
-      const isUsersPost = String(postExists.user) === userId
+      const isUsersPost = String(post.user) === userId
   
       if (!isUsersPost) { return res.status(403).json('Post is not user\'s') }
   
-      const bucket = CloudStorageService.bucket
-
-      const oldBlob = bucket.file(postExists.fileURL.slice(42))
-      await oldBlob.delete()
+      if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
 
       await Post.deletePost(postId)
   

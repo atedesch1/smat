@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
+import { getConnection } from 'typeorm'
 
 import Comment from '@/models/Comment'
 import User from '@/models/User'
 import Post from '@/models/Post'
-import { getConnection } from 'typeorm'
 
 class CommentController {
   async createComment(req: Request, res: Response) {

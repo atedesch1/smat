@@ -1,7 +1,6 @@
-import { NextFunction, Request, Response } from 'express'
+import { Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
-import { v4 as uuidv4 } from 'uuid'
 
 import User from '@/models/User'
 import Session from '@/models/Session'
@@ -12,9 +11,9 @@ class UserController {
       { email: User['email'], password: User['password'], name: User['name'], nationality: User['nationality'] } = req.body
       
     try {
-      const userExists = await User.findByEmail(email)
+      const user = await User.findByEmail(email)
   
-      if (userExists) { return res.status(409).json('Email is already in use') }
+      if (user) { return res.status(409).json('Email is already in use') }
   
       await User.createNew({ email, password, name, nationality })
   
@@ -66,41 +65,29 @@ class UserController {
     }
   }
 
-  async updateUser(req: Request, res: Response, next: NextFunction) {
+  async updateUser(req: Request, res: Response) {
     const id = req.userId
     const file = req.file
     const { name, nationality, bio }:
       { name?: User['name'], nationality?: User['nationality'], bio?: User['bio'] } = req.body
 
     try {
-      const currentUser = await User.findOne({ where: { id } })
+      const user = await User.findOne({ where: { id } })
   
-      if (!currentUser) { return res.status(404).json('User is not registered') }
+      if (!user) { return res.status(404).json('User is not registered') }
       
       let pictureURL: string | undefined = undefined
 
       if (file) {
-        const bucket = CloudStorageService.bucket
-
-        if (currentUser.pictureURL) {
-          const blob = bucket.file(currentUser.pictureURL.slice(42))
-          await blob.delete()
+        if (user.pictureURL) {
+          await CloudStorageService.deleteFile(user.pictureURL)
         }
 
-        const fileId: string = uuidv4()
-        const blob = bucket.file(file.originalname + fileId)
-        const blobStream = blob.createWriteStream({
+        pictureURL = await CloudStorageService.uploadFile(file, {
+          resumable: false,
           gzip: true, 
           metadata: { contentType: 'image/jpeg' }
         })
-  
-        blobStream.on('error', err => {
-          next(err)
-        })
-        
-        blobStream.end(file.buffer)
-
-        pictureURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       }
 
       await User.updateUser(id, { name, nationality, bio, pictureURL })
@@ -119,13 +106,15 @@ class UserController {
     const { password }: { password: User['password'] } = req.body
     
     try {
-      const currentUser = await User.findOne({ where: { id } })
+      const user = await User.findOne({ where: { id } })
   
-      if (!currentUser) { return res.status(404).json('User is not registered') }
+      if (!user) { return res.status(404).json('User is not registered') }
   
-      const isValidPassword = await bcrypt.compare(password, currentUser.password)
+      const isValidPassword = await bcrypt.compare(password, user.password)
   
       if (!isValidPassword) { return res.status(401).json('Invalid password') }
+
+      if (user.pictureURL) { await CloudStorageService.deleteFile(user.pictureURL) }
   
       await Session.deleteSession(sessionId)
 
