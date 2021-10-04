@@ -10,7 +10,9 @@ import ConditionalRoute from "./components/Router/ConditionalRoute";
 
 import SignUp from "./pages/SignUp/index";
 import SignIn from "./pages/SignIn/index";
+import Home from "./pages/Home/index"
 
+import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import UserContext, { UserProvider } from "./contexts/UserContext";
 
 export default function App() {
@@ -29,7 +31,7 @@ export default function App() {
                 <SignIn />
               </ConditionalRoute>
 
-              <ConditionalRoute check={ensureAuthenticated} path="/home">
+              <ConditionalRoute check={1} path="/home">
                 <Home />
               </ConditionalRoute>
             </Switch>
@@ -38,15 +40,4 @@ export default function App() {
       </EventInfoProvider>
     </>
   );
-}
-
-
-
-
-function ensureAuthenticated() {
-  const { userData } = useContext(UserContext);
-
-  return [
-    { to: "/sign-in", check: () => !!userData.token, message: "Por favor, faça login!" }
-  ];
 }
