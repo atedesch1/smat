@@ -6,6 +6,7 @@ import MulterMiddleware from '@/middlewares/MulterMiddleware'
 
 const router = Router()
 
+router.get('/search', UserController.searchUsers)
 router.post('/sign-up', UserController.signUp)
 router.post('/sign-in', UserController.signIn)
 router.post('/sign-out', AuthMiddleware, UserController.signOut)

@@ -93,9 +93,6 @@ class UserController {
           gzip: true, 
           metadata: {
             contentType: 'image/jpeg',
-            metadata: {
-              custom: 'metadata'
-            }
           }
         })
   
@@ -187,6 +184,26 @@ class UserController {
       if (err.code === '22P02') { return res.sendStatus(404) }
       console.error(err.message)
       return res.sendStatus(500)
+    }
+  }
+
+  async searchUsers(req: Request, res: Response) {
+    const { searchQuery } = req.body
+
+    try {
+      const matchedUsers = await User
+        .createQueryBuilder()
+        .select()
+        .where('name ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('bio ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .getMany()
+
+      if (matchedUsers.length === 0) { return res.status(404).json('No users matched') }
+
+      return res.status(200).json(matchedUsers)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(404)
     }
   }
 }

@@ -3,20 +3,22 @@ import { v4 as uuidv4 } from 'uuid'
 
 import Post from '@/models/Post'
 import User from '@/models/User'
-import { getConnection } from 'typeorm'
+import { getConnection, getRepository, Like } from 'typeorm'
 import CloudStorageService from '@/services/CloudStorageService'
 
 class PostController {
   async createPost(req: Request, res: Response, next: NextFunction) {
     const file = req.file
     const id = req.userId
-    const { language, description, subject, instructor }:
-      { language: Post['language'], description: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
+    const { language, title, description, subject, instructor }:
+      { language: Post['language'], title: Post['title'], description: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
       const user = await User.findOne({ where: { id } })
   
       if (!user) { return res.sendStatus(401) }
+
+      if (!title || !description) { return res.sendStatus(400) }
 
       if (!file) { return res.sendStatus(400) }
 
@@ -34,7 +36,7 @@ class PostController {
 
       const fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       
-      const newPost = await Post.createNew({ fileURL, language, description, subject, instructor, user })
+      const newPost = await Post.createNew({ fileURL, language, title, description, subject, instructor, user })
   
       return res.json(newPost)
     } catch (err) {
@@ -47,8 +49,8 @@ class PostController {
     const { postId } = req.params
     const file = req.file
     const userId = req.userId
-    const { language, description, subject, instructor }:
-      { language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
+    const { language, title, description, subject, instructor }:
+      { language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
       const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
@@ -80,7 +82,7 @@ class PostController {
         fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
       }
 
-      await Post.updatePost(postId, { fileURL, language, description, subject, instructor })
+      await Post.updatePost(postId, { fileURL, language, title, description, subject, instructor })
   
       return res.sendStatus(201)
     } catch (err) {
@@ -181,7 +183,6 @@ class PostController {
 
       return res.sendStatus(200)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
       if (err.code === '23505') { return res.sendStatus(409) }
       console.error(err.message)
       return res.sendStatus(500)
@@ -248,6 +249,28 @@ class PostController {
       if (err.code === '22P02') { return res.sendStatus(404) }
       console.error(err.message)
       return res.sendStatus(500)
+    }
+  }
+
+  async searchPosts(req: Request, res: Response) {
+    const { searchQuery } = req.body
+
+    try {
+      const matchedPosts = await Post
+        .createQueryBuilder()
+        .select()
+        .where('title ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('description ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('subject ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('instructor ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .getMany()
+
+      if (matchedPosts.length === 0) { return res.status(404).json('No posts matched') }
+
+      return res.status(200).json(matchedPosts)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(404)
     }
   }
 }
