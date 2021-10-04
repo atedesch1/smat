@@ -1,38 +1,52 @@
-import { Fragment } from 'react'
 
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
+  Switch
 } from "react-router-dom";
+import { useContext } from "react";
+import { ToastContainer } from "react-toastify";
 
-import Home from "./pages/Home"
-import SignIn from "./pages/SignIn"
-import SignUp from "./pages/SignUp"
+import ConditionalRoute from "./components/Router/ConditionalRoute";
 
-import "./assets/styles/reset.css";
-import "./assets/styles/style.css";
+import SignUp from "./pages/SignUp/index";
+import SignIn from "./pages/SignIn/index";
 
-function App() {
+import UserContext, { UserProvider } from "./contexts/UserContext";
+
+export default function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/home" exact>
-          <Home />
-        </Route>
-        <Route path="/sign-in" exact>
-          <SignIn />
-        </Route>
-        <Route path="/sign-up">
-          <SignUp />
-        </Route>
-      </Switch>
-    </Router>
-  )
+    <>
+      <ToastContainer />
+      <EventInfoProvider>
+        <UserProvider>
+          <Router>
+            <Switch>
+              <ConditionalRoute check={1} path="/sign-up" exact>
+                <SignUp />
+              </ConditionalRoute>
+
+              <ConditionalRoute check={1} path="/sign-in" exact>
+                <SignIn />
+              </ConditionalRoute>
+
+              <ConditionalRoute check={ensureAuthenticated} path="/home">
+                <Home />
+              </ConditionalRoute>
+            </Switch>
+          </Router>
+        </UserProvider>
+      </EventInfoProvider>
+    </>
+  );
 }
 
-export default App
+
+
+
+function ensureAuthenticated() {
+  const { userData } = useContext(UserContext);
+
+  return [
+    { to: "/sign-in", check: () => !!userData.token, message: "Por favor, faça login!" }
+  ];
+}
