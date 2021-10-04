@@ -21,7 +21,7 @@ class PostController {
 
       if (!file) { return res.status(400).json('Missing file attached') }
 
-      const fileURL = await CloudStorageService.uploadFile(file, {
+      const fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
         resumable: false,
         gzip: true
       })
@@ -56,7 +56,7 @@ class PostController {
       if (file) {
         if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
 
-        fileURL = await CloudStorageService.uploadFile(file, {
+        fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
           resumable: false,
           gzip: true
         })

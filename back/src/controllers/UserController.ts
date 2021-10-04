@@ -83,7 +83,7 @@ class UserController {
           await CloudStorageService.deleteFile(user.pictureURL)
         }
 
-        pictureURL = await CloudStorageService.uploadFile(file, {
+        pictureURL = await CloudStorageService.uploadFile(file, 'profile_pictures', {
           resumable: false,
           gzip: true, 
           metadata: { contentType: 'image/jpeg' }

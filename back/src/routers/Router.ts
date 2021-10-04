@@ -20,7 +20,7 @@ router.post('/upload', MulterMiddleware.multer.single('file'), async(req, res) =
     return
   }
 
-  const fileURL = await CloudStorageService.uploadFile(req.file, { resumable: false })
+  const fileURL = await CloudStorageService.uploadFile(req.file, 'test_folder', { resumable: false })
 
   res.status(200).send(fileURL)
 })

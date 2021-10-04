@@ -32,13 +32,13 @@ class CloudStorageService {
       console.log('Successfully connected to Google Cloud Storage Bucket')
     }
 
-    uploadFile(file: Express.Multer.File, options: CreateWriteStreamOptions) {
+    uploadFile(file: Express.Multer.File, folderName: string, options: CreateWriteStreamOptions) {
       return new Promise<string>((resolve, reject) => {
         const { originalname, buffer } = file
       
         const fileId = uuidv4()
 
-        const blob = this.bucket.file(`${fileId}&${originalname.replace(/ /g, '_')}`)
+        const blob = this.bucket.file(`${folderName}/${fileId}&${originalname.replace(/ /g, '_')}`)
         const blobStream = blob.createWriteStream(options)
         
         blobStream.on('finish', () => {
