@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity, OneToOne, JoinColumn } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity, OneToOne } from 'typeorm'
 import bcrypt from 'bcryptjs'
 import Post from '@/models/Post'
 import Session from '@/models/Session'

@@ -14,6 +14,9 @@ export default class Post extends BaseEntity {
     language!: string
 
     @Column()
+    title!: string
+
+    @Column()
     description!: string
 
     @Column({ nullable: true })
@@ -38,9 +41,9 @@ export default class Post extends BaseEntity {
     @OneToMany(() => Comment, comment => comment.post, { nullable: true, cascade: true })
     comments?: Comment[]
 
-    static async createNew({ fileURL, language, description, user, subject, instructor }:
-        { fileURL: Post['fileURL'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const postInfo = this.filterNullProperties({ fileURL, language, description, user, subject, instructor })
+    static async createNew({ fileURL, language, title, description, user, subject, instructor }:
+        { fileURL: Post['fileURL'], language: Post['language'], title: Post['title'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const postInfo = this.filterNullProperties({ fileURL, language, description, title, user, subject, instructor })
       
       const newPost = this.create(postInfo)
   
@@ -49,9 +52,9 @@ export default class Post extends BaseEntity {
       return newPost
     }
 
-    static async updatePost(id: Post['id'], { fileURL, language, description, subject, instructor }:
-        { fileURL?: Post['fileURL'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const updatedProperties = this.filterNullProperties({ fileURL, language, description, subject, instructor })
+    static async updatePost(id: Post['id'], { fileURL, language, title, description, subject, instructor }:
+        { fileURL?: Post['fileURL'], language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const updatedProperties = this.filterNullProperties({ fileURL, language, title, description, subject, instructor })
 
       await this.update({ id }, updatedProperties)
     }
