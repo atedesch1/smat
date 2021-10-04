@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity, OneToOne } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate, OneToMany, BaseEntity, OneToOne, DeepPartial } from 'typeorm'
 import bcrypt from 'bcryptjs'
 import Post from '@/models/Post'
 import Session from '@/models/Session'
@@ -57,7 +57,7 @@ export default class User extends BaseEntity {
       await this.delete({ id })
     }
 
-    static filterNullProperties(properties: Record<string, unknown>) {
+    static filterNullProperties(properties: DeepPartial<User>) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }

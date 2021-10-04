@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, DeepPartial, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import User from '@/models/User'
 import Post from '@/models/Post'
 
@@ -46,7 +46,7 @@ export default class Comment extends BaseEntity {
       await this.delete({ id: commentId })
     }
 
-    static filterNullProperties(properties: Record<string, unknown>) {
+    static filterNullProperties(properties: DeepPartial<Comment>) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
