@@ -11,7 +11,7 @@ interface TokenPayLoad {
 export default async function AuthMiddleware(req: Request, res: Response, next: NextFunction) {
   const { authorization } = req.headers
 
-  if (!authorization) { return res.sendStatus(401) }
+  if (!authorization) { return res.status(401).send('No token received') }
 
   const token = authorization.replace('Bearer', '').trim()
 
@@ -25,7 +25,7 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
     const session = await Session.findOne({ where: { token } })
 
     if (!session) {
-      return res.sendStatus(401)
+      return res.status(401).json('User is not logged in')
     }
 
     req.userId = id
@@ -35,8 +35,11 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
   } catch (err) {
     if (err.message === 'jwt expired') {
       const session = await Session.findOne({ where: { token } })
+
       if (session) { Session.deleteSession(session.id) }
+
+      return res.status(401).json('Token expired')
     }
-    return res.sendStatus(401)
+    return res.status(401).json('Invalid token')
   }
 }

@@ -14,14 +14,14 @@ class UserController {
     try {
       const userExists = await User.findByEmail(email)
   
-      if (userExists) { return res.sendStatus(409) }
+      if (userExists) { return res.status(409).json('Email is already in use') }
   
-      const newUser = await User.createNew({ email, password, name, nationality })
+      await User.createNew({ email, password, name, nationality })
   
-      return res.json(newUser)
+      return res.status(201).json('Signed up successfully')
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t sign up user')
     }
   }
 
@@ -32,13 +32,13 @@ class UserController {
     try {
       const user = await User.findOne({ where: { email }, relations: ['session'] })
       
-      if (!user) { return res.sendStatus(401) }
+      if (!user) { return res.status(404).json('Email not found') }
     
       const isValidPassword = await bcrypt.compare(password, user.password)
       
-      if (!isValidPassword) { return res.sendStatus(401) }
+      if (!isValidPassword) { return res.status(401).json('Invalid password') }
 
-      if (user.session) { Session.deleteSession(user.session.id) }
+      if (user.session) { await Session.deleteSession(user.session.id) }
     
       const jwtSecret = process.env.JWT_SECRET || 'secret_key'
     
@@ -46,10 +46,10 @@ class UserController {
     
       await Session.createNew(user, token)
     
-      return res.json({ user: { id: user.id, email: user.email }, token })
+      return res.status(200).json({ user: { id: user.id, email: user.email }, token })
     } catch (err) {
       console.error(err.message)
-      res.sendStatus(500)
+      res.status(500).json('Server couldn\'t sign in user')
     }
   }
 
@@ -59,10 +59,10 @@ class UserController {
     try {
       await Session.deleteSession(id)
   
-      res.sendStatus(200)
+      res.status(200).json('Signed out successfully')
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t sign out user')
     }
   }
 
@@ -75,7 +75,7 @@ class UserController {
     try {
       const currentUser = await User.findOne({ where: { id } })
   
-      if (!currentUser) { return res.sendStatus(401) }
+      if (!currentUser) { return res.status(404).json('User is not registered') }
       
       let pictureURL: string | undefined = undefined
 
@@ -91,9 +91,7 @@ class UserController {
         const blob = bucket.file(file.originalname + fileId)
         const blobStream = blob.createWriteStream({
           gzip: true, 
-          metadata: {
-            contentType: 'image/jpeg',
-          }
+          metadata: { contentType: 'image/jpeg' }
         })
   
         blobStream.on('error', err => {
@@ -107,10 +105,10 @@ class UserController {
 
       await User.updateUser(id, { name, nationality, bio, pictureURL })
   
-      return res.sendStatus(201)
+      return res.status(201).json('User was updated successfully')
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t update user')
     }
   }
 
@@ -123,20 +121,20 @@ class UserController {
     try {
       const currentUser = await User.findOne({ where: { id } })
   
-      if (!currentUser) { return res.sendStatus(401) }
+      if (!currentUser) { return res.status(404).json('User is not registered') }
   
       const isValidPassword = await bcrypt.compare(password, currentUser.password)
   
-      if (!isValidPassword) { return res.sendStatus(401) }
+      if (!isValidPassword) { return res.status(401).json('Invalid password') }
   
       await Session.deleteSession(sessionId)
 
       await User.deleteUser(id)
   
-      return res.sendStatus(200)
+      return res.status(200).json('User was deleted successfully')
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t delete user')
     }
   }
 
@@ -146,12 +144,12 @@ class UserController {
     try {
       const user = await User.findOne({ where: { id } })
   
-      if (!user) { return res.sendStatus(404) }
+      if (!user) { return res.status(404).json('User is not registered') }
   
-      return res.json(user)
+      return res.status(200).json(user)
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get current user')
     }
   }
 
@@ -161,13 +159,13 @@ class UserController {
     try {
       const user = await User.findOne({ where: { id: userId } })
       
-      if (!user) { return res.sendStatus(404) }
+      if (!user) { return res.status(404).json('User not found') }
   
-      return res.json(user)
+      return res.status(200).json(user)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid user id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get user')
     }
   }
 
@@ -177,13 +175,13 @@ class UserController {
     try {
       const user = await User.findOne({ where: { id: userId }, relations: ['posts'] })
   
-      if (!user) { return res.sendStatus(404) }
+      if (!user) { return res.status(404).json('User not found') }
   
-      return res.json(user.posts)
+      return res.status(200).json(user.posts)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid user id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get user posts')
     }
   }
 
@@ -198,12 +196,12 @@ class UserController {
         .orWhere('bio ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
         .getMany()
 
-      if (matchedUsers.length === 0) { return res.status(404).json('No users matched') }
+      if (matchedUsers.length === 0) { return res.status(404).json('No users matched query') }
 
       return res.status(200).json(matchedUsers)
     } catch (err) {
       console.error(err.message)
-      return res.status(404)
+      return res.status(500).json('Server couldn\'t process search query')
     }
   }
 }
