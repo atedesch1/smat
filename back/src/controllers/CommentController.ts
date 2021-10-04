@@ -102,6 +102,15 @@ class CommentController {
   
       if (!comment) { return res.sendStatus(404) }
       
+      const liked = await getConnection()
+        .createQueryBuilder()
+        .select()
+        .from('comments_users_liked_users', 'comments_users_liked_users')
+        .where({ commentsId: commentId, usersId: userId })
+        .execute()
+
+      if (liked.length !== 0) { return res.sendStatus(409) }
+
       await getConnection()
         .createQueryBuilder()
         .insert()

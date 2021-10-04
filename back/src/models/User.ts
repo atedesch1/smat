@@ -20,7 +20,7 @@ export default class User extends BaseEntity {
     nationality!: string // Use somekind of Country
 
     @Column({ nullable: true })
-    profilePicture?: string // TODO: store real images
+    pictureURL?: string
 
     @Column({ nullable: true })
     bio?: string
@@ -29,7 +29,6 @@ export default class User extends BaseEntity {
     posts?: Post[]
 
     @OneToOne(() => Session, session => session.user, { nullable: true })
-    @JoinColumn()
     session?: Session
 
     @BeforeInsert()
@@ -38,7 +37,8 @@ export default class User extends BaseEntity {
       this.password = bcrypt.hashSync(this.password, 12)
     }
 
-    static async createNew(email: User['email'], password: User['password'], name: User['name'], nationality: User['nationality']) {
+    static async createNew({ email, password, name, nationality }:
+        {email: User['email'], password: User['password'], name: User['name'], nationality: User['nationality']}) {
       const newUser = this.create({ email, password, name, nationality })
 
       await this.save(newUser)
@@ -46,12 +46,19 @@ export default class User extends BaseEntity {
       return newUser
     }
 
-    static async updateUser(id: User['id'], newProperties: Record<string, unknown>) {
-      await this.update({ id }, newProperties)
+    static async updateUser(id: User['id'], { name, nationality, bio, pictureURL }:
+        { name?: User['name'], nationality?: User['nationality'], bio?: User['bio'], pictureURL?: User['pictureURL'] }) {
+      const updatedProperties = this.filterNullProperties({ name, nationality, bio, pictureURL })
+
+      await this.update({ id }, updatedProperties)
     }
 
     static async deleteUser(id: User['id']) {
       await this.delete({ id })
+    }
+
+    static filterNullProperties(properties: Record<string, unknown>) {
+      return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
 
     static async findByEmail(email: User['email']) {

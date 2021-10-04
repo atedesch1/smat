@@ -1,20 +1,40 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
+import { v4 as uuidv4 } from 'uuid'
 
 import Post from '@/models/Post'
 import User from '@/models/User'
 import { getConnection } from 'typeorm'
+import CloudStorageService from '@/services/CloudStorageService'
 
 class PostController {
-  async createPost(req: Request, res: Response) {
-    const { file, language, description, subject, instructor } = req.body
+  async createPost(req: Request, res: Response, next: NextFunction) {
+    const file = req.file
     const id = req.userId
+    const { language, description, subject, instructor }:
+      { language: Post['language'], description: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
       const user = await User.findOne({ where: { id } })
   
       if (!user) { return res.sendStatus(401) }
+
+      if (!file) { return res.sendStatus(400) }
+
+      const bucket = CloudStorageService.bucket
+
+      const fileId: string = uuidv4()
+      const blob = bucket.file(file.originalname + fileId)
+      const blobStream = blob.createWriteStream()
   
-      const newPost = await Post.createNew({ file, language, description, subject, instructor, user })
+      blobStream.on('error', err => {
+        next(err)
+      })
+        
+      blobStream.end(file.buffer)
+
+      const fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      
+      const newPost = await Post.createNew({ fileURL, language, description, subject, instructor, user })
   
       return res.json(newPost)
     } catch (err) {
@@ -23,11 +43,12 @@ class PostController {
     }
   }
 
-  async updatePost(req: Request, res: Response) {
+  async updatePost(req: Request, res: Response, next: NextFunction) {
     const { postId } = req.params
-    const { file, language, description, subject, instructor }:
-    { file?: Post['file'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
+    const file = req.file
     const userId = req.userId
+    const { language, description, subject, instructor }:
+      { language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
       const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
@@ -37,8 +58,29 @@ class PostController {
       const isUsersPost = String(postExists.user) === userId
   
       if (!isUsersPost) { return res.sendStatus(403) }
+
+      let fileURL: string | undefined = undefined
+      
+      if (file) {
+        const bucket = CloudStorageService.bucket
+
+        const oldBlob = bucket.file(postExists.fileURL.slice(42))
+        await oldBlob.delete()
+
+        const fileId: string = uuidv4()
+        const blob = bucket.file(file.originalname + fileId)
+        const blobStream = blob.createWriteStream()
   
-      await Post.updatePost(postId, { file, language, description, subject, instructor })
+        blobStream.on('error', err => {
+          next(err)
+        })
+        
+        blobStream.end(file.buffer)
+
+        fileURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      }
+
+      await Post.updatePost(postId, { fileURL, language, description, subject, instructor })
   
       return res.sendStatus(201)
     } catch (err) {
@@ -61,6 +103,11 @@ class PostController {
   
       if (!isUsersPost) { return res.sendStatus(403) }
   
+      const bucket = CloudStorageService.bucket
+
+      const oldBlob = bucket.file(postExists.fileURL.slice(42))
+      await oldBlob.delete()
+
       await Post.deletePost(postId)
   
       return res.sendStatus(200)
@@ -112,6 +159,15 @@ class PostController {
   
       if (!post) { return res.sendStatus(404) }
       
+      const liked = await getConnection()
+        .createQueryBuilder()
+        .select()
+        .from('posts_users_liked_users', 'posts_users_liked_users')
+        .where({ postsId: postId, usersId: userId })
+        .execute()
+
+      if (liked.length !== 0) { return res.sendStatus(409) }
+
       await getConnection()
         .createQueryBuilder()
         .insert()

@@ -35,11 +35,18 @@ export default class Comment extends BaseEntity {
       return newComment
     }
 
-    static async updateComment(id: Comment['id'], newProperties: Record<string, unknown>) {
-      await this.update({ id }, newProperties)
+    static async updateComment(id: Comment['id'], { body }:
+        {body?: Comment['body']}) {
+      const updatedProperties = this.filterNullProperties({ body })
+      
+      await this.update({ id }, updatedProperties)
     }
   
     static async deleteComment(commentId: Comment['id']) {
       await this.delete({ id: commentId })
+    }
+
+    static filterNullProperties(properties: Record<string, unknown>) {
+      return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
 }

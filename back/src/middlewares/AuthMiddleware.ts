@@ -24,10 +24,12 @@ export default async function AuthMiddleware(req: Request, res: Response, next: 
 
     const session = await Session.findOne({ where: { token } })
 
-    if (session) {
-      req.userId = id
-      req.sessionId = session.id
+    if (!session) {
+      return res.sendStatus(401)
     }
+
+    req.userId = id
+    req.sessionId = session.id
 
     next()
   } catch (err) {

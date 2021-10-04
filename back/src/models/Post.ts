@@ -8,7 +8,7 @@ export default class Post extends BaseEntity {
     id!: string
 
     @Column()
-    file!: string // TODO: store real files
+    fileURL!: string
 
     @Column()
     language!: string
@@ -38,21 +38,30 @@ export default class Post extends BaseEntity {
     @OneToMany(() => Comment, comment => comment.post, { nullable: true, cascade: true })
     comments?: Comment[]
 
-    static async createNew({ file, language, description, user, subject, instructor }:
-        { file: Post['file'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const newPost = this.create({ file, language, description, user, subject, instructor })
+    static async createNew({ fileURL, language, description, user, subject, instructor }:
+        { fileURL: Post['fileURL'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const postInfo = this.filterNullProperties({ fileURL, language, description, user, subject, instructor })
+      
+      const newPost = this.create(postInfo)
   
       await this.save(newPost)
   
       return newPost
     }
 
-    static async updatePost(id: Post['id'], newProperties: Record<string, unknown>) {
-      await this.update({ id }, newProperties)
+    static async updatePost(id: Post['id'], { fileURL, language, description, subject, instructor }:
+        { fileURL?: Post['fileURL'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const updatedProperties = this.filterNullProperties({ fileURL, language, description, subject, instructor })
+
+      await this.update({ id }, updatedProperties)
     }
 
     static async deletePost(id: Post['id']) {
-      await this.delete({ id },)
+      await this.delete({ id })
+    }
+
+    static filterNullProperties(properties: Record<string, unknown>) {
+      return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
 }
 

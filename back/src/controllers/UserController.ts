@@ -1,9 +1,11 @@
-import { Request, Response } from 'express'
+import { NextFunction, Request, Response } from 'express'
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
+import { v4 as uuidv4 } from 'uuid'
 
 import User from '@/models/User'
 import Session from '@/models/Session'
+import CloudStorageService from '@/services/CloudStorageService'
 class UserController {
   async signUp(req: Request, res: Response) {
     const { email, password, name, nationality }:
@@ -14,7 +16,7 @@ class UserController {
   
       if (userExists) { return res.sendStatus(409) }
   
-      const newUser = await User.createNew(email, password, name, nationality)
+      const newUser = await User.createNew({ email, password, name, nationality })
   
       return res.json(newUser)
     } catch (err) {
@@ -29,13 +31,13 @@ class UserController {
       
     try {
       const user = await User.findOne({ where: { email }, relations: ['session'] })
-    
+      
       if (!user) { return res.sendStatus(401) }
     
       const isValidPassword = await bcrypt.compare(password, user.password)
-    
+      
       if (!isValidPassword) { return res.sendStatus(401) }
-    
+
       if (user.session) { Session.deleteSession(user.session.id) }
     
       const jwtSecret = process.env.JWT_SECRET || 'secret_key'
@@ -64,17 +66,49 @@ class UserController {
     }
   }
 
-  async updateUser(req: Request, res: Response) {
+  async updateUser(req: Request, res: Response, next: NextFunction) {
     const id = req.userId
-    const { name, nationality, profilePicture, bio }:
-      { name?: User['name'], nationality?: User['nationality'], profilePicture?: User['profilePicture'], bio?: User['bio'] } = req.body
+    const file = req.file
+    const { name, nationality, bio }:
+      { name?: User['name'], nationality?: User['nationality'], bio?: User['bio'] } = req.body
 
     try {
       const currentUser = await User.findOne({ where: { id } })
   
       if (!currentUser) { return res.sendStatus(401) }
+      
+      let pictureURL: string | undefined = undefined
+
+      if (file) {
+        const bucket = CloudStorageService.bucket
+
+        if (currentUser.pictureURL) {
+          const blob = bucket.file(currentUser.pictureURL.slice(42))
+          await blob.delete()
+        }
+
+        const fileId: string = uuidv4()
+        const blob = bucket.file(file.originalname + fileId)
+        const blobStream = blob.createWriteStream({
+          gzip: true, 
+          metadata: {
+            contentType: 'image/jpeg',
+            metadata: {
+              custom: 'metadata'
+            }
+          }
+        })
   
-      await User.updateUser(id, { name, nationality, profilePicture, bio })
+        blobStream.on('error', err => {
+          next(err)
+        })
+        
+        blobStream.end(file.buffer)
+
+        pictureURL = `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+      }
+
+      await User.updateUser(id, { name, nationality, bio, pictureURL })
   
       return res.sendStatus(201)
     } catch (err) {
@@ -85,6 +119,8 @@ class UserController {
 
   async deleteUser(req: Request, res: Response) {
     const id = req.userId
+    const sessionId = req.sessionId
+
     const { password }: { password: User['password'] } = req.body
     
     try {
@@ -96,6 +132,8 @@ class UserController {
   
       if (!isValidPassword) { return res.sendStatus(401) }
   
+      await Session.deleteSession(sessionId)
+
       await User.deleteUser(id)
   
       return res.sendStatus(200)

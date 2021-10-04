@@ -23,7 +23,7 @@ router.post('/upload', MulterMiddleware.multer.single('file'), (req, res, next) 
   // Create a new blob in the bucket and upload the file data.
   const bucket = CloudStorageService.bucket
   const blob = bucket.file(req.file.originalname)
-  const blobStream = blob.createWriteStream()
+  const blobStream = blob.createWriteStream({ gzip: true })
   
   blobStream.on('error', err => {
     next(err)
