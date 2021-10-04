@@ -1,13 +1,10 @@
 import { Fragment } from 'react'
-import TestGet from './components/TestGet'
-
-import TestPost from './components/TestPost'
+import TestUpload from './components/TestUpload'
 
 function App() {
   return (
     <Fragment>
-      <TestPost></TestPost>
-      <TestGet></TestGet>
+      <TestUpload></TestUpload>
     </Fragment>
   )
 }
