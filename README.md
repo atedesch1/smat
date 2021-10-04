@@ -21,6 +21,8 @@ Postgres is only accessible when inside containers.<br/>
 
 Use `docker exec -it <container_name> bash` to connect to specified container's bash.<br/>
 
+Make sure you create database smatdb in postgres's container with the command above.<br/>
+
 Postgres INFO:<br/>
 host: postgres<br/>
 user: postgres<br/>
