@@ -14,19 +14,19 @@ class CommentController {
     try {
       const user = await User.findOne({ where: { id: userId } })
   
-      if (!user) { return res.sendStatus(401) }
+      if (!user) { return res.status(401).json('User is not registered') }
   
       const post = await Post.findOne({ where: { id: postId } })
   
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
   
       const newComment = await Comment.createNew({ body, post, user })
   
-      return res.json(newComment)
+      return res.status(200).json(newComment)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t create comment')
     }
   }
 
@@ -38,19 +38,19 @@ class CommentController {
     try {
       const user = await User.findOne({ where: { id: userId } })
   
-      if (!user) { return res.sendStatus(401) }
+      if (!user) { return res.status(401).json('User is not registered') }
   
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found') }
   
       await Comment.updateComment(commentId, { body })
   
-      return res.sendStatus(200)
+      return res.status(200).json('Comment was updated successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t update comment')
     }
   }
 
@@ -61,19 +61,19 @@ class CommentController {
     try {
       const user = await User.findOne({ where: { id: userId } })
   
-      if (!user) { return res.sendStatus(401) }
+      if (!user) { return res.status(401).json('User is not registered') }
   
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found') }
   
       await Comment.deleteComment(commentId)
   
-      return res.sendStatus(200)
+      return res.status(200).json('Comment was deleted successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t delete comment')
     }
   }
 
@@ -83,13 +83,13 @@ class CommentController {
     try {
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found') }
   
       return res.json(comment)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get comment')
     }
   }
 
@@ -100,7 +100,7 @@ class CommentController {
     try {
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found')  }
       
       const liked = await getConnection()
         .createQueryBuilder()
@@ -109,7 +109,7 @@ class CommentController {
         .where({ commentsId: commentId, usersId: userId })
         .execute()
 
-      if (liked.length !== 0) { return res.sendStatus(409) }
+      if (liked.length !== 0) { return res.status(409).json('User already liked comment') }
 
       await getConnection()
         .createQueryBuilder()
@@ -122,12 +122,11 @@ class CommentController {
 
       await Comment.update({ id: commentId }, { like_count: comment.like_count + 1 })
 
-      return res.sendStatus(200)
+      return res.status(200).json('Comment was liked successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
-      if (err.code === '23505') { return res.sendStatus(409) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process like comment request')
     }
   }
 
@@ -138,7 +137,7 @@ class CommentController {
     try {
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found') }
       
       const liked = await getConnection()
         .createQueryBuilder()
@@ -147,13 +146,13 @@ class CommentController {
         .where({ commentsId: commentId, usersId: userId })
         .execute()
 
-      if (liked.length === 0) { return res.json('false') }
+      if (liked.length === 0) { return res.status(200).json('false') }
 
-      return res.json('true')
+      return res.status(200).json('true')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process has liked comment request')
     }
   }
 
@@ -164,7 +163,7 @@ class CommentController {
     try {
       const comment = await Comment.findOne({ where: { id: commentId } })
   
-      if (!comment) { return res.sendStatus(404) }
+      if (!comment) { return res.status(404).json('Comment not found') }
 
       const liked = await getConnection()
         .createQueryBuilder()
@@ -173,7 +172,7 @@ class CommentController {
         .where({ commentsId: commentId, usersId: userId })
         .execute()
 
-      if (liked.length === 0) { return res.sendStatus(400) }
+      if (liked.length === 0) { return res.status(400).json('User has not liked comment') }
 
       await getConnection()
         .createQueryBuilder()
@@ -188,9 +187,9 @@ class CommentController {
 
       return res.sendStatus(200)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process unlike comment request')
     }
   }
 }
