@@ -3,8 +3,8 @@ import cors from 'cors'
 import path from 'path'
 import 'reflect-metadata'
 
-import router from '@/routers/Router'
-import connectDatabase from '@/database/connect'
+import router from './routers/Router'
+import connectDatabase from './database/connect'
 
 const app = express()
 
