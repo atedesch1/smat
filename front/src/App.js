@@ -1,6 +1,7 @@
 
 import {
   BrowserRouter as Router,
+  Route,
   Switch
 } from "react-router-dom";
 import { useContext } from "react";
@@ -18,26 +19,22 @@ import UserContext, { UserProvider } from "./contexts/UserContext";
 export default function App() {
   return (
     <>
-      <ToastContainer />
-      <EventInfoProvider>
-        <UserProvider>
-          <Router>
+      <UserProvider>
+          <ToastContainer />
+           <Router>
             <Switch>
-              <ConditionalRoute check={1} path="/sign-up" exact>
+              <Route path="/sign-up" exact>
                 <SignUp />
-              </ConditionalRoute>
-
-              <ConditionalRoute check={1} path="/sign-in" exact>
+              </Route>
+              <Route path="/sign-in" exact>
                 <SignIn />
-              </ConditionalRoute>
-
-              <ConditionalRoute check={1} path="/home">
+              </Route>
+              <Route path="/home">
                 <Home />
-              </ConditionalRoute>
+              </Route>
             </Switch>
           </Router>
-        </UserProvider>
-      </EventInfoProvider>
+      </UserProvider>
     </>
   );
 }

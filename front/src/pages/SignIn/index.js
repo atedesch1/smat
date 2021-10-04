@@ -8,7 +8,6 @@ import Button from "../../components/Form/Button";
 import Link from "../../components/Link";
 import { Row, Title, Label } from "../../components/Auth";
 
-import EventInfoContext from "../../contexts/EventInfoContext";
 import UserContext from "../../contexts/UserContext";
 
 import useApi from "../../hooks/useApi";
@@ -19,8 +18,7 @@ export default function SignIn() {
   const [loadingSignIn, setLoadingSignIn] = useState(false);
 
   const api = useApi();
-
-  const { eventInfo } = useContext(EventInfoContext);
+  console.log(useContext(UserContext))
   const { setUserData } = useContext(UserContext);
   
   function submit(event) {
@@ -46,10 +44,9 @@ export default function SignIn() {
   } 
 
   return (
-    <AuthLayout background={eventInfo.backgroundImage}>
+    <AuthLayout>
       <Row>
-        <img src={eventInfo.logoImage} alt="Event Logo" />
-        <Title>{eventInfo.eventTitle}</Title>
+        <Title>Login</Title>
       </Row>
       <Row>
         <Label>Entrar</Label>

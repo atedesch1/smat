@@ -9,7 +9,6 @@ import Button from "../../components/Form/Button";
 import { Row, Title, Label } from "../../components/Auth";
 import Link from "../../components/Link";
 
-import EventInfoContext from "../../contexts/EventInfoContext";
 
 import useApi from "../../hooks/useApi";
 
@@ -23,7 +22,6 @@ export default function SignUp() {
 
   const api = useApi();
   
-  const { eventInfo } = useContext(EventInfoContext);
 
   function submit(event) {
     event.preventDefault();
@@ -50,10 +48,9 @@ export default function SignUp() {
   }
 
   return (
-    <AuthLayout background={eventInfo.backgroundImage}>
+    <AuthLayout >
       <Row>
-        <img src={eventInfo.logoImage} alt="Event Logo" />
-        <Title>{eventInfo.eventTitle}</Title>
+        <Title>Cadastro </Title>
       </Row>
       <Row>
         <Label>Inscrição</Label>
