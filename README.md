@@ -50,7 +50,7 @@ To get logs from a container run:
 docker logs <container_name> -f
 ```
 
-## Create database and Run Migrations
+## Create Database and Run Migrations
 
 In order to be able to use postgres you need to create the database and run migrations. <br/>
 
@@ -82,7 +82,7 @@ Inside Node's bash run:
 npm run migration:run
 ```
 
-## Google cloud storage
+## Google Cloud Storage
 
 This project uses a Google Cloud storage bucket to store files and images. <br/>
 
