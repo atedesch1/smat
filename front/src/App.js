@@ -1,10 +1,10 @@
 import { Fragment } from 'react'
-import TestUpload from './components/TestUpload'
+import AuthForm from './components/AuthForm'
 
 function App() {
   return (
     <Fragment>
-      <TestUpload></TestUpload>
+      <AuthForm></AuthForm>
     </Fragment>
   )
 }
