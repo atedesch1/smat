@@ -1,7 +1,8 @@
 import { Fragment, useState } from 'react'
 import axios from 'axios'
+import Post from './Post'
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [postsMatched, setPostsMatched] = useState([])
 
@@ -15,7 +16,7 @@ const SearchBar = () => {
           searchQuery: searchQuery,
         },
       })
-      setPostsMatched(res.data)
+      props.setPostsMatched(res.data)
     } catch (err) {
       console.error(err)
     }

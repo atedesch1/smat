@@ -1,5 +1,7 @@
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import axios from 'axios'
+import styled from 'styled-components'
+import { useHistory } from 'react-router'
 
 const PostForm = ({ isNewPost, token }) => {
   const [file, setFile] = useState(null)
@@ -8,7 +10,7 @@ const PostForm = ({ isNewPost, token }) => {
   const [description, setDescription] = useState('')
   const [subject, setSubject] = useState('')
   const [instructor, setInstructor] = useState('')
-
+  const history = useHistory()
   const onSubmitForm = async (e) => {
     e.preventDefault()
     try {
@@ -20,7 +22,7 @@ const PostForm = ({ isNewPost, token }) => {
       formData.append('subject', subject)
       formData.append('instructor', instructor)
       // Needs to be authenticated
-         const res = await axios('/api/post/create', {
+         await axios('/api/post/create', {
            method: 'POST',
            data: formData,
            headers: {
@@ -28,6 +30,7 @@ const PostForm = ({ isNewPost, token }) => {
              'Authorization': `Bearer ${token}`
            },
          })
+      history.push("/")
       console.log(formData)
     } catch (err) {
       console.error(err.message)
@@ -35,7 +38,7 @@ const PostForm = ({ isNewPost, token }) => {
   }
 
   return (
-    <Fragment>
+    <PostFormBox>
       <h1>{isNewPost ? 'Create Post' : 'Update Post'}</h1>
       <form onSubmit={onSubmitForm}>
         <input
@@ -77,8 +80,23 @@ const PostForm = ({ isNewPost, token }) => {
         />
         <button>{isNewPost ? 'Create' : 'Update'}</button>
       </form>
-    </Fragment>
+    </PostFormBox>
   )
 }
 
 export default PostForm
+
+const PostFormBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  form  {
+    display: flex;
+    flex-direction: column;
+    input {
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+  }
+`

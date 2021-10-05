@@ -11,10 +11,13 @@ import SignIn from "./pages/SignIn/index";
 import Home from "./pages/Home/index"
 import CreatePost from "./pages/CreatePost/index"
 import UserContext, { UserProvider } from "./contexts/UserContext";
+import {ThemeProvider} from '@mui/material/styles'
+import Theme from "./components/Theme";
 
 export default function App() {
   return (
     <>
+
       <UserProvider>
           <ToastContainer />
            <Router>
@@ -34,6 +37,7 @@ export default function App() {
             </Switch>
           </Router>
       </UserProvider>
+
     </>
   );
 }
