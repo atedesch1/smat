@@ -6,7 +6,7 @@ import MulterMiddleware from '@/middlewares/MulterMiddleware'
 
 const router = Router()
 
-router.get('/search', PostController.searchPosts)
+router.post('/search', PostController.searchPosts)
 router.post('/create', AuthMiddleware, MulterMiddleware.multer.single('file'), PostController.createPost)
 router.get('/:postId', PostController.getAPost)
 router.put('/:postId', AuthMiddleware, MulterMiddleware.multer.single('file'), PostController.updatePost)
