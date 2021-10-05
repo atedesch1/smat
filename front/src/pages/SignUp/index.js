@@ -15,6 +15,8 @@ import useApi from "../../hooks/useApi";
 export default function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [nationality, setNationality] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loadingSignUp, setLoadingSignUp] = useState(false);
 
@@ -30,10 +32,11 @@ export default function SignUp() {
     if (password !== confirmPassword) {
       toast("As senhas devem ser iguais!");
     } else {
-      api.user.signUp(email, password).then(response => {
+      api.user.signUp(email, password, name, nationality).then(response => {
         toast("Inscrito com sucesso! Por favor, faça login.");
         history.push("/sign-in");
       }).catch(error => {
+        console.log(error)
         if (error.response) {
           for (const detail of error.response.data.details) {
             toast(detail);
@@ -55,6 +58,8 @@ export default function SignUp() {
       <Row>
         <Label>Inscrição</Label>
         <form onSubmit={submit}>
+          <Input label="Nome" type="text" fullWidth value={name} onChange={e => setName(e.target.value)} />
+          <Input label="Nacionalidade" type="text" fullWidth value={nationality} onChange={e => setNationality(e.target.value)} />
           <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
           <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />

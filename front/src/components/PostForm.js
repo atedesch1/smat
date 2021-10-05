@@ -1,7 +1,7 @@
 import { Fragment, useState } from 'react'
 import axios from 'axios'
 
-const PostForm = ({ isNewPost }) => {
+const PostForm = ({ isNewPost, token }) => {
   const [file, setFile] = useState(null)
   const [language, setLanguage] = useState('')
   const [title, setTitle] = useState('')
@@ -20,13 +20,14 @@ const PostForm = ({ isNewPost }) => {
       formData.append('subject', subject)
       formData.append('instructor', instructor)
       // Needs to be authenticated
-      //   const res = await axios('/api/post/create', {
-      //     method: 'POST',
-      //     data: formData,
-      //     headers: {
-      //       'Content-Type': 'multipart/form-data',
-      //     },
-      //   })
+         const res = await axios('/api/post/create', {
+           method: 'POST',
+           data: formData,
+           headers: {
+             'Content-Type': 'multipart/form-data',
+             'Authorization': `Bearer ${token}`
+           },
+         })
       console.log(formData)
     } catch (err) {
       console.error(err.message)
