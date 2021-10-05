@@ -1,3 +1,5 @@
+<br/>
+
 <p align="center">
   <a href="https://smat-web.herokuapp.com">
     <img
@@ -8,7 +10,6 @@
   </a>
 </p>
 
-<br/>
 
 <p align="center">
   Currently in development
