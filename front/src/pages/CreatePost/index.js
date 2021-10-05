@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 export default function CreatePost() {
     const { userData, setUserData } = useContext(UserContext);
-
     return (
       <CreatePostBox>
         <PostForm isNewPost={true} token={userData.token}/>

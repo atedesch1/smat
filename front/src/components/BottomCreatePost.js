@@ -23,6 +23,8 @@ export default function BottomCreatePost(){
     )
 }
 
+
+
 const TopBox = styled.div`
     display: flex;
     position: fixed;

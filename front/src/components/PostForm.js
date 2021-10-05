@@ -80,6 +80,7 @@ const PostForm = ({ isNewPost, token }) => {
         />
         <button>{isNewPost ? 'Create' : 'Update'}</button>
       </form>
+      
     </PostFormBox>
   )
 }

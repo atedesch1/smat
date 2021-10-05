@@ -23,6 +23,7 @@ export default function Bottom(){
     )
 }
 
+
 const TopBox = styled.div`
     display: flex;
     position: absolute;

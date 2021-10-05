@@ -6,6 +6,7 @@ import Bottom from '../../components/Bottom'
 export default function Home() {
   const [searchQuery, setSearchQuery] = useState('')
   const [postsMatched, setPostsMatched] = useState([])
+  
     return (
       <HomeBox>
         <SearchBar setPostsMatched={setPostsMatched} postsMatched={postsMatched} searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
