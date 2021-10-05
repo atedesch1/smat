@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import SignUp from "./pages/SignUp/index";
 import SignIn from "./pages/SignIn/index";
 import Home from "./pages/Home/index"
+import CreatePost from "./pages/CreatePost/index"
 import UserContext, { UserProvider } from "./contexts/UserContext";
 
 export default function App() {
@@ -24,8 +25,11 @@ export default function App() {
               <Route path="/sign-in" exact>
                 <SignIn />
               </Route>
-              <Route path="/home">
+              <Route path="/" exact>
                 <Home />
+              </Route>
+              <Route path="/create-post" exact>
+                <CreatePost />
               </Route>
             </Switch>
           </Router>

@@ -6,5 +6,5 @@ build:
   docker:
     web: Dockerfile.prod
 # RUN MIGRATIONS
-# run:
-#   web: node ./node_modules/typeorm/cli.js --config dist/database/ormconfig.js migration:run
+run:
+  web: node ./node_modules/typeorm/cli.js --config dist/database/ormconfig.js migration:run
