@@ -4,16 +4,12 @@ import {
   Route,
   Switch
 } from "react-router-dom";
-import { useContext } from "react";
-import { ToastContainer } from "react-toastify";
 
-import ConditionalRoute from "./components/Router/ConditionalRoute";
+import { ToastContainer } from "react-toastify";
 
 import SignUp from "./pages/SignUp/index";
 import SignIn from "./pages/SignIn/index";
 import Home from "./pages/Home/index"
-
-import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import UserContext, { UserProvider } from "./contexts/UserContext";
 
 export default function App() {

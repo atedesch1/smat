@@ -9,9 +9,9 @@ export default class Session extends BaseEntity {
   @Column()
   token!: string;
 
-  @OneToOne(() => User, user => user.session)
+  @OneToOne(() => User, user => user.session, { cascade: true })
   @JoinColumn()
-  user?: User
+  user!: User
 
   static async createNew(user: Session['user'], token: Session['token']) {
     const session = this.create({ user, token })

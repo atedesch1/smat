@@ -1,4 +1,4 @@
-import { BaseEntity, Column, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
+import { BaseEntity, Column, DeepPartial, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn } from 'typeorm'
 import User from '@/models/User'
 import Post from '@/models/Post'
 
@@ -35,11 +35,19 @@ export default class Comment extends BaseEntity {
       return newComment
     }
 
-    static async updateComment(id: Comment['id'], newProperties: Record<string, unknown>) {
-      await this.update({ id }, newProperties)
+    static async updateComment(id: Comment['id'], { body }:
+        {body?: Comment['body']}) {
+      const updatedProperties = this.filterNullProperties({ body })
+      
+      await this.update({ id }, updatedProperties)
     }
   
     static async deleteComment(commentId: Comment['id']) {
       await this.delete({ id: commentId })
+    }
+
+    static filterNullProperties(properties: DeepPartial<Comment>) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
 }

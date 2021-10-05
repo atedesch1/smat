@@ -3,48 +3,72 @@ import { Request, Response } from 'express'
 import Post from '@/models/Post'
 import User from '@/models/User'
 import { getConnection } from 'typeorm'
+import CloudStorageService from '@/services/CloudStorageService'
 
 class PostController {
   async createPost(req: Request, res: Response) {
-    const { file, language, description, subject, instructor } = req.body
+    const file = req.file
     const id = req.userId
+    const { language, title, description, subject, instructor }:
+      { language: Post['language'], title: Post['title'], description: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
       const user = await User.findOne({ where: { id } })
   
-      if (!user) { return res.sendStatus(401) }
+      if (!user) { return res.status(401).json('User is not registered') }
+
+      if (!title || !description) { return res.status(400).json('Missing required parameters') }
+
+      if (!file) { return res.status(400).json('Missing file attached') }
+
+      const fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
+        resumable: false,
+        gzip: true
+      })
+      
+      const newPost = await Post.createNew({ fileURL, language, title, description, subject, instructor, user })
   
-      const newPost = await Post.createNew({ file, language, description, subject, instructor, user })
-  
-      return res.json(newPost)
+      return res.status(200).json(newPost)
     } catch (err) {
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t create post')
     }
   }
 
   async updatePost(req: Request, res: Response) {
     const { postId } = req.params
-    const { file, language, description, subject, instructor }:
-    { file?: Post['file'], language?: Post['language'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
+    const file = req.file
     const userId = req.userId
+    const { language, title, description, subject, instructor }:
+      { language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] } = req.body
 
     try {
-      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
+      const post = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
-      if (!postExists) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
   
-      const isUsersPost = String(postExists.user) === userId
+      const isUsersPost = String(post.user) === userId
   
-      if (!isUsersPost) { return res.sendStatus(403) }
+      if (!isUsersPost) { return res.status(403).json('Post is not user\'s') }
+
+      let fileURL: string | undefined = undefined
+      
+      if (file) {
+        if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
+
+        fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
+          resumable: false,
+          gzip: true
+        })
+      }
+
+      await Post.updatePost(postId, { fileURL, language, title, description, subject, instructor })
   
-      await Post.updatePost(postId, { file, language, description, subject, instructor })
-  
-      return res.sendStatus(201)
+      return res.status(201).json('Post was updated successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t update post')
     }
   }
 
@@ -53,21 +77,23 @@ class PostController {
     const userId = req.userId
     
     try {
-      const postExists = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
+      const post = await Post.findOne({ where: { id: postId }, loadRelationIds: true } )
   
-      if (!postExists) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
   
-      const isUsersPost = String(postExists.user) === userId
+      const isUsersPost = String(post.user) === userId
   
-      if (!isUsersPost) { return res.sendStatus(403) }
+      if (!isUsersPost) { return res.status(403).json('Post is not user\'s') }
   
+      if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
+
       await Post.deletePost(postId)
   
-      return res.sendStatus(200)
+      return res.status(200).json('Post was deleted successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t delete post')
     }
   }
 
@@ -77,13 +103,13 @@ class PostController {
     try {
       const post = await Post.findOne({ where: { id: postId }, relations: ['comments'] })
 
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
 
-      return res.json(post)
+      return res.status(200).json(post)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get post')
     }
   }
 
@@ -93,13 +119,13 @@ class PostController {
     try {
       const post = await Post.findOne({ where: { id: postId }, relations: ['comments'] })
   
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
   
-      return res.json(post.comments)
+      return res.status(200).json(post.comments)
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t get post comments')
     }
   }
 
@@ -110,8 +136,17 @@ class PostController {
     try {
       const post = await Post.findOne({ where: { id: postId } })
   
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
       
+      const liked = await getConnection()
+        .createQueryBuilder()
+        .select()
+        .from('posts_users_liked_users', 'posts_users_liked_users')
+        .where({ postsId: postId, usersId: userId })
+        .execute()
+
+      if (liked.length !== 0) { return res.status(409).json('User already liked post') }
+
       await getConnection()
         .createQueryBuilder()
         .insert()
@@ -123,12 +158,11 @@ class PostController {
 
       await Post.update({ id: postId }, { like_count: post.like_count + 1 })
 
-      return res.sendStatus(200)
+      return res.status(200).json('Post was liked successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
-      if (err.code === '23505') { return res.sendStatus(409) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process like post request')
     }
   }
 
@@ -139,7 +173,7 @@ class PostController {
     try {
       const post = await Post.findOne({ where: { id: postId } })
   
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
       
       const liked = await getConnection()
         .createQueryBuilder()
@@ -148,13 +182,13 @@ class PostController {
         .where({ postsId: postId, usersId: userId })
         .execute()
 
-      if (liked.length === 0) { return res.json('false') }
+      if (liked.length === 0) { return res.status(200).json('false') }
       
-      return res.json('true')
+      return res.status(200).json('true')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process has liked post request')
     }
   }
 
@@ -165,7 +199,7 @@ class PostController {
     try {
       const post = await Post.findOne({ where: { id: postId }, relations: ['usersLiked'] })
   
-      if (!post) { return res.sendStatus(404) }
+      if (!post) { return res.status(404).json('Post not found') }
 
       const liked = await getConnection()
         .createQueryBuilder()
@@ -174,7 +208,7 @@ class PostController {
         .where({ postsId: postId, usersId: userId })
         .execute()
 
-      if (liked.length === 0) { return res.sendStatus(400) }
+      if (liked.length === 0) { return res.status(400).json('User has not liked post') }
 
       await getConnection()
         .createQueryBuilder()
@@ -187,11 +221,33 @@ class PostController {
         await Post.update({ id: postId }, { like_count: post.like_count - 1 })
       }
 
-      return res.sendStatus(200)
+      return res.status(200).json('Post unliked successfully')
     } catch (err) {
-      if (err.code === '22P02') { return res.sendStatus(404) }
+      if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)
-      return res.sendStatus(500)
+      return res.status(500).json('Server couldn\'t process unlike post request')
+    }
+  }
+
+  async searchPosts(req: Request, res: Response) {
+    const { searchQuery } = req.body
+
+    try {
+      const matchedPosts = await Post
+        .createQueryBuilder()
+        .select()
+        .where('title ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('description ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('subject ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .orWhere('instructor ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+        .getMany()
+
+      if (matchedPosts.length === 0) { return res.status(404).json('No posts matched query') }
+
+      return res.status(200).json(matchedPosts)
+    } catch (err) {
+      console.error(err.message)
+      return res.status(500).json('Server couldn\'t process search posts request')
     }
   }
 }

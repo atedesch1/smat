@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, BaseEntity, ManyToMany, JoinTable } from 'typeorm'
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany, ManyToOne, BaseEntity, ManyToMany, JoinTable, DeepPartial } from 'typeorm'
 import User from '@/models/User'
 import Comment from './Comment'
 
@@ -8,10 +8,13 @@ export default class Post extends BaseEntity {
     id!: string
 
     @Column()
-    file!: string // TODO: store real files
+    fileURL!: string
 
     @Column()
     language!: string
+
+    @Column()
+    title!: string
 
     @Column()
     description!: string
@@ -38,21 +41,31 @@ export default class Post extends BaseEntity {
     @OneToMany(() => Comment, comment => comment.post, { nullable: true, cascade: true })
     comments?: Comment[]
 
-    static async createNew({ file, language, description, user, subject, instructor }:
-        { file: Post['file'], language: Post['language'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const newPost = this.create({ file, language, description, user, subject, instructor })
+    static async createNew({ fileURL, language, title, description, user, subject, instructor }:
+        { fileURL: Post['fileURL'], language: Post['language'], title: Post['title'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const postInfo = this.filterNullProperties({ fileURL, language, description, title, user, subject, instructor })
+      
+      const newPost = this.create(postInfo)
   
       await this.save(newPost)
   
       return newPost
     }
 
-    static async updatePost(id: Post['id'], newProperties: Record<string, unknown>) {
-      await this.update({ id }, newProperties)
+    static async updatePost(id: Post['id'], { fileURL, language, title, description, subject, instructor }:
+        { fileURL?: Post['fileURL'], language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const updatedProperties = this.filterNullProperties({ fileURL, language, title, description, subject, instructor })
+
+      await this.update({ id }, updatedProperties)
     }
 
     static async deletePost(id: Post['id']) {
-      await this.delete({ id },)
+      await this.delete({ id })
+    }
+
+    static filterNullProperties(properties: DeepPartial<Post>) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      return Object.fromEntries(Object.entries(properties).filter(([_, v]) => v != null))
     }
 }
 

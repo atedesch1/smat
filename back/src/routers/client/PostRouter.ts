@@ -2,12 +2,14 @@ import { Router } from 'express'
 
 import PostController from '@/controllers/PostController'
 import AuthMiddleware from '@/middlewares/AuthMiddleware'
+import MulterMiddleware from '@/middlewares/MulterMiddleware'
 
 const router = Router()
 
-router.post('/create', AuthMiddleware, PostController.createPost)
+router.get('/search', PostController.searchPosts)
+router.post('/create', AuthMiddleware, MulterMiddleware.multer.single('file'), PostController.createPost)
 router.get('/:postId', PostController.getAPost)
-router.put('/:postId', AuthMiddleware, PostController.updatePost)
+router.put('/:postId', AuthMiddleware, MulterMiddleware.multer.single('file'), PostController.updatePost)
 router.delete('/:postId', AuthMiddleware, PostController.deletePost)
 router.get('/:postId/comments', PostController.getPostComments)
 router.put('/:postId/like', AuthMiddleware, PostController.likePost)
