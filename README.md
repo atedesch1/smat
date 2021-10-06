@@ -90,7 +90,7 @@ Create a Google Cloud account and create a storage bucket. <br/>
 
 Get the a service account key JSON file: https://cloud.google.com/iam/docs/creating-managing-service-account-keys <br/>
 
-To connect to your bucket, place the generated service account key JSON file inside /back and add storage_bucket field with the bucket's name.
+To connect to your bucket, place the generated service account key JSON file inside /back, add storage_bucket field with the bucket's name to it and rename the file to **smat-keys.json**.
 
 
 
