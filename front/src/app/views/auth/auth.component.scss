@@ -1,4 +1,4 @@
-@import "..//../styles.scss";
+@import "../../../styles.scss";
 
 .body {
   color: $text-color;
@@ -16,7 +16,6 @@
 }
 
 .nav-bar a {
-  font-size: 18px;
   text-decoration: none;
   color: $text-color;
 }
@@ -50,9 +49,7 @@
 
   outline: none;
 
-  border-color: $accent-color;
-  border-style: solid;
-  border-width: 3px;
+  border: 3px solid $accent-color;
   border-radius: 20px;
 
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
@@ -78,27 +75,43 @@
   padding-left: 1em;
   border: none;
   border-radius: 100em;
+  caret-color: $accent-color;
+  margin-bottom: 1.5em;
 }
 
-.form-input + .form-input {
-  margin-top: 1em;
+// .form-input + .form-input {
+//   margin-top: 1.5em;
+// }
+
+.error-input {
+  margin-bottom: 0;
+  background-color: $error-bg-color;
+  border: 0.2px solid $error-color;
+  color: $error-color;
 }
 
-.auth-card form p {
-  font-size: 18px;
-  margin: 0;
-  margin-top: 1em;
+.error-message {
+  margin: 0.1em;
+  margin-left: 1.2em;
+  font-size: 0.8rem;
+  align-self: flex-start;
+  color: $error-color;
+}
+
+.redirect-text {
+  font-size: 1rem;
+  margin: 1em;
 }
 
 .form-button {
-  margin-top: 1em;
-  padding: 0.4em 2em;
-  caret-color: $accent-color;
+  font-size: 1.3rem;
+  // margin-top: 1em;
+  padding: 0.5em 2em;
   background-color: $text-color;
 
   font-weight: bold;
   color: white;
-
+  border: none;
   border-radius: 100em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
@@ -107,6 +120,10 @@
 .form-button:hover,
 .form-button:focus {
   opacity: 0.9;
+}
+
+.form-button:disabled {
+  opacity: 0.3;
 }
 
 .redirect-button {
