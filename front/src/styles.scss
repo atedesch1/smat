@@ -1,1 +1,40 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,400&display=swap");
+
+$bg-color: #f0f2f5;
+$bg-color-contrast: #fff;
+
+$accent-color: #ff9914;
+$accent-color-light: #ffaf47;
+$accent-color-lightest: #ffc170;
+$accent-color-dark: #f58b00;
+$accent-color-darkest: #b86800;
+
+$text-color: #1d1e24;
+$text-contrast: #65676b;
+
+$text-size-xxsmall: 8px;
+$text-size-xsmall: 12px;
+$text-size-small: 16px;
+$text-size-normal: 18px;
+$text-size-medium: 20px;
+$text-size-large: 36px;
+$text-size-xlarge: 48px;
+$text-size-xxlarge: 96px;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  color: $text-color;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.3rem;
+}
+
+img {
+  max-width: 100%;
+}
