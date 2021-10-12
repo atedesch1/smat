@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "http://node:3333",
+    "secure": false
+  }
+}
