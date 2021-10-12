@@ -1,17 +1,16 @@
 version: '3.8'
 
 services:
-  react:
+  angular:
     build:
       context: .
       dockerfile: Dockerfile.front
     ports:
-      - '3000:3000'
+      - '4200:4200'
     environment:
-      - PORT=3000
+      - PORT=4200
     volumes:
-      - ./front/src:/react/src
-      - ./front/public:/react/public
+      - ./front/src:/angular/src
     depends_on:
       - node
     networks:
