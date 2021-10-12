@@ -1,4 +1,4 @@
-@import "..//../styles.scss";
+@import "../../../styles.scss";
 
 .body {
   color: $text-color;
@@ -17,7 +17,6 @@
 }
 
 .nav-bar a {
-  font-size: 18px;
   text-decoration: none;
   color: $text-color;
 }
@@ -56,13 +55,13 @@
   border-style: solid;
   border-width: 3px;
 
+  caret-color: $accent-color;
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
 }
 
 .search-button {
   margin-top: 2rem;
-  padding: 0.4em 2em;
-  caret-color: $accent-color;
+  padding: 0.5em 2em;
   background-color: $text-color;
 
   font-weight: bold;
