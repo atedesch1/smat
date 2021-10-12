@@ -1,0 +1,130 @@
+@import "..//../styles.scss";
+
+.body {
+  color: $text-color;
+  background-color: $accent-color;
+  height: 100vh;
+  overflow: auto;
+}
+
+.nav-bar {
+  // max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+}
+
+.nav-bar a {
+  font-size: 18px;
+  text-decoration: none;
+  color: $text-color;
+}
+
+.nav-bar a:hover,
+.nav-bar a:focus {
+  opacity: 0.9;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 1.2em;
+}
+
+.logo {
+  width: 70%;
+  max-width: calc(0.7 * 0.9 * 600px);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: calc(0.9 * 600px);
+  margin-top: 2em;
+  background-color: $bg-color-contrast;
+
+  outline: none;
+
+  border-color: $accent-color;
+  border-style: solid;
+  border-width: 3px;
+  border-radius: 20px;
+
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
+}
+
+.auth-card h1 {
+  font-weight: 500;
+}
+
+.auth-card form {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-input {
+  outline: none;
+  background-color: $bg-color;
+  width: 100%;
+  padding: 0.8em;
+  padding-left: 1em;
+  border: none;
+  border-radius: 100em;
+}
+
+.form-input + .form-input {
+  margin-top: 1em;
+}
+
+.auth-card form p {
+  font-size: 18px;
+  margin: 0;
+  margin-top: 1em;
+}
+
+.form-button {
+  margin-top: 1em;
+  padding: 0.4em 2em;
+  caret-color: $accent-color;
+  background-color: $text-color;
+
+  font-weight: bold;
+  color: white;
+
+  border-radius: 100em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.form-button:hover,
+.form-button:focus {
+  opacity: 0.9;
+}
+
+.redirect-button {
+  text-decoration: none;
+  cursor: pointer;
+  color: $accent-color;
+}
+
+.redirect-button:hover,
+.redirect-button:focus {
+  color: $accent-color-darkest;
+}
+
+@media (min-width: 600px) {
+  .main {
+    margin-top: 0;
+    justify-content: center;
+    height: 80vh;
+    max-height: 2000px;
+  }
+}

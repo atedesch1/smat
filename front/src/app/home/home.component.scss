@@ -1,0 +1,88 @@
+@import "..//../styles.scss";
+
+.body {
+  color: $text-color;
+  background-color: $accent-color;
+  height: 100vh;
+  overflow: auto;
+}
+
+.nav-bar {
+  // max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 20px;
+}
+
+.nav-bar a {
+  font-size: 18px;
+  text-decoration: none;
+  color: $text-color;
+}
+
+.nav-bar a:hover,
+.nav-bar a:focus {
+  opacity: 0.9;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 1.2em;
+}
+
+.logo {
+  width: 70%;
+  max-width: calc(0.7 * 0.9 * 600px);
+}
+
+.search-bar {
+  outline: none;
+  margin-top: 2rem;
+  width: 100%;
+  max-width: 550px;
+  padding: 0.8em;
+  padding-left: 1em;
+
+  border-radius: 100em;
+  border-color: $accent-color;
+  border-style: solid;
+  border-width: 3px;
+
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
+}
+
+.search-button {
+  margin-top: 2rem;
+  padding: 0.4em 2em;
+  caret-color: $accent-color;
+  background-color: $text-color;
+
+  font-weight: bold;
+  color: white;
+
+  border-radius: 100em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+.search-button:hover,
+.search-button:focus {
+  opacity: 0.9;
+}
+
+@media (min-width: 600px) {
+  .main {
+    margin-top: 0;
+    justify-content: center;
+    height: 80vh;
+    max-height: 2000px;
+  }
+}
