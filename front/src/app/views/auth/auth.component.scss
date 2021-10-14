@@ -79,6 +79,11 @@
   margin-bottom: 1.5em;
 }
 
+.form-input:hover,
+.form-input:focus {
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+}
+
 // .form-input + .form-input {
 //   margin-top: 1.5em;
 // }
@@ -95,6 +100,7 @@
   margin-left: 1.2em;
   font-size: 0.8rem;
   align-self: flex-start;
+  text-align: left;
   color: $error-color;
 }
 

@@ -23,7 +23,7 @@
           <input
             [class.error-input]="password?.invalid && password?.touched"
             class="form-input"
-            type="text"
+            type="password"
             placeholder="Password"
             formControlName="password"
           />
@@ -31,7 +31,7 @@
             *ngIf="password?.invalid && password?.touched"
             class="error-message"
           >
-            Invalid password
+            Password needs at least one letter and one numeral
           </p>
           <input
             [class.error-input]="name?.invalid && name?.touched"
@@ -92,7 +92,7 @@
           <input
             [class.error-input]="password?.invalid && password?.touched"
             class="form-input"
-            type="text"
+            type="password"
             placeholder="Password"
             formControlName="password"
           />
@@ -100,7 +100,7 @@
             *ngIf="password?.invalid && password?.touched"
             class="error-message"
           >
-            Invalid password
+            Password needs at least one letter and one numeral
           </p>
           <button
             type="submit"
