@@ -41,3 +41,25 @@ body {
 img {
   max-width: 100%;
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  height: 70%;
+  background: none;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: $accent-color-lightest;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: $accent-color-dark;
+}
