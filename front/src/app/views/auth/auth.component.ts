@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-auth',
@@ -17,7 +18,8 @@ export class AuthComponent implements OnInit {
 
   constructor(private location: Location,
     private fb: FormBuilder,
-    private http: HttpClient
+    private authService: AuthService,
+    private router: Router
     ) {
   }
 
@@ -70,15 +72,12 @@ export class AuthComponent implements OnInit {
     }
 
     try {
-      console.log(formValue)
       if (this.isSignUp) {
-        this.http.post('/api/user/sign-up', formValue).subscribe(
-          res => {console.log(res)}
-        )
+        this.authService.signUp(formValue)
+        this.isSignUp = false
       } else {
-        this.http.post('/api/user/sign-in', formValue).subscribe(
-          res => {console.log(res)}
-        )
+        this.authService.signIn(formValue)
+        this.router.navigateByUrl('/')
       }
     } catch (err) {
       console.error(err)
