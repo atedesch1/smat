@@ -13,18 +13,17 @@
   justify-content: flex-end;
   gap: 20px;
   padding: 20px;
-}
 
-.nav-bar a {
-  text-decoration: none;
-  color: $text-color;
+  a {
+    text-decoration: none;
+    color: $text-color;
 
-  &:hover,
-  &:focus {
-    opacity: 0.9;
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+    }
   }
 }
-
 
 .main {
   display: flex;
@@ -36,7 +35,8 @@
   margin-top: 1.2em;
 
   header {
-    width: 400px;
+    width: 70%;
+    max-width: calc(0.7 * 0.9 * 600px);
 
     .logo {
       width: 100%;
@@ -74,7 +74,6 @@
   }
 }
 
-
 .search-results {
   display: flex;
   flex-direction: column;
@@ -97,24 +96,6 @@
   border-radius: 100em;
 
   caret-color: $accent-color;
-}
-
-.search-button {
-  margin-top: 2rem;
-  padding: 0.5em 2em;
-  background-color: $text-color;
-
-  font-weight: bold;
-  color: white;
-
-  border-radius: 100em;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  cursor: pointer;
-}
-
-.search-button:hover,
-.search-button:focus {
-  opacity: 0.9;
 }
 
 @media (min-width: 600px) {

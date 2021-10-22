@@ -13,16 +13,16 @@
   display: flex;
   justify-content: flex-end;
   padding: 20px;
-}
 
-.nav-bar a {
-  text-decoration: none;
-  color: $text-color;
-}
+  a {
+    text-decoration: none;
+    color: $text-color;
 
-.nav-bar a:hover,
-.nav-bar a:focus {
-  opacity: 0.9;
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+    }
+  }
 }
 
 .main {
@@ -53,18 +53,17 @@
   border-radius: 20px;
 
   box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
-}
 
-.auth-card h1 {
-  font-weight: 500;
-}
-
-.auth-card form {
-  width: 80%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  h1 {
+    font-weight: 500;
+  }
+  form {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .form-input {
@@ -77,11 +76,11 @@
   border-radius: 100em;
   caret-color: $accent-color;
   margin-bottom: 1.5em;
-}
 
-.form-input:hover,
-.form-input:focus {
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  &:hover,
+  &:focus {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  }
 }
 
 // .form-input + .form-input {
@@ -121,26 +120,25 @@
   border-radius: 100em;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   cursor: pointer;
-}
 
-.form-button:hover,
-.form-button:focus {
-  opacity: 0.9;
-}
-
-.form-button:disabled {
-  opacity: 0.3;
+  &:hover,
+  &:focus {
+    opacity: 0.9;
+  }
+  &:disabled {
+    opacity: 0.3;
+  }
 }
 
 .redirect-button {
   text-decoration: none;
   cursor: pointer;
   color: $accent-color;
-}
 
-.redirect-button:hover,
-.redirect-button:focus {
-  color: $accent-color-darkest;
+  &:hover,
+  &:focus {
+    color: $accent-color-darkest;
+  }
 }
 
 @media (min-width: 600px) {

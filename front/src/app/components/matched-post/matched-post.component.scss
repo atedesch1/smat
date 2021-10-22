@@ -1,9 +1,12 @@
 @import "../../../styles.scss";
 
-.post:hover,
-.post:focus {
-  background: $bg-color;
-  cursor: pointer;
+.post {
+  &:hover,
+  &:focus {
+    border-radius: 20px;
+    background: $bg-color;
+    cursor: pointer;
+  }
 }
 
 .post-container {
@@ -20,19 +23,18 @@
 
 .user-bar {
   margin: 0.5em 0;
-}
 
-.user-bar img {
-  height: 28px;
-  width: 28px;
-  border-radius: 50%;
-}
-
-.user-bar h2 {
-  margin: 0;
-  margin-left: 0.8em;
-  color: $text-color;
-  font-size: 1rem;
+  img {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+  }
+  h2 {
+    margin: 0;
+    margin-left: 0.8em;
+    color: $text-color;
+    font-size: 1rem;
+  }
 }
 
 .file-preview {
@@ -56,22 +58,22 @@
   flex-grow: 1;
 }
 
-.post-info h1 {
-  margin: 0;
-  font-size: $text-size-medium;
-}
-
-.post-info h3 {
-  font-weight: 500;
-  font-size: $text-size-xsmall;
-}
-
-.post-info p {
-  color: $text-contrast;
-  overflow: auto;
-  height: 90px;
-  margin: 0;
-  font-size: $text-size-xsmall;
+.post-info {
+  h1 {
+    margin: 0;
+    font-size: $text-size-medium;
+  }
+  h3 {
+    font-weight: 500;
+    font-size: $text-size-xsmall;
+  }
+  p {
+    color: $text-contrast;
+    overflow: auto;
+    height: 90px;
+    margin: 0;
+    font-size: $text-size-xsmall;
+  }
 }
 
 .post-info-row {
@@ -87,16 +89,17 @@
   gap: 30px;
 }
 
-.stat svg {
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-}
-
-.stat h6 {
-  margin: 0;
-  font-size: $text-size-xsmall;
-  color: $text-contrast;
+.stat {
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  h6 {
+    margin: 0;
+    font-size: $text-size-xsmall;
+    color: $text-contrast;
+  }
 }
 
 .hide-desktop {

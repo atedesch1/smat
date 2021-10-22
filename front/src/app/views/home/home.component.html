@@ -44,7 +44,11 @@
         />
       </div>
       <div class="search-results">
-        <app-matched-post *ngFor="let post of matchedPosts" [post]="post"></app-matched-post>
+        <app-matched-post
+          style="width: 100%"
+          *ngFor="let post of matchedPosts"
+          [post]="post"
+        ></app-matched-post>
       </div>
     </div>
   </div>
