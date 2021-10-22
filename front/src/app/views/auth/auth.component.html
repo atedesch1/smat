@@ -43,17 +43,22 @@
           <p *ngIf="name?.invalid && name?.touched" class="error-message">
             Name is required
           </p>
-          <!-- <select class="form-input" formControlName="nationality">
-            <option value="Brazilian">Brazilian</option>
-            <option value="American">American</option>
-          </select> -->
-          <input
-            [class.error-input]="nationality?.invalid && nationality?.touched"
+          <select
             class="form-input"
-            type="text"
-            placeholder="Nationality"
             formControlName="nationality"
-          />
+            [class.error-input]="nationality?.invalid && nationality?.touched"
+            required
+          >
+            <option value="" disabled selected hidden>
+              Select nationality
+            </option>
+            <option
+              *ngFor="let nationality of nationalities"
+              [ngValue]="nationality"
+            >
+              {{ nationality }}
+            </option>
+          </select>
           <p
             *ngIf="nationality?.invalid && nationality?.touched"
             class="error-message"

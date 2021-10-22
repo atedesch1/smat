@@ -3,6 +3,7 @@ import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
+import nationalitiesJSON  from 'src/assets/nationalities.json'
 
 @Component({
   selector: 'app-auth',
@@ -15,6 +16,8 @@ export class AuthComponent implements OnInit {
   authForm!: FormGroup
   isLoading = false
   isSuccess = false
+
+  nationalities = nationalitiesJSON.nationatilies
 
   constructor(private location: Location,
     private fb: FormBuilder,
