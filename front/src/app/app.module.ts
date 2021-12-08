@@ -11,6 +11,8 @@ import { AuthComponent } from './views/auth/auth.component'
 import { LocalStorageService } from './services/local-storage.service';
 import { MatchedPostComponent } from './components/matched-post/matched-post.component';
 import { MainComponent } from './views/main/main.component'
+import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
+import { CreatePostFormComponent } from './components/create-post-form/create-post-form.component'
 
 @NgModule({
   declarations: [
@@ -19,6 +21,7 @@ import { MainComponent } from './views/main/main.component'
     AuthComponent,
     MainComponent,
     MatchedPostComponent,
+    CreatePostFormComponent,
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import { MainComponent } from './views/main/main.component'
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [LocalStorageService],
+  providers: [LocalStorageService, AuthInterceptorProvider],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
