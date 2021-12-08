@@ -1,1 +1,12 @@
-<p>main works!</p>
+<div class="flex">
+  <div class="sidebar"></div>
+  <div class="content">
+    <div class="search-bar"></div>
+    <div class="content-display">
+      <app-create-post-form
+        *ngIf="authService.isLoggedIn | async"
+      ></app-create-post-form>
+    </div>
+  </div>
+  <div class="sidebar"></div>
+</div>
