@@ -231,7 +231,7 @@ class PostController {
 
   async searchPosts(req: Request, res: Response) {
     const { searchQuery } = req.query
-    console.log(req.params)
+    
     try {
       // const matchedPosts = await Post
       //   .createQueryBuilder()
