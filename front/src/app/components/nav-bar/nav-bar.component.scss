@@ -1,0 +1,20 @@
+@import "../../../styles.scss";
+
+.nav-bar {
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 20px;
+
+  a {
+    text-decoration: none;
+    color: $text-color;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+    }
+  }
+}

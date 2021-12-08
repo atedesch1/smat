@@ -1,0 +1,15 @@
+<nav class="nav-bar">
+  <div
+    *ngIf="authService.isLoggedIn | async; then loggedIn; else loggedOut"
+  ></div>
+
+  <ng-template #loggedIn>
+    <a (click)="authService.signOut()" *ngIf="authService.isLoggedIn | async">
+      Sign Out
+    </a>
+  </ng-template>
+  <ng-template #loggedOut>
+    <a [routerLink]="['auth']" [state]="{ isSignUp: false }">Sign In</a>
+    <a [routerLink]="['auth']" [state]="{ isSignUp: true }">Sign Up</a>
+  </ng-template>
+</nav>
