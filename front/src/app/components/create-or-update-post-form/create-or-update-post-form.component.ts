@@ -4,13 +4,13 @@ import { PostService } from 'src/app/services/post.service';
 
 
 @Component({
-  selector: 'app-create-post-form',
-  templateUrl: './create-post-form.component.html',
-  styleUrls: ['./create-post-form.component.scss']
+  selector: 'app-create-or-update-post-form',
+  templateUrl: './create-or-update-post-form.component.html',
+  styleUrls: ['./create-or-update-post-form.component.scss']
 })
-export class CreatePostFormComponent implements OnInit {
+export class CreateOrUpdatePostFormComponent implements OnInit {
 
-  createPostForm!: FormGroup
+  postForm!: FormGroup
 
   constructor(
     private postService: PostService,
@@ -18,7 +18,7 @@ export class CreatePostFormComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.createPostForm = this.fb.group({
+    this.postForm = this.fb.group({
       file: [null, [
         Validators.required,
       ]],
@@ -41,28 +41,28 @@ export class CreatePostFormComponent implements OnInit {
   }
 
   get file() {
-    return this.createPostForm.get('file')
+    return this.postForm.get('file')
   }
   get title() {
-    return this.createPostForm.get('title')
+    return this.postForm.get('title')
   }
   get language() {
-    return this.createPostForm.get('language')
+    return this.postForm.get('language')
   }
   get description() {
-    return this.createPostForm.get('description')
+    return this.postForm.get('description')
   }
   get subject() {
-    return this.createPostForm.get('subject')
+    return this.postForm.get('subject')
   }
   get instructor() {
-    return this.createPostForm.get('instructor')
+    return this.postForm.get('instructor')
   }
 
   onFileChange(event: any) {
     if(event.target.files && event.target.files.length > 0) {
       const file = event.target.files[0];
-      this.createPostForm.patchValue({
+      this.postForm.patchValue({
           file: file
       })
     }
@@ -70,7 +70,7 @@ export class CreatePostFormComponent implements OnInit {
 
 
   async submitHandler() {
-    let formValue = this.createPostForm.value
+    let formValue = this.postForm.value
 
     const formData = new FormData()
     formData.append('file', formValue.file)

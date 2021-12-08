@@ -1,4 +1,4 @@
-<form [formGroup]="createPostForm" (ngSubmit)="submitHandler()">
+<form [formGroup]="postForm" (ngSubmit)="submitHandler()">
   <input
     type="file"
     [class.error-input]="file?.invalid && file?.touched"
@@ -41,7 +41,7 @@
     placeholder="Instructor"
     formControlName="instructor"
   />
-  <button type="submit" class="form-button" [disabled]="createPostForm.invalid">
+  <button type="submit" class="form-button" [disabled]="postForm.invalid">
     Submit
   </button>
 </form>
