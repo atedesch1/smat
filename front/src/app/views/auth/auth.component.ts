@@ -19,12 +19,12 @@ export class AuthComponent implements OnInit {
 
   nationalities = nationalitiesJSON.nationatilies
 
-  constructor(private location: Location,
+  constructor(
+    private location: Location,
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router
-    ) {
-  }
+    ) { }
 
   ngOnInit(): void {
     const state: any = this.location.getState()
@@ -69,20 +69,17 @@ export class AuthComponent implements OnInit {
 
     let formValue = this.authForm.value
 
-    if (!this.isSignUp) {
-      delete formValue.name
-      delete formValue.nationality
-    }
-
     try {
       if (this.isSignUp) {
-        this.authService.signUp(formValue)
+        this.authService.signUp(formValue).subscribe()
         this.isSignUp = false
       } else {
-        this.authService.signIn(formValue)
+        delete formValue.name
+        delete formValue.nationality
+        this.authService.signIn(formValue).subscribe()
         this.router.navigateByUrl('/')
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error(err)
     }
 
