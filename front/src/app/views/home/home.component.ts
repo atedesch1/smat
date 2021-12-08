@@ -1,7 +1,8 @@
 import { Component, NgModule, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { Post } from 'src/app/models/post';
-import { SearchService } from 'src/app/services/search.service';
+import { PostService } from 'src/app/services/post.service';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,7 @@ export class HomeComponent implements OnInit {
   // matchedPosts: Observable<Post[]> | undefined
   matchedPosts: Post[] = []
 
-  constructor(private searchService: SearchService) { }
+  constructor(private postService: PostService) { }
 
   ngOnInit(): void {
   }
@@ -25,8 +26,10 @@ export class HomeComponent implements OnInit {
       return
     }
 
-    // this.searchService.search(this.searchQuery).subscribe(res => { this.matchedPosts = res })
-    this.matchedPosts = await this.searchService.search(this.searchQuery).toPromise()
+    this.postService.getMatchedPosts(this.searchQuery).pipe(
+      tap(res => {this.matchedPosts = res})
+    ).subscribe()
+    // this.matchedPosts = await this.postService.getMatchedPosts(this.searchQuery).toPromise()
   }
 
   // getMatchedPosts(): void {

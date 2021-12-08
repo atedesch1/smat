@@ -230,7 +230,7 @@ class PostController {
   }
 
   async searchPosts(req: Request, res: Response) {
-    const { searchQuery } = req.query
+    const { searchQuery } = req.params
     
     try {
       // const matchedPosts = await Post
