@@ -1,0 +1,127 @@
+<div class="body">
+  <nav class="nav-bar">
+    <a routerLink="/">Home</a>
+  </nav>
+  <div class="main">
+    <img class="logo" src="../../../assets/SMAT_LOGO.svg" alt="SMAT logo" />
+    <div class="auth-card">
+      <div *ngIf="isSignUp; then signUpBlock; else signInBlock"></div>
+
+      <ng-template #signUpBlock>
+        <h1>Sign Up</h1>
+        <form [formGroup]="authForm" (ngSubmit)="submitHandler()">
+          <input
+            [class.error-input]="email?.invalid && email?.touched"
+            class="form-input"
+            type="text"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <p *ngIf="email?.invalid && email?.touched" class="error-message">
+            Invalid email
+          </p>
+          <input
+            [class.error-input]="password?.invalid && password?.touched"
+            class="form-input"
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <p
+            *ngIf="password?.invalid && password?.touched"
+            class="error-message"
+          >
+            Password needs at least one letter and one numeral
+          </p>
+          <input
+            [class.error-input]="name?.invalid && name?.touched"
+            class="form-input"
+            type="text"
+            placeholder="Name"
+            formControlName="name"
+          />
+          <p *ngIf="name?.invalid && name?.touched" class="error-message">
+            Name is required
+          </p>
+          <select
+            class="form-input"
+            formControlName="nationality"
+            [class.error-input]="nationality?.invalid && nationality?.touched"
+            required
+          >
+            <option value="" disabled selected hidden>
+              Select nationality
+            </option>
+            <option
+              *ngFor="let nationality of nationalities"
+              [ngValue]="nationality"
+            >
+              {{ nationality }}
+            </option>
+          </select>
+          <p
+            *ngIf="nationality?.invalid && nationality?.touched"
+            class="error-message"
+          >
+            Nationality is required
+          </p>
+          <button
+            type="submit"
+            class="form-button"
+            [disabled]="authForm.invalid"
+          >
+            Register
+          </button>
+          <p class="redirect-text">
+            Already a member?
+            <span>
+              <a class="redirect-button" (click)="isSignUp = false">Sign In</a>
+            </span>
+          </p>
+        </form>
+      </ng-template>
+
+      <ng-template #signInBlock>
+        <h1>Sign In</h1>
+        <form [formGroup]="authForm" (ngSubmit)="submitHandler()">
+          <input
+            [class.error-input]="email?.invalid && email?.touched"
+            class="form-input"
+            type="text"
+            placeholder="Email"
+            formControlName="email"
+          />
+          <p *ngIf="email?.invalid && email?.touched" class="error-message">
+            Invalid email
+          </p>
+          <input
+            [class.error-input]="password?.invalid && password?.touched"
+            class="form-input"
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+          />
+          <p
+            *ngIf="password?.invalid && password?.touched"
+            class="error-message"
+          >
+            Password needs at least one letter and one numeral
+          </p>
+          <button
+            type="submit"
+            class="form-button"
+            [disabled]="email?.invalid || password?.invalid"
+          >
+            Access
+          </button>
+          <p class="redirect-text">
+            New to SMAT?
+            <span>
+              <a class="redirect-button" (click)="isSignUp = true">Sign Up</a>
+            </span>
+          </p>
+        </form>
+      </ng-template>
+    </div>
+  </div>
+</div>

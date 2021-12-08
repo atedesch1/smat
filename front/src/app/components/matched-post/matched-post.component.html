@@ -1,0 +1,76 @@
+<div class="post">
+  <div class="post-container">
+    <div class="user-bar row-center">
+      <img src="{{ post.user.pictureURL }}" alt="profile picture" />
+      <h2>{{ post.user.name }}</h2>
+    </div>
+
+    <div class="row-center">
+      <div class="file-preview">
+        <img src="{{ post.user.pictureURL }}" alt="profile picture" />
+        <!-- <a href="{{ post.fileURL }}"></a> -->
+      </div>
+
+      <div class="post-info">
+        <h1>{{ post.title }}</h1>
+        <div class="post-info-row">
+          <h3>
+            <span class="hide-mobile">Subject:</span>
+            {{ post.subject || "None" }}
+          </h3>
+          <h3 class="hide-mobile">
+            Instructor: {{ post.instructor || "None" }}
+          </h3>
+          <h3 class="hide-mobile">Language: {{ post.language || "None" }}</h3>
+          <h3 class="hide-desktop">
+            {{ post.instructor || "None" }}, {{ post.language || "None" }}
+          </h3>
+        </div>
+        <p>{{ post.description }}</p>
+        <div class="post-stats row-center">
+          <div class="stat row-center">
+            <svg
+              width="12"
+              height="10"
+              viewBox="0 0 12 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M0.553588 1.36453C2.75973 -1.10676 5.10375 0.334823 6 1.36453V10C3.2653 8.15121 -1.65255 3.83582 0.553588 1.36453Z"
+                fill="#FF9914"
+              />
+              <path
+                d="M11.4464 1.36453C9.24027 -1.10676 6.89625 0.334823 6 1.36453V10C8.7347 8.15121 13.6526 3.83582 11.4464 1.36453Z"
+                fill="#FF9914"
+              />
+            </svg>
+            <h6>{{ post.like_count }}</h6>
+          </div>
+          <div class="stat row-center">
+            <svg
+              width="12"
+              height="10"
+              viewBox="0 0 12 10"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <ellipse cx="6.78262" cy="5" rx="5.21739" ry="5" fill="#FF9914" />
+              <path
+                d="M3.13043 4.80005L5.82609 7.60005C5.42406 8.39262 3.71902 9.93116 0.102152 9.80406C0.067498 9.80681 0.033428 9.80554 0 9.80005C0.0342189 9.80153 0.0682694 9.80287 0.102152 9.80406C1.07714 9.72681 2.51464 6.47389 3.13043 4.80005Z"
+                fill="#FF9914"
+              />
+              <ellipse cx="4.34782" cy="5" rx="0.869565" ry="1" fill="white" />
+              <ellipse cx="4.34782" cy="5" rx="0.869565" ry="1" fill="white" />
+              <ellipse cx="9.21739" cy="5" rx="0.869565" ry="1" fill="white" />
+              <ellipse cx="9.21739" cy="5" rx="0.869565" ry="1" fill="white" />
+              <ellipse cx="6.78262" cy="5" rx="0.869565" ry="1" fill="white" />
+              <ellipse cx="6.78262" cy="5" rx="0.869565" ry="1" fill="white" />
+            </svg>
+            <h6>{{ post.like_count }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,17 +1,20 @@
 version: '3.8'
 
+networks:
+  smat:
+    driver: bridge
+
 services:
-  react:
+  angular:
     build:
       context: .
       dockerfile: Dockerfile.front
     ports:
-      - '3000:3000'
+      - '4200:4200'
     environment:
-      - PORT=3000
+      - PORT=4200
     volumes:
-      - ./front/src:/react/src
-      - ./front/public:/react/public
+      - ./front/src:/angular/src
     depends_on:
       - node
     networks:
@@ -23,13 +26,13 @@ services:
       dockerfile: Dockerfile.back
     ports:
       - '3333:3333'
-    volumes:
-      - ./back/src:/node/src
     environment:
       - PORT=3333
       - NODE_ENV=development
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/smatdb
       - JWT_SECRET=secret_key
+    volumes:
+      - ./back/src:/node/src
     depends_on:
       - postgres
     networks:
@@ -38,6 +41,8 @@ services:
   postgres:
     image: postgres:13
     restart: always
+    ports:
+      - '5400:5432'
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -46,9 +51,6 @@ services:
       - postgres-db:/var/lib/postgresql/data
     networks:
       - smat
-
-networks:
-  smat: {}
 
 volumes:
   postgres-db:

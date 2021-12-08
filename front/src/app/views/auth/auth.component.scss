@@ -1,0 +1,155 @@
+@import "../../../styles.scss";
+
+.body {
+  color: $text-color;
+  background-color: $accent-color;
+  height: 100vh;
+  overflow: auto;
+}
+
+.nav-bar {
+  // max-width: 2000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-end;
+  padding: 20px;
+
+  a {
+    text-decoration: none;
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+      opacity: 0.9;
+    }
+  }
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 1.2em;
+}
+
+.logo {
+  width: 70%;
+  max-width: calc(0.7 * 0.9 * 600px);
+}
+
+.auth-card {
+  width: 100%;
+  max-width: calc(0.9 * 600px);
+  margin-top: 2em;
+  background-color: $bg-color-contrast;
+
+  outline: none;
+
+  border: 3px solid $accent-color;
+  border-radius: 20px;
+
+  box-shadow: 0 6px 6px rgba(0, 0, 0, 0.2);
+
+  h1 {
+    font-weight: 500;
+  }
+  form {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.form-input {
+  outline: none;
+  background-color: $bg-color;
+  width: 100%;
+  padding: 0.8em;
+  padding-left: 1em;
+  border: none;
+  border-radius: 100em;
+  caret-color: $accent-color;
+  margin-bottom: 1.5em;
+
+  &:hover,
+  &:focus {
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.2);
+  }
+}
+
+select:invalid {
+  color: grey;
+}
+
+// .form-input + .form-input {
+//   margin-top: 1.5em;
+// }
+
+.error-input {
+  margin-bottom: 0;
+  background-color: $error-bg-color;
+  border: 0.2px solid $error-color;
+  color: $error-color;
+}
+
+.error-message {
+  margin: 0.1em;
+  margin-left: 1.2em;
+  font-size: 0.8rem;
+  align-self: flex-start;
+  text-align: left;
+  color: $error-color;
+}
+
+.redirect-text {
+  font-size: 1rem;
+  margin: 1em;
+}
+
+.form-button {
+  font-size: 1.3rem;
+  // margin-top: 1em;
+  padding: 0.5em 2em;
+  background-color: $text-color;
+
+  font-weight: bold;
+  color: white;
+  border: none;
+  border-radius: 100em;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    opacity: 0.9;
+  }
+  &:disabled {
+    opacity: 0.3;
+  }
+}
+
+.redirect-button {
+  text-decoration: none;
+  cursor: pointer;
+  color: $accent-color;
+
+  &:hover,
+  &:focus {
+    color: $accent-color-darkest;
+  }
+}
+
+@media (min-width: 600px) {
+  .main {
+    margin-top: 0;
+    justify-content: center;
+    height: 80vh;
+    max-height: 2000px;
+  }
+}

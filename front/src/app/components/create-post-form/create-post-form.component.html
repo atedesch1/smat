@@ -1,0 +1,47 @@
+<form [formGroup]="createPostForm" (ngSubmit)="submitHandler()">
+  <input
+    type="file"
+    [class.error-input]="file?.invalid && file?.touched"
+    class="form-input"
+    formControlName="file"
+    (change)="onFileChange($event)"
+  />
+  <input
+    type="text"
+    [class.error-input]="title?.invalid && title?.touched"
+    class="form-input"
+    placeholder="Title"
+    formControlName="title"
+  />
+  <input
+    type="text"
+    [class.error-input]="language?.invalid && language?.touched"
+    class="form-input"
+    placeholder="Language"
+    formControlName="language"
+  />
+  <input
+    type="text"
+    [class.error-input]="description?.invalid && description?.touched"
+    class="form-input"
+    placeholder="Description"
+    formControlName="description"
+  />
+  <input
+    type="text"
+    [class.error-input]="subject?.invalid && subject?.touched"
+    class="form-input"
+    placeholder="Subject"
+    formControlName="subject"
+  />
+  <input
+    type="text"
+    [class.error-input]="instructor?.invalid && instructor?.touched"
+    class="form-input"
+    placeholder="Instructor"
+    formControlName="instructor"
+  />
+  <button type="submit" class="form-button" [disabled]="createPostForm.invalid">
+    Submit
+  </button>
+</form>

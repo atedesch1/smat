@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import Post from '@/models/Post'
 import User from '@/models/User'
-import { getConnection } from 'typeorm'
+import { getConnection, Like } from 'typeorm'
 import CloudStorageService from '@/services/CloudStorageService'
 
 class PostController {
@@ -230,19 +230,28 @@ class PostController {
   }
 
   async searchPosts(req: Request, res: Response) {
-    const { searchQuery } = req.body
-
+    const { searchQuery } = req.query
+    
     try {
-      const matchedPosts = await Post
-        .createQueryBuilder()
-        .select()
-        .where('title ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
-        .orWhere('description ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
-        .orWhere('subject ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
-        .orWhere('instructor ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
-        .getMany()
+      // const matchedPosts = await Post
+      //   .createQueryBuilder()
+      //   .select()
+      //   .where('title ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+      //   .orWhere('description ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+      //   .orWhere('subject ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+      //   .orWhere('instructor ILIKE :searchQuery', { searchQuery: `%${searchQuery}%` })
+      //   .getMany()
 
-      if (matchedPosts.length === 0) { return res.status(404).json('No posts matched query') }
+      const matchedPosts = await Post.find({ 
+        where: [
+          { title: Like(`%${searchQuery}%`) },
+          { description: Like(`%${searchQuery}%`) },
+          { subject: Like(`%${searchQuery}%`) },
+          { instructor: Like(`%${searchQuery}%`) }
+        ]
+      })
+
+      // if (matchedPosts.length === 0) { return res.status(404).json('No posts matched query') }
 
       return res.status(200).json(matchedPosts)
     } catch (err) {

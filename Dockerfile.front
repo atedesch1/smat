@@ -1,6 +1,6 @@
 FROM node:16
 
-WORKDIR /react
+WORKDIR /angular
 
 COPY ./front/package*.json ./
 
@@ -8,4 +8,6 @@ RUN npm install
 
 COPY ./front/ .
 
-CMD ["npm", "run", "start"]
+EXPOSE 4200
+
+CMD ["npm", "run", "docker:serve"]

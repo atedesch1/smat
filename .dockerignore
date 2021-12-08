@@ -6,4 +6,6 @@
 ./front/node_modules
 ./front/.gitignore
 ./front/.git
+./front/.browserslistrc
+./front/.editorconfig
 
