@@ -1,12 +1,14 @@
-<div class="flex">
-  <div class="sidebar"></div>
-  <div class="content">
-    <div class="search-bar"></div>
-    <div class="content-display">
-      <app-create-or-update-post-form
-        *ngIf="authService.isLoggedIn | async"
-      ></app-create-or-update-post-form>
-    </div>
-  </div>
-  <div class="sidebar"></div>
-</div>
+<header>
+  <app-nav-bar></app-nav-bar>
+</header>
+<main>
+  <section class="sidebar">
+    <app-side-bar *ngIf="this.authService.isLoggedIn | async"></app-side-bar>
+  </section>
+  <section class="content">
+    <router-outlet></router-outlet>
+  </section>
+  <section class="sidebar">
+    <app-user-card *ngIf="this.authService.isLoggedIn | async"></app-user-card>
+  </section>
+</main>
