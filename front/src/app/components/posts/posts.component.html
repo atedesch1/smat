@@ -1,0 +1,5 @@
+<app-post-card
+  *ngFor="let post of posts"
+  [post]="post"
+  [routerLink]="['post', post.id]"
+></app-post-card>
