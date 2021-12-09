@@ -1,0 +1,30 @@
+<div class="search-container">
+  <div class="input-container">
+    <img
+      class="search-icon"
+      src="../../../assets/search-icon.svg"
+      alt="search icon"
+    />
+    <input
+      autocomplete="off"
+      class="search-bar"
+      id="search"
+      name="search"
+      type="text"
+      placeholder="Search"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="search()"
+      (keyup.enter)="onEnter()"
+    />
+  </div>
+  <div class="search-results">
+    <div
+      class="result"
+      *ngFor="let post of posts"
+      [routerLink]="['/main/post', post.id]"
+    >
+      <h3>{{ post.title }}</h3>
+      <h3>{{ post.subject }}</h3>
+    </div>
+  </div>
+</div>
