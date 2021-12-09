@@ -1,0 +1,11 @@
+<h3>{{ comment?.body }}</h3>
+<h3>{{ comment?.like_count }}</h3>
+<img
+  class="icon"
+  src="../../../assets/like-icon.svg"
+  alt="like icon"
+  (click)="toggleLikeComment()"
+/>
+<!-- if is users comment -->
+<button (click)="deleteComment()">DELETE COMMENT</button>
+<div></div>
