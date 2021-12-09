@@ -1,5 +1,5 @@
 import { User } from './user'
-
+import { Comment } from './comment'
 export interface Post {
   id: string,
   fileURL: string,
@@ -10,5 +10,6 @@ export interface Post {
   instructor: string,
   like_count: number,
   date: Date,
-  user: User
+  user: User,
+  comments: Comment[],
 }
