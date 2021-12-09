@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CommentService } from 'src/app/services/comment.service';
 import { Comment } from 'src/app/models/comment';
@@ -13,8 +13,12 @@ export class CreateOrUpdateCommentFormComponent implements OnInit {
   @Input()
   postId!: string
 
+  @Output() commentChanged = new EventEmitter<Comment>()
+
   commentForm!: FormGroup
   comment?: Comment
+
+  isSaving = false
 
   constructor(
     private commentService: CommentService,
@@ -37,12 +41,18 @@ export class CreateOrUpdateCommentFormComponent implements OnInit {
 
   async submitHandler() {
     let formValue = this.commentForm.value
+    this.isSaving = true
 
     try {
-      if (this.comment)
-        this.commentService.updateComment(this.comment.id, formValue).subscribe()
-      else
-        this.commentService.createComment(this.postId, formValue).subscribe()
+      const call$ = this.comment
+        ? this.commentService.updateComment(this.comment.id, formValue)
+        : this.commentService.createComment(this.postId, formValue)
+
+      call$.subscribe(comment => {
+        console.log('comment', comment)
+        this.commentChanged.emit(comment as Comment)
+        this.isSaving = false
+      })
     } catch (e) {
       console.error(e)
     }

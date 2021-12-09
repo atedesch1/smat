@@ -1,5 +1,10 @@
 @import "../../../styles.scss";
 
+
+:host {
+  width: 100%;
+}
+
 .input-container {
   display: flex;
   align-items: center;
@@ -11,9 +16,8 @@
 }
 
 .search-container {
-  margin-top: 1.5em;
   width: 100%;
-  max-width: 750px;
+  margin: 0 auto;
 
   background-color: white;
 
@@ -52,9 +56,6 @@
   border-radius: 100em;
 
   caret-color: $accent-color;
-}
-
-.search-results {
 }
 
 .result {

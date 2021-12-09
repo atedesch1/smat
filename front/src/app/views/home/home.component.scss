@@ -1,10 +1,19 @@
 @import "../../../styles.scss";
 
-.body {
+.wrapper {
   color: $text-color;
   background-color: $accent-color;
   height: 100vh;
   overflow: auto;
+}
+
+:host ::ng-deep {
+  app-search-bar {
+    .search-container {
+      margin-top: 25px;
+      max-width: 750px;
+    }
+  }
 }
 
 .main {

@@ -5,12 +5,25 @@ main {
   display: flex;
 
   .sidebar {
-    width: 400px;
+    width: 200px;
     height: calc(100vh - 60px);
   }
 
   .content {
     flex: 1;
     background-color: whitesmoke;
+  }
+}
+
+:host ::ng-deep {
+  app-nav-bar {
+    app-search-bar {
+      .search-container {
+        max-width: 400px;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
@@ -8,10 +8,11 @@ import { AuthService } from 'src/app/services/auth.service';
   styleUrls: ['./nav-bar.component.scss']
 })
 export class NavBarComponent implements OnInit {
+  @Input() hideSearch = false
 
   constructor(
     public authService: AuthService,
-    private router: Router,
+    private router: Router
   ) { }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 <nav class="nav-bar">
-  <app-search-bar></app-search-bar>
+  <app-search-bar *ngIf="!hideSearch"></app-search-bar>
 
   <div
     *ngIf="authService.isLoggedIn | async; then loggedIn; else loggedOut"

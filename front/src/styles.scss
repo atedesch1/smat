@@ -42,6 +42,21 @@ img {
   max-width: 100%;
 }
 
+a {
+  text-decoration: none;
+  color: $text-color;
+  cursor: pointer;
+
+  &:hover,
+  &:focus {
+    opacity: 0.9;
+  }
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .flex {
   display: flex;
 }

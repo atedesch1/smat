@@ -1,8 +1,11 @@
 <app-post-card [post]="post"></app-post-card>
+
 <app-create-or-update-comment-form
   *ngIf="post"
   [postId]="post.id"
+  (commentChanged)="updateComment($event)"
 ></app-create-or-update-comment-form>
+
 <div *ngIf="post">
   <app-comment-card
     *ngFor="let comment of post.comments"

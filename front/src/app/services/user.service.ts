@@ -2,7 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Post } from '../models/post';
 import { User } from '../models/user';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'

@@ -29,4 +29,17 @@ export class PostComponent implements OnInit {
     })
   }
 
+  updateComment(comment: Comment): void {
+    const { comments } = this.post
+
+    const savedComment = comments?.find(c => c.id === comment.id)
+
+    if (savedComment) {
+      this.post.comments = this.post?.comments?.map(c => {
+        return c.id === comment.id ? comment : c
+      })
+    } else {
+      this.post.comments = [...this.post.comments, comment]
+    }
+  }
 }

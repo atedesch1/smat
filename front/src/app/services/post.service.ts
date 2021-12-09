@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/internal/operators/map';
 import { Post } from '../models/post';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,12 +13,16 @@ export class PostService {
 
   constructor(private http: HttpClient) { }
 
-  createPost(formData: any) {
-    return this.http.post(`${this.postUrl}/create`, formData)
+  createPost(formData: any): Observable<Post> {
+    return this.http.post(`${this.postUrl}/create`, formData).pipe(
+      map((post: any) => new Post(post))
+    )
   }
 
-  updatePost(postId: string, formData: any) {
-    return this.http.put(`${this.postUrl}/${postId}`, formData)
+  updatePost(postId: string, formData: any): Observable<Post> {
+    return this.http.put(`${this.postUrl}/${postId}`, formData).pipe(
+      map((post: any) => new Post(post))
+    )
   }
 
   deletePost(postId: string) {
@@ -29,8 +34,10 @@ export class PostService {
     return this.http.get<Post[]>(`${this.postUrl}/search`, { params })
   }
 
-  getAPost(postId: string) {
-    return this.http.get<Post>(`${this.postUrl}/${postId}`)
+  getAPost(postId: string): Observable<Post> {
+    return this.http.get<Post>(`${this.postUrl}/${postId}`).pipe(
+      map((post: any) => new Post(post))
+    )
   }
 
   getPostComments(postId: string) {

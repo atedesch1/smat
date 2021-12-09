@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 
@@ -17,6 +17,7 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private postService: PostService,
     private fb: FormBuilder,
   ) { }
@@ -25,7 +26,7 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
     this.route.params.subscribe(params => {
       if (params.id) {
         const postId = params.id
-        this.postService.getAPost(postId).subscribe(post => {
+        this.postService.getAPost(postId).subscribe((post: Post) => {
           this.post = post
           this.setFormGroup()
         })
@@ -110,13 +111,13 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
     formData.append('instructor', formValue.instructor)
 
     try {
-      // redirect accordingly
-      if (this.post) {
-        this.postService.updatePost(this.post.id, formData).subscribe()
-      }
-      else {
-        this.postService.createPost(formData).subscribe()
-      }
+      const call$ = this.post
+        ? this.postService.updatePost(this.post.id, formData)
+        : this.postService.createPost(formData)
+
+        call$.subscribe(post => {
+          this.router.navigate(['/main/post', post.id])
+        })
     } catch (e) {
       console.error(e)
     }
