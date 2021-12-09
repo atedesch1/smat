@@ -20,8 +20,8 @@ export class UserService {
     return this.http.get<User[]>(`${this.userUrl}/search`, { params })
   }
 
-  updateUser(formValue: any) {
-    return this.http.put(`${this.userUrl}`, formValue)
+  updateUser(formData: any) {
+    return this.http.put(`${this.userUrl}`, formData)
   }
 
   deleteUser() {
