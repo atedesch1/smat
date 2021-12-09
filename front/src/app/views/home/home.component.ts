@@ -1,8 +1,4 @@
-import { Component, NgModule, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
-import { Post } from 'src/app/models/post';
-import { PostService } from 'src/app/services/post.service';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-home',
@@ -11,34 +7,7 @@ import { PostService } from 'src/app/services/post.service';
 })
 export class HomeComponent implements OnInit {
 
-  searchQuery = ''
-  // matchedPosts: Observable<Post[]> | undefined
-  matchedPosts: Post[] = []
+  constructor() { }
 
-  constructor(private postService: PostService) { }
-
-  ngOnInit(): void {
-  }
-
-  async getMatchedPosts() {
-    if (this.searchQuery === '') {
-      this.matchedPosts = []
-      return
-    }
-
-    this.postService.getMatchedPosts(this.searchQuery).pipe(
-      tap(res => {this.matchedPosts = res})
-    ).subscribe()
-    // this.matchedPosts = await this.postService.getMatchedPosts(this.searchQuery).toPromise()
-  }
-
-  // getMatchedPosts(): void {
-  //   if (this.searchQuery === '') {
-  //     this.matchedPosts = new Observable<Post[]>()
-  //     return
-  //   }
-
-  //   this.matchedPosts = this.searchService.search(this.searchQuery)
-  // }
-
+  ngOnInit(): void {}
 }

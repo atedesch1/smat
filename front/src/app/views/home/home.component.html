@@ -1,55 +1,9 @@
 <div class="body">
-  <nav class="nav-bar">
-    <a [routerLink]="['auth']" [state]="{ isSignUp: false }">Sign In</a>
-    <a [routerLink]="['auth']" [state]="{ isSignUp: true }">Sign Up</a>
-  </nav>
-  <div class="main" [ngClass]="{ 'fix-top': searchQuery !== '' }">
+  <app-nav-bar></app-nav-bar>
+  <div class="main">
     <header>
-      <img class="logo" src="../../assets/SMAT_LOGO.svg" alt="SMAT logo" />
+      <img class="logo" src="../../assets/smat-logo.svg" alt="SMAT logo" />
     </header>
-
-    <div class="search-container">
-      <div class="input-container">
-        <svg
-          class="search-svg"
-          width="29"
-          height="28"
-          viewBox="0 0 29 28"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M20.5 10.5C20.5 15.4056 16.3132 19.5 11 19.5C5.68677 19.5 1.5 15.4056 1.5 10.5C1.5 5.59443 5.68677 1.5 11 1.5C16.3132 1.5 20.5 5.59443 20.5 10.5Z"
-            stroke="grey"
-            stroke-width="3"
-          />
-          <line
-            x1="18.0607"
-            y1="17.9393"
-            x2="27.0607"
-            y2="26.9393"
-            stroke="grey"
-            stroke-width="3"
-          />
-        </svg>
-        <input
-          autocomplete="off"
-          class="search-bar"
-          id="search"
-          name="search"
-          type="text"
-          placeholder="Search"
-          [(ngModel)]="searchQuery"
-          (ngModelChange)="getMatchedPosts()"
-        />
-      </div>
-      <div class="search-results">
-        <app-matched-post
-          style="width: 100%"
-          *ngFor="let post of matchedPosts"
-          [post]="post"
-        ></app-matched-post>
-      </div>
-    </div>
+    <app-search-bar></app-search-bar>
   </div>
 </div>
