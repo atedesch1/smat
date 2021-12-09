@@ -13,16 +13,18 @@ export class AuthService {
   isLoggedIn = this._isLoggedIn.asObservable()
   private readonly TOKEN_NAME = 'auth-token'
 
-  userUrl = '/api/user'
+  private userUrl = '/api/user'
 
   get token() { return this.localStorage.get(this.TOKEN_NAME) }
 
-  constructor(private http: HttpClient,
-    private localStorage: LocalStorageService) {
+  constructor(
+    private http: HttpClient,
+    private localStorage: LocalStorageService,
+    ) {
       const token = this.localStorage.get(this.TOKEN_NAME)
       // Verify if token is not expired !
       this._isLoggedIn.next(!!this.token)
-    }
+  }
 
   signUp(formValue: any) {
     return this.http.post(`${this.userUrl}/sign-up`, formValue)
@@ -35,6 +37,12 @@ export class AuthService {
         this._isLoggedIn.next(true)
       })
     )
+  }
+
+  signOut()  {
+    this.http.post<void>(`${this.userUrl}/sign-out`, null).subscribe()
+    this.localStorage.remove(this.TOKEN_NAME)
+    this._isLoggedIn.next(false)
   }
 
 }
