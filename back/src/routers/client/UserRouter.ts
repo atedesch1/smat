@@ -6,12 +6,12 @@ import MulterMiddleware from '@/middlewares/MulterMiddleware'
 
 const router = Router()
 
-router.post('/search', UserController.searchUsers)
+router.get('/search?:searchQuery', UserController.searchUsers)
 router.post('/sign-up', UserController.signUp)
 router.post('/sign-in', UserController.signIn)
 router.post('/sign-out', AuthMiddleware, UserController.signOut)
-router.put('/update', AuthMiddleware, MulterMiddleware.multer.single('file'), UserController.updateUser)
-router.delete('/delete', AuthMiddleware, UserController.deleteUser)
+router.put('', AuthMiddleware, MulterMiddleware.multer.single('file'), UserController.updateUser)
+router.delete('', AuthMiddleware, UserController.deleteUser)
 router.get('/session', AuthMiddleware, UserController.getCurrentUser)
 router.get('/:userId', UserController.getAUser)
 router.get('/:userId/posts', UserController.getUserPosts)

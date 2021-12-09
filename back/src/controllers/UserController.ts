@@ -175,7 +175,7 @@ class UserController {
   }
 
   async searchUsers(req: Request, res: Response) {
-    const { searchQuery } = req.body
+    const { searchQuery } = req.query
 
     try {
       const matchedUsers = await User
