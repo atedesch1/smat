@@ -1,5 +1,9 @@
-<app-user-card></app-user-card>
+<!-- <app-user-card></app-user-card> -->
 <div *ngIf="user">
+  <img src="{{ user?.pictureURL }}" alt="user picture" />
+  <h2>{{ user?.name }}</h2>
+  <h3>{{ user?.nationality }}</h3>
+  <h3>{{ user?.bio }}</h3>
   <!-- <app-post-card *ngFor="let post of user.posts"></app-post-card> -->
   <a [routerLink]="['edit']">Edit User</a>
 </div>
