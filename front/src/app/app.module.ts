@@ -9,10 +9,18 @@ import { AppComponent } from './app.component'
 import { HomeComponent } from './views/home/home.component'
 import { AuthComponent } from './views/auth/auth.component'
 import { LocalStorageService } from './services/local-storage.service';
-import { MatchedPostComponent } from './components/matched-post/matched-post.component';
 import { MainComponent } from './views/main/main.component'
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
-import { CreateOrUpdatePostFormComponent } from './components/create-or-update-post-form/create-or-update-post-form.component'
+import { CreateOrUpdatePostFormComponent } from './components/create-or-update-post-form/create-or-update-post-form.component';
+import { PostsComponent } from './components/posts/posts.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { SearchBarComponent } from './components/search-bar/search-bar.component';
+import { PostComponent } from './components/post/post.component';
+import { PostCardComponent } from './components/post-card/post-card.component';
+import { CommentCardComponent } from './components/comment-card/comment-card.component';
+import { CreateOrUpdateCommentFormComponent } from './components/create-or-update-comment-form/create-or-update-comment-form.component';
+import { SideBarComponent } from './components/side-bar/side-bar.component';
+import { UserCardComponent } from './components/user-card/user-card.component'
 
 @NgModule({
   declarations: [
@@ -20,8 +28,16 @@ import { CreateOrUpdatePostFormComponent } from './components/create-or-update-p
     HomeComponent,
     AuthComponent,
     MainComponent,
-    MatchedPostComponent,
     CreateOrUpdatePostFormComponent,
+    PostsComponent,
+    NavBarComponent,
+    SearchBarComponent,
+    PostComponent,
+    PostCardComponent,
+    CommentCardComponent,
+    CreateOrUpdateCommentFormComponent,
+    SideBarComponent,
+    UserCardComponent,
   ],
   imports: [
     BrowserModule,
