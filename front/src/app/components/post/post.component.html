@@ -1,0 +1,11 @@
+<app-post-card [post]="post"></app-post-card>
+<app-create-or-update-comment-form
+  *ngIf="post"
+  [postId]="post.id"
+></app-create-or-update-comment-form>
+<div *ngIf="post">
+  <app-comment-card
+    *ngFor="let comment of post.comments"
+    [comment]="comment"
+  ></app-comment-card>
+</div>
