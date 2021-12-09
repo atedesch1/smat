@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { Post } from 'src/app/models/post';
 import { PostService } from 'src/app/services/post.service';
 
 
@@ -11,31 +13,58 @@ import { PostService } from 'src/app/services/post.service';
 export class CreateOrUpdatePostFormComponent implements OnInit {
 
   postForm!: FormGroup
+  post?: Post
 
   constructor(
+    private route: ActivatedRoute,
     private postService: PostService,
     private fb: FormBuilder,
   ) { }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params.id) {
+        const postId = params.id
+        this.postService.getAPost(postId).subscribe(post => {
+          this.post = post
+          this.setFormGroup()
+        })
+      }
+      this.setFormGroup()
+    })
+  }
+
+  setFormGroup() {
     this.postForm = this.fb.group({
-      file: [null, [
-        Validators.required,
+      file: [
+        null,
+        [
+          Validators.required,
       ]],
-      title: ['', [
-        Validators.required,
+      title: [
+        this.post?.title ?? '',
+        [
+          Validators.required,
       ]],
-      language: ['', [
-        Validators.required,
+      language: [
+        this.post?.language ?? '',
+        [
+          Validators.required,
       ]],
-      description: ['', [
-        Validators.required,
+      description: [
+        this.post?.description ?? '',
+        [
+          Validators.required,
       ]],
-      subject: ['', [
-        Validators.maxLength(10),
+      subject: [
+        this.post?.subject ?? '',
+        [
+          Validators.maxLength(10),
       ]],
-      instructor: ['', [
-        Validators.maxLength(20),
+      instructor: [
+        this.post?.instructor ?? '',
+        [
+          Validators.maxLength(20),
       ]]
     })
   }
@@ -60,7 +89,7 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
   }
 
   onFileChange(event: any) {
-    if(event.target.files && event.target.files.length > 0) {
+    if (event?.target?.files?.length) {
       const file = event.target.files[0];
       this.postForm.patchValue({
           file: file
@@ -81,7 +110,13 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
     formData.append('instructor', formValue.instructor)
 
     try {
-      this.postService.createPost(formData).subscribe()
+      // redirect accordingly
+      if (this.post) {
+        this.postService.updatePost(this.post.id, formData).subscribe()
+      }
+      else {
+        this.postService.createPost(formData).subscribe()
+      }
     } catch (e) {
       console.error(e)
     }
