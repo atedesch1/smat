@@ -1,0 +1,5 @@
+<app-user-card></app-user-card>
+<div *ngIf="user">
+  <!-- <app-post-card *ngFor="let post of user.posts"></app-post-card> -->
+  <a [routerLink]="['edit']">Edit User</a>
+</div>
