@@ -20,7 +20,9 @@ import { PostCardComponent } from './components/post-card/post-card.component';
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
 import { CreateOrUpdateCommentFormComponent } from './components/create-or-update-comment-form/create-or-update-comment-form.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
-import { UserCardComponent } from './components/user-card/user-card.component'
+import { UserCardComponent } from './components/user-card/user-card.component';
+import { EditUserFormComponent } from './components/edit-user-form/edit-user-form.component';
+import { UserComponent } from './components/user/user.component'
 
 @NgModule({
   declarations: [
@@ -38,6 +40,8 @@ import { UserCardComponent } from './components/user-card/user-card.component'
     CreateOrUpdateCommentFormComponent,
     SideBarComponent,
     UserCardComponent,
+    EditUserFormComponent,
+    UserComponent,
   ],
   imports: [
     BrowserModule,

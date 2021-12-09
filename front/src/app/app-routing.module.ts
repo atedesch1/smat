@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CreateOrUpdatePostFormComponent } from './components/create-or-update-post-form/create-or-update-post-form.component';
+import { EditUserFormComponent } from './components/edit-user-form/edit-user-form.component';
 import { PostComponent } from './components/post/post.component';
 import { PostsComponent } from './components/posts/posts.component';
+import { UserComponent } from './components/user/user.component';
 import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 import { AuthComponent } from './views/auth/auth.component';
 import { HomeComponent } from './views/home/home.component';
@@ -45,6 +47,23 @@ const routes: Routes = [
                 component: CreateOrUpdatePostFormComponent,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'user',
+        children: [
+          {
+            path: '',
+            component: UserComponent,
+          },
+          {
+            path: 'edit',
+            component: EditUserFormComponent,
+          },
+          {
+            path: ':id',
+            component: UserComponent,
           },
         ],
       },
