@@ -1,0 +1,54 @@
+<div class="post">
+  <div class="post-container">
+    <div class="user-bar row-center">
+      <img src="{{ post?.user?.pictureURL }}" alt="profile picture" />
+      <h2>{{ post?.user?.name }}</h2>
+    </div>
+
+    <div class="row-center">
+      <div class="file-preview">
+        <img src="{{ post?.user?.pictureURL }}" alt="profile picture" />
+        <!-- <a href="{{ post.fileURL }}"></a> -->
+      </div>
+
+      <div class="post-info">
+        <h1>{{ post?.title }}</h1>
+        <div class="post-info-row">
+          <h3>
+            <span class="hide-mobile">Subject:</span>
+            {{ post?.subject || "None" }}
+          </h3>
+          <h3 class="hide-mobile">
+            Instructor: {{ post?.instructor || "None" }}
+          </h3>
+          <h3 class="hide-mobile">Language: {{ post?.language || "None" }}</h3>
+          <h3 class="hide-desktop">
+            {{ post?.instructor || "None" }}, {{ post?.language || "None" }}
+          </h3>
+        </div>
+        <p>{{ post?.description }}</p>
+        <div class="post-stats row-center">
+          <div class="stat row-center">
+            <img
+              class="icon"
+              src="../../../assets/like-icon.svg"
+              alt="like icon"
+              (click)="toggleLikePost()"
+            />
+            <h6>{{ post?.like_count }}</h6>
+          </div>
+          <div class="stat row-center">
+            <img
+              class="icon"
+              src="../../../assets/comment-icon.svg"
+              alt="comment icon"
+            />
+            <h6>{{ post?.comments?.length }}</h6>
+          </div>
+        </div>
+      </div>
+      <!-- if is users post -->
+      <button (click)="deletePost()">DELETE POST</button>
+    </div>
+  </div>
+</div>

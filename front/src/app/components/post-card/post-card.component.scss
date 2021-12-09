@@ -1,0 +1,136 @@
+@import "../../../styles.scss";
+
+.post {
+  &:hover,
+  &:focus {
+    border-radius: 20px;
+    background: $bg-color;
+    cursor: pointer;
+  }
+}
+
+.post-container {
+  width: 95%;
+  margin: 0 auto;
+  border-top: 0.2px solid rgba(128, 128, 128, 0.767);
+}
+
+.row-center {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.user-bar {
+  margin: 0.5em 0;
+
+  img {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+  }
+  h2 {
+    margin: 0;
+    margin-left: 0.8em;
+    color: $text-color;
+    font-size: 1rem;
+  }
+}
+
+.file-preview {
+  align-self: flex-start;
+  height: 180px;
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.file-preview img {
+  padding: 0 15px;
+  height: 160px;
+  width: 150px;
+}
+
+.post-info {
+  align-self: flex-start;
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.post-info {
+  h1 {
+    margin: 0;
+    font-size: $text-size-medium;
+  }
+  h3 {
+    font-weight: 500;
+    font-size: $text-size-xsmall;
+  }
+  p {
+    color: $text-contrast;
+    overflow: auto;
+    height: 90px;
+    margin: 0;
+    font-size: $text-size-xsmall;
+  }
+}
+
+.post-info-row {
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.post-stats {
+  height: 40px;
+  gap: 30px;
+}
+
+.stat {
+  svg {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  h6 {
+    margin: 0;
+    font-size: $text-size-xsmall;
+    color: $text-contrast;
+  }
+}
+
+.hide-desktop {
+  display: none;
+}
+
+.icon {
+  margin-right: 0.5em;
+  width: 0.8em;
+}
+
+@media (max-width: 600px) {
+  .hide-mobile {
+    display: none;
+  }
+
+  .hide-desktop {
+    display: block;
+  }
+
+  .post-info h3 {
+    margin: 0;
+    margin-top: 0.5em;
+  }
+
+  .post-info p {
+    margin-top: 0.5em;
+  }
+
+  .post-info-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
