@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user';
 import { UserService } from 'src/app/services/user.service';
 import nationalitiesJSON  from 'src/assets/nationalities.json'
 
 @Component({
-  selector: 'app-edit-user-form',
-  templateUrl: './edit-user-form.component.html',
-  styleUrls: ['./edit-user-form.component.scss']
+  selector: 'app-user-form',
+  templateUrl: './user-form.component.html',
+  styleUrls: ['./user-form.component.scss']
 })
-export class EditUserFormComponent implements OnInit {
+export class UserFormComponent implements OnInit {
 
   nationalities = nationalitiesJSON.nationatilies
 
@@ -19,6 +20,7 @@ export class EditUserFormComponent implements OnInit {
   constructor(
     private userService: UserService,
     private fb: FormBuilder,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -86,7 +88,9 @@ export class EditUserFormComponent implements OnInit {
     formData.append('bio', formValue.bio)
 
     try {
-      this.userService.updateUser(formData).subscribe()
+      this.userService.updateUser(formData).subscribe(res => {
+        this.router.navigateByUrl('/main/user')
+      })
     } catch (e) {
       console.error(e)
     }

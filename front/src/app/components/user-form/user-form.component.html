@@ -1,0 +1,53 @@
+<div class="user">
+  <header>
+    <img src="{{ user?.pictureURL }}" alt="" />
+  </header>
+  <main>
+    <form [formGroup]="userForm">
+      <label class="file-input">
+        <input
+          type="file"
+          [class.error-input]="file?.invalid && file?.touched"
+          (change)="onFileChange($event)"
+        />
+        Upload Picture
+      </label>
+      <div class="input-row">
+        <input
+          type="text"
+          [class.error-input]="name?.invalid && name?.touched"
+          class="text-input"
+          placeholder="Name"
+          formControlName="name"
+        />
+        <select
+          class="text-input"
+          formControlName="nationality"
+          [class.error-input]="nationality?.invalid && nationality?.touched"
+        >
+          <option value="" disabled selected hidden>Select nationality</option>
+          <option
+            *ngFor="let nationality of nationalities"
+            [ngValue]="nationality"
+          >
+            {{ nationality }}
+          </option>
+        </select>
+      </div>
+      <textarea
+        style="resize: none"
+        class="text-input"
+        [class.error-input]="bio?.invalid && bio?.touched"
+        cols="30"
+        rows="10"
+        placeholder="Bio"
+        formControlName="bio"
+      ></textarea>
+    </form>
+  </main>
+  <footer>
+    <button type="submit" class="form-button" (click)="submitHandler()">
+      Edit
+    </button>
+  </footer>
+</div>

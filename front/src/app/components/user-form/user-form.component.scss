@@ -1,0 +1,94 @@
+@import "../../../styles.scss";
+.user {
+  background: $bg-color-contrast;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin-top: 15px;
+  padding: 10px 20px;
+
+  header {
+    display: flex;
+    justify-content: center;
+
+    img {
+      width: 250px;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+  }
+  main {
+    form {
+      display: flex;
+      flex-direction: column;
+
+      .input-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .file-input {
+        cursor: pointer;
+        font-weight: bold;
+        margin: 0 auto;
+        margin-bottom: 15px;
+        padding: 8px 20px;
+        border-radius: 20px;
+        color: $text-color;
+        font-size: 1rem;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+        background-color: $accent-color;
+        &:hover,
+        &:focus {
+          background-color: $accent-color-dark;
+        }
+        input[type="file"] {
+          display: none;
+        }
+      }
+      .text-input {
+        min-height: 40px;
+        margin-bottom: 15px;
+        width: 100%;
+        border: none;
+        padding: 10px;
+        border-radius: 20px;
+        background: $bg-color;
+        color: $text-contrast;
+        font-size: $text-size-xsmall;
+
+        &:hover,
+        &:focus {
+          outline: 1px solid $accent-color;
+        }
+      }
+    }
+    .input-row {
+      display: flex;
+      gap: 20px;
+    }
+  }
+  footer {
+    display: flex;
+    justify-content: center;
+
+    button {
+      font-size: 1rem;
+      font-weight: bold;
+      color: $text-color;
+      background-color: $accent-color;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+
+      cursor: pointer;
+      margin: 0 auto;
+      padding: 8px 20px;
+      border-radius: 20px;
+
+      &:hover,
+      &:focus {
+        background-color: $accent-color-dark;
+      }
+    }
+  }
+}
