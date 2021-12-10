@@ -42,4 +42,14 @@ export class PostComponent implements OnInit {
       this.post.comments = [...this.post.comments, comment]
     }
   }
+
+  deleteComment(commentId: string): void {
+    const { comments } = this.post
+
+    const savedComment = comments?.find(c => c.id === commentId)
+
+    if (savedComment) {
+      this.post.comments = this.post?.comments?.filter(c => c.id != commentId)
+    }
+  }
 }
