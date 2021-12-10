@@ -1,54 +1,79 @@
 <div class="post">
-  <div class="post-container">
-    <div class="user-bar row-center">
+  <header>
+    <div class="user" [routerLink]="['/main/user', post?.user?.id]">
       <img src="{{ post?.user?.pictureURL }}" alt="profile picture" />
       <h2>{{ post?.user?.name }}</h2>
     </div>
-
-    <div class="row-center">
-      <div class="file-preview">
-        <img src="{{ post?.user?.pictureURL }}" alt="profile picture" />
-        <!-- <a href="{{ post.fileURL }}"></a> -->
-      </div>
-
-      <div class="post-info">
-        <h1>{{ post?.title }}</h1>
-        <div class="post-info-row">
-          <h3>
-            <span class="hide-mobile">Subject:</span>
-            {{ post?.subject || "None" }}
-          </h3>
-          <h3 class="hide-mobile">
-            Instructor: {{ post?.instructor || "None" }}
-          </h3>
-          <h3 class="hide-mobile">Language: {{ post?.language || "None" }}</h3>
-          <h3 class="hide-desktop">
-            {{ post?.instructor || "None" }}, {{ post?.language || "None" }}
-          </h3>
-        </div>
-        <p>{{ post?.description }}</p>
-        <div class="post-stats row-center">
-          <div class="stat row-center">
-            <img
-              class="icon"
-              src="../../../assets/like-icon.svg"
-              alt="like icon"
-              (click)="toggleLikePost()"
-            />
-            <h6>{{ post?.like_count }}</h6>
-          </div>
-          <div class="stat row-center">
-            <img
-              class="icon"
-              src="../../../assets/comment-icon.svg"
-              alt="comment icon"
-            />
-            <h6>{{ post?.comments?.length }}</h6>
-          </div>
+    <div class="trailing">
+      <div *ngIf="isUsersPost ?? false" class="dropdown">
+        <img
+          class="icon"
+          src="../../../assets/three-dots-orange-icon.svg"
+          alt="dropdown icon"
+        />
+        <div class="buttons">
+          <button
+            style="border-radius: 10px 10px 0 0"
+            [routerLink]="['/main/post/', post.id, 'edit']"
+          >
+            Edit
+          </button>
+          <button style="border-radius: 0 0 10px 10px" (click)="deletePost()">
+            Delete
+          </button>
         </div>
       </div>
-      <!-- if is users post -->
-      <button (click)="deletePost()">DELETE POST</button>
     </div>
-  </div>
+  </header>
+
+  <main>
+    <img
+      class="file-preview"
+      src="{{ post?.user?.pictureURL }}"
+      alt="file preview"
+    />
+
+    <div class="post-info" [routerLink]="['/main/post', post.id]">
+      <h1>{{ post?.title }}</h1>
+      <div class="post-info-row">
+        <h3>
+          <span class="hide-mobile">Subject:</span>
+          {{ post?.subject || "None" }}
+        </h3>
+        <h3 class="hide-mobile">
+          Instructor: {{ post?.instructor || "None" }}
+        </h3>
+        <h3 class="hide-mobile">Language: {{ post?.language || "None" }}</h3>
+        <h3 class="hide-desktop">
+          {{ post?.instructor || "None" }}, {{ post?.language || "None" }}
+        </h3>
+      </div>
+      <div class="post-description">
+        <p>{{ post?.description }}</p>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <a href="{{ post?.fileURL }}">View Document</a>
+    <div class="trailing">
+      <div class="stat">
+        <img
+          class="icon"
+          src="../../../assets/like-icon.svg"
+          alt="like icon"
+          (click)="toggleLikePost()"
+        />
+        <h6>{{ post?.like_count }}</h6>
+      </div>
+      <div class="stat">
+        <img
+          class="icon"
+          src="../../../assets/comment-icon.svg"
+          alt="comment icon"
+        />
+        <h6>{{ post?.comments?.length }}</h6>
+      </div>
+    </div>
+  </footer>
 </div>
