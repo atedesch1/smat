@@ -11,17 +11,17 @@ import { AuthComponent } from './views/auth/auth.component'
 import { LocalStorageService } from './services/local-storage.service';
 import { MainComponent } from './views/main/main.component'
 import { AuthInterceptorProvider } from './interceptors/auth.interceptor';
-import { CreateOrUpdatePostFormComponent } from './components/create-or-update-post-form/create-or-update-post-form.component';
+import { PostFormComponent } from './components/post-form/post-form.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { SearchBarComponent } from './components/search-bar/search-bar.component';
 import { PostComponent } from './components/post/post.component';
 import { PostCardComponent } from './components/post-card/post-card.component';
 import { CommentCardComponent } from './components/comment-card/comment-card.component';
-import { CreateOrUpdateCommentFormComponent } from './components/create-or-update-comment-form/create-or-update-comment-form.component';
+import { CommentFormComponent } from './components/comment-form/comment-form.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { UserCardComponent } from './components/user-card/user-card.component';
-import { EditUserFormComponent } from './components/edit-user-form/edit-user-form.component';
+import { UserFormComponent } from './components/user-form/user-form.component';
 import { UserComponent } from './components/user/user.component'
 
 @NgModule({
@@ -30,17 +30,17 @@ import { UserComponent } from './components/user/user.component'
     HomeComponent,
     AuthComponent,
     MainComponent,
-    CreateOrUpdatePostFormComponent,
+    PostFormComponent,
     PostsComponent,
     NavBarComponent,
     SearchBarComponent,
     PostComponent,
     PostCardComponent,
     CommentCardComponent,
-    CreateOrUpdateCommentFormComponent,
+    CommentFormComponent,
     SideBarComponent,
     UserCardComponent,
-    EditUserFormComponent,
+    UserFormComponent,
     UserComponent,
   ],
   imports: [
