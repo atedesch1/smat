@@ -1,6 +1,15 @@
-<div class="flex" style="flex-direction: column">
-  <img src="{{ user?.pictureURL }}" alt="user picture" />
-  <h2>{{ user?.name }}</h2>
-  <h3>{{ user?.nationality }}</h3>
-  <h3>{{ user?.bio }}</h3>
+<div *ngIf="!router.isActive('/main/user', false)" class="user-card">
+  <header [routerLink]="['/main/user']">
+    <img src="{{ user?.pictureURL }}" alt="user picture" />
+    <h2>
+      {{ user?.name }},
+      <span style="font-style: italic; font-size: 0.8em">
+        {{ user?.nationality }}</span
+      >
+    </h2>
+  </header>
+  <!-- <h3>22 Posts</h3> -->
+  <!-- <h3>234 Comments</h3> -->
+  <h3>Bio</h3>
+  <p>{{ user?.bio }}</p>
 </div>
