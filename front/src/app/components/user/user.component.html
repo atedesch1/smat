@@ -1,15 +1,43 @@
 <!-- <app-user-card></app-user-card> -->
 <div *ngIf="user">
-  <img src="{{ user?.pictureURL }}" alt="user picture" />
-  <h2>{{ user?.name }}</h2>
-  <h3>{{ user?.nationality }}</h3>
-  <h3>{{ user?.bio }}</h3>
+  <div class="user-card">
+    <header>
+      <div class="dropdown">
+        <img
+          class="icon"
+          src="../../../assets/three-dots-orange-icon.svg"
+          alt="dropdown icon"
+        />
+        <div class="buttons">
+          <button
+            style="border-radius: 10px"
+            [routerLink]="['/main/user/edit']"
+          >
+            Edit
+          </button>
+          <!-- <button style="border-radius: 0 0 10px 10px">Delete</button> -->
+        </div>
+      </div>
+    </header>
+    <section>
+      <div class="user-profile">
+        <img src="{{ user?.pictureURL }}" alt="user picture" />
+        <h2>
+          {{ user?.name }},
+          <span style="font-style: italic; font-size: 0.8em">
+            {{ user?.nationality }}</span
+          >
+        </h2>
+        <h3>Bio</h3>
+        <p>{{ user?.bio }}</p>
+      </div>
+    </section>
+  </div>
 
   <app-post-card
     *ngFor="let post of userPosts"
     [post]="post"
-    [routerLink]="['/main/post', post.id]">
+    [routerLink]="['/main/post', post.id]"
+  >
   </app-post-card>
-
-  <a [routerLink]="['edit']">Edit User</a>
 </div>
