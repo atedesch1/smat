@@ -1,17 +1,43 @@
 <nav class="nav-bar">
+  <img
+    *ngIf="router.isActive('/main', false)"
+    class="logo"
+    src="../../../assets/smat-logo.svg"
+    alt="SMAT logo"
+    [routerLink]="['/main']"
+  />
   <app-search-bar *ngIf="!hideSearch"></app-search-bar>
-
-  <div
-    *ngIf="authService.isLoggedIn | async; then loggedIn; else loggedOut"
-  ></div>
-
-  <ng-template #loggedIn>
-    <a (click)="authService.signOut()" *ngIf="authService.isLoggedIn | async">
-      Sign Out
-    </a>
-  </ng-template>
-  <ng-template #loggedOut>
-    <a [routerLink]="['/auth']" [state]="{ isSignUp: false }">Sign In</a>
-    <a [routerLink]="['/auth']" [state]="{ isSignUp: true }">Sign Up</a>
-  </ng-template>
+  <div class="buttons">
+    <div
+      *ngIf="authService.isLoggedIn | async; then loggedIn; else loggedOut"
+    ></div>
+    <ng-template #loggedIn>
+      <a
+        class="button"
+        (click)="authService.signOut()"
+        *ngIf="authService.isLoggedIn | async"
+      >
+        Sign Out
+      </a>
+    </ng-template>
+    <ng-template #loggedOut>
+      <a
+        *ngIf="router.url != '/auth'"
+        class="button"
+        [routerLink]="['/auth']"
+        [state]="{ isSignUp: true }"
+        >Sign Up</a
+      >
+      <a
+        *ngIf="router.url != '/auth'"
+        class="button"
+        [routerLink]="['/auth']"
+        [state]="{ isSignUp: false }"
+        >Sign In</a
+      >
+    </ng-template>
+    <a *ngIf="router.url === '/auth'" class="button" [routerLink]="['/']"
+      >Home</a
+    >
+  </div>
 </nav>
