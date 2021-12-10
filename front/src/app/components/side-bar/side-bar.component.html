@@ -1,5 +1,26 @@
 <div class="side-bar">
-  <a [routerLink]="['/main']">Home</a>
-  <a [routerLink]="['/main/post/create']">Publish</a>
-  <a [routerLink]="['/main/user']">Profile</a>
+  <div class="link">
+    <img
+      class="icon"
+      src="../../../assets/home-black-icon.svg"
+      alt="home icon"
+    />
+    <a [routerLink]="['/main']">Home</a>
+  </div>
+  <div class="link">
+    <img
+      class="icon"
+      src="../../../assets/publish-black-icon.svg"
+      alt="publish icon"
+    />
+    <a [routerLink]="['/main/post/create']">Publish</a>
+  </div>
+  <div class="link">
+    <img
+      class="icon"
+      src="../../../assets/profile-black-icon.svg"
+      alt="profile icon"
+    />
+    <a [routerLink]="['/main/user']">Profile</a>
+  </div>
 </div>

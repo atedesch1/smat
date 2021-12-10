@@ -1,9 +1,26 @@
+@import "../../../styles.scss";
+
 .side-bar {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: 40px 20px;
 
-  a {
-    margin-bottom: 15px;
+  .link {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+
+    img {
+      height: 1.6rem;
+      margin-right: 10px;
+    }
+    a {
+      font-weight: bold;
+      font-size: 1.6rem;
+      &:hover,
+      &:focus {
+        color: $accent-color;
+      }
+    }
   }
 }
