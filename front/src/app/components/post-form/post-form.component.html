@@ -2,13 +2,22 @@
   <div class="post">
     <header>
       <div class="user" [routerLink]="['/main/user', user?.id]">
-        <img src="{{ user?.pictureURL }}" alt="profile picture" />
+        <img
+          src="{{
+            user?.pictureURL ?? '../../../assets/profile-black-icon.svg'
+          }}"
+          alt="profile picture"
+        />
         <h2>{{ user?.name }}</h2>
       </div>
     </header>
     <main>
       <div class="file-preview">
-        <img src="{{ user?.pictureURL }}" alt="profile picture" />
+        <img
+          class="file-preview"
+          src="../../../assets/pdf-icon.svg"
+          alt="file preview"
+        />
       </div>
       <form [formGroup]="postForm">
         <label class="file-input">

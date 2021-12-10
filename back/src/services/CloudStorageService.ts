@@ -29,7 +29,7 @@ class CloudStorageService {
 
       this.bucket = storage.bucket(process.env.GCLOUD_STORAGE_BUCKET || '')
 
-      console.log('Successfully connected to Google Cloud Storage Bucket')
+      console.log(this.bucket ? 'Successfully connected to Google Cloud Storage Bucket' : 'Couldn\'t connect to Google Cloud Storage Bucket')
     }
 
     uploadFile(file: Express.Multer.File, folderName: string, options: CreateWriteStreamOptions) {

@@ -1,7 +1,12 @@
 <div class="comment" *ngIf="!isEditMode">
   <header>
     <div class="user" [routerLink]="['/main/user', comment?.user?.id]">
-      <img src="{{ comment?.user?.pictureURL }}" alt="profile picture" />
+      <img
+        src="{{
+          comment?.user?.pictureURL ?? '../../../assets/profile-black-icon.svg'
+        }}"
+        alt="profile picture"
+      />
       <h2>{{ comment?.user?.name }}</h2>
     </div>
     <div class="trailing">

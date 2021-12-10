@@ -1,11 +1,19 @@
-<div class="post">
+<div class="post" *ngIf="post">
   <header>
     <div class="user" [routerLink]="['/main/user', post?.user?.id]">
-      <img src="{{ post?.user?.pictureURL }}" alt="profile picture" />
+      <img
+        src="{{
+          post?.user?.pictureURL ?? '../../../assets/profile-black-icon.svg'
+        }}"
+        alt="profile picture"
+      />
       <h2>{{ post?.user?.name }}</h2>
     </div>
     <div class="trailing">
-      <div *ngIf="isUsersPost ?? false" class="dropdown">
+      <div
+        *ngIf="(isUsersPost ?? false) && !router.isActive('/main', true)"
+        class="dropdown"
+      >
         <img
           class="icon"
           src="../../../assets/three-dots-orange-icon.svg"
@@ -27,11 +35,13 @@
   </header>
 
   <main>
-    <img
-      class="file-preview"
-      src="{{ post?.user?.pictureURL }}"
-      alt="file preview"
-    />
+    <a href="{{ post?.fileURL }}">
+      <img
+        class="file-preview"
+        src="{{ post?.filePreviewURL }}"
+        alt="file preview"
+      />
+    </a>
 
     <div class="post-info" [routerLink]="['/main/post', post.id]">
       <h1>{{ post?.title }}</h1>

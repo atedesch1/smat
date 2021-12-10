@@ -21,7 +21,12 @@
     </header>
     <section>
       <div class="user-profile">
-        <img src="{{ user?.pictureURL }}" alt="user picture" />
+        <img
+          src="{{
+            user?.pictureURL ?? '../../../assets/profile-black-icon.svg'
+          }}"
+          alt="user picture"
+        />
         <h2>
           {{ user?.name }},
           <span style="font-style: italic; font-size: 0.8em">
@@ -29,7 +34,7 @@
           >
         </h2>
         <h3>Bio</h3>
-        <p>{{ user?.bio }}</p>
+        <p>{{ user?.bio ?? "User has no bio" }}</p>
       </div>
     </section>
   </div>

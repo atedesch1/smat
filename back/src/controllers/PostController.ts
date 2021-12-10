@@ -4,6 +4,24 @@ import User from '@/models/User'
 import { getConnection, Like } from 'typeorm'
 import CloudStorageService from '@/services/CloudStorageService'
 
+const convertPdfToJpeg = (file: Express.Multer.File): Promise<Express.Multer.File> => {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const gm = require('gm').subClass({ imageMagick: true })
+
+  return new Promise((resolve, reject) => {
+    gm(file.buffer, file.filename)
+      .selectFrame(0)
+      .toBuffer('jpeg', (err: any, buffer: any) => {
+        if (err) reject(err)
+        const filePreview = {
+          originalname: file.originalname.replace('.pdf', '.jpeg'),
+          buffer: buffer,
+          mimetype: 'image/jpeg',
+        }
+        resolve(filePreview as Express.Multer.File)
+      })
+  })
+}
 class PostController {
   async createPost(req: Request, res: Response) {
     const file = req.file
@@ -21,11 +39,22 @@ class PostController {
       if (!file) { return res.status(400).json('Missing file attached') }
 
       const fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
+        contentType: file.mimetype,
         resumable: false,
-        gzip: true
+        gzip: true,
+      })
+
+      const filePreview = await convertPdfToJpeg(file)
+      
+      if (!filePreview) { return res.status(500).json('Server couldn\'t create pdf preview') }
+
+      const filePreviewURL = await CloudStorageService.uploadFile(filePreview, 'post_files_preview', {
+        contentType: filePreview.mimetype,
+        resumable: false,
+        gzip: true,
       })
       
-      const newPost = await Post.createNew({ fileURL, language, title, description, subject, instructor, user })
+      const newPost = await Post.createNew({ fileURL, filePreviewURL, language, title, description, subject, instructor, user })
   
       return res.status(200).json(newPost)
     } catch (err) {
@@ -51,17 +80,27 @@ class PostController {
       if (!isUsersPost) { return res.status(403).json('Post is not user\'s') }
 
       let fileURL: string | undefined = undefined
+      let filePreviewURL: string | undefined = undefined
       
       if (file) {
         if (post.fileURL) { await CloudStorageService.deleteFile(post.fileURL) }
 
         fileURL = await CloudStorageService.uploadFile(file, 'post_files', {
+          contentType: file.mimetype,
           resumable: false,
-          gzip: true
+          gzip: true,
+        })
+
+        const filePreview = await convertPdfToJpeg(file)
+
+        filePreviewURL = await CloudStorageService.uploadFile(filePreview, 'post_files_preview', {
+          contentType: filePreview.mimetype,
+          resumable: false,
+          gzip: true,
         })
       }
 
-      const updatedPost = await Post.updatePost(post, { fileURL, language, title, description, subject, instructor })
+      const updatedPost = await Post.updatePost(post, { fileURL, filePreviewURL, language, title, description, subject, instructor })
   
       return res.status(201).json(updatedPost)
     } catch (err) {

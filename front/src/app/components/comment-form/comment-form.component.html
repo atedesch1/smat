@@ -1,7 +1,10 @@
 <div class="comment">
   <header>
     <div class="user">
-      <img src="{{ user?.pictureURL }}" alt="profile picture" />
+      <img
+        src="{{ user?.pictureURL ?? '../../../assets/profile-black-icon.svg' }}"
+        alt="profile picture"
+      />
       <h2>{{ user?.name }}</h2>
     </div>
     <div *ngIf="comment" class="trailing">

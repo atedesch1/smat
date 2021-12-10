@@ -4,6 +4,12 @@ WORKDIR /node
 
 COPY ./back/package*.json ./
 
+RUN  apt update && apt install ghostscript -y
+
+COPY ./back/replace.bash ./
+
+RUN bash replace.bash
+
 RUN npm install
 
 COPY ./back/ .

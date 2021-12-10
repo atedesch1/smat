@@ -4,6 +4,7 @@ import { Comment } from './comment'
 export class Post {
   id: string
   fileURL?: string
+  filePreviewURL?: string
   language?: string
   title?: string
   description?: string

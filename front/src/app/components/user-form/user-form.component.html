@@ -1,6 +1,9 @@
 <div class="user">
   <header>
-    <img src="{{ user?.pictureURL }}" alt="" />
+    <img
+      src="{{ user?.pictureURL ?? '../../../assets/profile-black-icon.svg' }}"
+      alt=""
+    />
   </header>
   <main>
     <form [formGroup]="userForm">

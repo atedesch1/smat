@@ -11,6 +11,9 @@ export default class Post extends BaseEntity {
     fileURL!: string
 
     @Column()
+    filePreviewURL!: string
+
+    @Column()
     language!: string
 
     @Column()
@@ -41,9 +44,9 @@ export default class Post extends BaseEntity {
     @OneToMany(() => Comment, comment => comment.post, { nullable: true, cascade: true })
     comments?: Comment[]
 
-    static async createNew({ fileURL, language, title, description, user, subject, instructor }:
-        { fileURL: Post['fileURL'], language: Post['language'], title: Post['title'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const postInfo = this.filterNullProperties({ fileURL, language, description, title, user, subject, instructor })
+    static async createNew({ fileURL, filePreviewURL, language, title, description, user, subject, instructor }:
+        { fileURL: Post['fileURL'], filePreviewURL: Post['filePreviewURL'], language: Post['language'], title: Post['title'], description: Post['description'], user: Post['user'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const postInfo = this.filterNullProperties({ fileURL, filePreviewURL, language, description, title, user, subject, instructor })
       
       const newPost = this.create(postInfo)
   
@@ -52,9 +55,9 @@ export default class Post extends BaseEntity {
       return newPost
     }
 
-    static async updatePost(post: Post, { fileURL, language, title, description, subject, instructor }:
-        { fileURL?: Post['fileURL'], language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
-      const updatedProperties = this.filterNullProperties({ fileURL, language, title, description, subject, instructor })
+    static async updatePost(post: Post, { fileURL, filePreviewURL, language, title, description, subject, instructor }:
+        { fileURL?: Post['fileURL'], filePreviewURL?: Post['filePreviewURL'], language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
+      const updatedProperties = this.filterNullProperties({ fileURL, filePreviewURL, language, title, description, subject, instructor })
 
       const updatedPost = this.create({ ...post, ...updatedProperties })
 
