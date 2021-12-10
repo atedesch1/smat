@@ -1,11 +1,52 @@
-<h3>{{ comment?.body }}</h3>
-<h3>{{ comment?.like_count }}</h3>
-<img
-  class="icon"
-  src="../../../assets/like-icon.svg"
-  alt="like icon"
-  (click)="toggleLikeComment()"
-/>
-<!-- if is users comment -->
-<button (click)="deleteComment()">DELETE COMMENT</button>
-<div></div>
+<div class="comment" *ngIf="!isEditMode">
+  <header>
+    <div class="user" [routerLink]="['/main/user', comment?.user?.id]">
+      <img src="{{ comment?.user?.pictureURL }}" alt="profile picture" />
+      <h2>{{ comment?.user?.name }}</h2>
+    </div>
+    <div class="trailing">
+      <div *ngIf="isUsersComment ?? false" class="dropdown">
+        <img
+          class="icon"
+          src="../../../assets/three-dots-orange-icon.svg"
+          alt="dropdown icon"
+        />
+        <div class="buttons">
+          <button
+            style="border-radius: 10px 10px 0 0"
+            (click)="toggleEditComment()"
+          >
+            Edit
+          </button>
+          <button
+            style="border-radius: 0 0 10px 10px"
+            (click)="deleteComment()"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main>
+    <p>{{ comment?.body }}</p>
+  </main>
+  <footer>
+    <div class="stat">
+      <img
+        class="icon"
+        src="../../../assets/like-icon.svg"
+        alt="like icon"
+        (click)="toggleLikeComment()"
+      />
+      <h6>{{ comment?.like_count }}</h6>
+    </div>
+  </footer>
+</div>
+
+<app-comment-form
+  *ngIf="isEditMode"
+  [comment]="comment"
+  (editCommentClosed)="toggleEditComment()"
+  (commentChanged)="updateComment($event)"
+></app-comment-form>

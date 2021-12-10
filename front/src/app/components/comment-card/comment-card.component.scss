@@ -1,0 +1,108 @@
+@import "../../../styles.scss";
+
+.comment {
+  background: $bg-color-contrast;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin-top: 15px;
+  padding: 10px 20px;
+
+  header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .user {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      img {
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+      }
+      h2 {
+        margin: 0;
+        margin-left: 0.8em;
+        color: $text-color;
+        font-size: 1rem;
+      }
+    }
+    .trailing {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+
+      .dropdown {
+        cursor: pointer;
+        position: relative;
+        display: inline-block;
+
+        .icon {
+          height: 30px;
+          width: 30px;
+          padding: 5px;
+          border-radius: 50%;
+          color: $accent-color;
+          &:hover,
+          &:focus {
+            background-color: $bg-color;
+          }
+        }
+        .buttons {
+          display: none;
+          position: absolute;
+          right: 0;
+          min-width: 150px;
+          border-radius: 20px;
+          box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+          z-index: 1;
+
+          button {
+            background-color: $bg-color-contrast;
+            min-height: 40px;
+            padding: 10px;
+            text-align: left;
+            cursor: pointer;
+            border: none;
+            &:hover {
+              background-color: $bg-color;
+            }
+          }
+        }
+        &:hover .buttons {
+          display: flex;
+          flex-direction: column;
+        }
+      }
+    }
+  }
+  main {
+    margin: 0.2em 0;
+
+    p {
+      padding: 10px;
+      border-radius: 10px;
+      background: $bg-color;
+      color: $text-contrast;
+      font-size: $text-size-xsmall;
+    }
+  }
+  footer {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    .stat {
+      display: flex;
+      margin-right: 20px;
+      img {
+        cursor: pointer;
+        width: 20px;
+        margin-right: 0.8em;
+      }
+      h6 {
+        font-size: $text-size-small;
+        color: $text-contrast;
+      }
+    }
+  }
+}
