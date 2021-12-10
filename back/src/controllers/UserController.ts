@@ -89,10 +89,10 @@ class UserController {
           metadata: { contentType: 'image/jpeg' }
         })
       }
-
-      await User.updateUser(id, { name, nationality, bio, pictureURL })
+      
+      const updatedUser = await User.updateUser(user, { name, nationality, bio, pictureURL })
   
-      return res.status(201).json('User was updated successfully')
+      return res.status(201).json(updatedUser)
     } catch (err) {
       console.error(err.message)
       return res.status(500).json('Server couldn\'t update user')

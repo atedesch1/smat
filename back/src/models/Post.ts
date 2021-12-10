@@ -52,11 +52,15 @@ export default class Post extends BaseEntity {
       return newPost
     }
 
-    static async updatePost(id: Post['id'], { fileURL, language, title, description, subject, instructor }:
+    static async updatePost(post: Post, { fileURL, language, title, description, subject, instructor }:
         { fileURL?: Post['fileURL'], language?: Post['language'], title?: Post['title'], description?: Post['description'], subject?: Post['subject'], instructor?: Post['instructor'] }) {
       const updatedProperties = this.filterNullProperties({ fileURL, language, title, description, subject, instructor })
 
-      await this.update({ id }, updatedProperties)
+      const updatedPost = this.create({ ...post, ...updatedProperties })
+
+      await this.save(updatedPost)
+
+      return updatedPost
     }
 
     static async deletePost(id: Post['id']) {

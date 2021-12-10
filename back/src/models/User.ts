@@ -46,11 +46,15 @@ export default class User extends BaseEntity {
       return newUser
     }
 
-    static async updateUser(id: User['id'], { name, nationality, bio, pictureURL }:
+    static async updateUser(user: User, { name, nationality, bio, pictureURL }:
         { name?: User['name'], nationality?: User['nationality'], bio?: User['bio'], pictureURL?: User['pictureURL'] }) {
       const updatedProperties = this.filterNullProperties({ name, nationality, bio, pictureURL })
 
-      await this.update({ id }, updatedProperties)
+      const updatedUser = this.create({ ...user, ...updatedProperties })
+
+      await this.save(updatedUser)
+
+      return updatedUser
     }
 
     static async deleteUser(id: User['id']) {

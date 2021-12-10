@@ -1,5 +1,4 @@
 import { Request, Response } from 'express'
-
 import Post from '@/models/Post'
 import User from '@/models/User'
 import { getConnection, Like } from 'typeorm'
@@ -62,9 +61,9 @@ class PostController {
         })
       }
 
-      await Post.updatePost(postId, { fileURL, language, title, description, subject, instructor })
+      const updatedPost = await Post.updatePost(post, { fileURL, language, title, description, subject, instructor })
   
-      return res.status(201).json('Post was updated successfully')
+      return res.status(201).json(updatedPost)
     } catch (err) {
       if (err.code === '22P02') { return res.status(404).json('Invalid post id') }
       console.error(err.message)

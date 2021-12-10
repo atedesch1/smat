@@ -43,10 +43,10 @@ class CommentController {
       const comment = await Comment.findOne({ where: { id: commentId } })
   
       if (!comment) { return res.status(404).json('Comment not found') }
-  
-      await Comment.updateComment(commentId, { body })
-  
-      return res.status(200).json('Comment was updated successfully')
+
+      const updatedComment = await Comment.updateComment(comment, { body })
+
+      return res.status(201).json(updatedComment)
     } catch (err) {
       if (err.code === '22P02') { return res.status(404).json('Invalid comment id') }
       console.error(err.message)
