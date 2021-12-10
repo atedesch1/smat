@@ -1,17 +1,21 @@
+@import "../../../styles.scss";
+
 header {
 }
 
 main {
   display: flex;
+  background-color: $bg-color;
 
-  .sidebar {
-    width: 200px;
+  .side-content {
+    padding: 25px 10px;
+    flex: 1;
     height: calc(100vh - 60px);
   }
 
-  .content {
-    flex: 1;
-    background-color: whitesmoke;
+  .main-content {
+    padding: 10px;
+    width: 800px;
   }
 }
 
@@ -21,6 +25,8 @@ main {
       .search-container {
         max-width: 400px;
         position: absolute;
+        top: 0;
+        margin: 5px 0;
         left: 50%;
         transform: translateX(-50%);
       }
