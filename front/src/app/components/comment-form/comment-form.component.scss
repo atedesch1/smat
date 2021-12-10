@@ -1,0 +1,92 @@
+@import "../../../styles.scss";
+
+.comment {
+  background: $bg-color-contrast;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin-top: 15px;
+  padding: 10px 20px;
+
+  header {
+    min-height: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    .user {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      img {
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+      }
+      h2 {
+        margin: 0;
+        margin-left: 0.8em;
+        color: $text-color;
+        font-size: 1rem;
+      }
+    }
+    .trailing {
+      display: flex;
+      justify-content: flex-end;
+      flex: 1;
+
+      .icon {
+        cursor: pointer;
+        height: 30px;
+        width: 30px;
+        padding: 5px;
+        border-radius: 50%;
+        color: $accent-color;
+        &:hover,
+        &:focus {
+          background-color: $bg-color;
+        }
+      }
+    }
+  }
+  main {
+    margin: 0.2em 0;
+
+    input {
+      width: 100%;
+      border: none;
+      padding: 10px;
+      border-radius: 20px;
+      background: $bg-color;
+      color: $text-contrast;
+      font-size: $text-size-xsmall;
+
+      &:hover,
+      &:focus {
+        outline: 1px solid $accent-color;
+      }
+    }
+  }
+  footer {
+    display: flex;
+    align-items: center;
+    min-height: 40px;
+    button {
+      font-size: 1rem;
+      font-weight: bold;
+      color: $text-color;
+      background-color: $accent-color;
+      border-radius: 20px;
+      border: none;
+      box-shadow: 0 2px 3px rgba(0, 0, 0, 0.2);
+
+      cursor: pointer;
+      margin: 0 auto;
+      padding: 8px 20px;
+      border-radius: 20px;
+
+      &:hover,
+      &:focus {
+        background-color: $accent-color-dark;
+      }
+    }
+  }
+}

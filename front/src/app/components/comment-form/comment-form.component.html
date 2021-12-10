@@ -1,0 +1,38 @@
+<div class="comment">
+  <header>
+    <div class="user">
+      <img src="{{ user?.pictureURL }}" alt="profile picture" />
+      <h2>{{ user?.name }}</h2>
+    </div>
+    <div *ngIf="comment" class="trailing">
+      <img
+        class="icon"
+        src="../../../assets/close-orange-icon.svg"
+        alt="dropdown icon"
+        (click)="closeCommentEditor()"
+      />
+    </div>
+  </header>
+  <main>
+    <form [formGroup]="commentForm">
+      <input
+        type="text"
+        [class.error-input]="body?.invalid && body?.touched"
+        class="form-input"
+        formControlName="body"
+        placeholder="{{ comment ? 'Edit Comment' : 'New Comment' }}"
+        (keyup.enter)="submitHandler()"
+      />
+    </form>
+  </main>
+  <footer>
+    <button
+      type="submit"
+      class="form-button"
+      [disabled]="isSaving || body?.invalid"
+      (click)="submitHandler()"
+    >
+      {{ comment ? "Edit" : "Submit" }}
+    </button>
+  </footer>
+</div>
