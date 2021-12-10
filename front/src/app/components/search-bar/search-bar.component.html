@@ -7,7 +7,7 @@
     />
     <input
       autocomplete="off"
-      class="search-bar"
+      class="search-input"
       id="search"
       name="search"
       type="text"
@@ -23,8 +23,9 @@
       *ngFor="let post of posts"
       [routerLink]="['/main/post', post.id]"
     >
-      <h3>{{ post.title }}</h3>
-      <h3>{{ post.subject }}</h3>
+      <h3 class="title">{{ post.title }}</h3>
+      <h3 class="subject">{{ post.subject }}</h3>
     </div>
+    <div *ngIf="searchQuery != ''" style="height: 15px"></div>
   </div>
 </div>
