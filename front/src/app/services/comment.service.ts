@@ -13,7 +13,7 @@ export class CommentService {
   constructor(private http: HttpClient) { }
 
   createComment(postId: string, formValue: any) {
-    return this.http.post(`${this.commentUrl}/${postId}`, formValue)
+    return this.http.post<Comment>(`${this.commentUrl}/${postId}`, formValue)
   }
 
   getAComment(commentId: string) {
@@ -21,7 +21,7 @@ export class CommentService {
   }
 
   updateComment(commentId: string, formValue: any) {
-    return this.http.put(`${this.commentUrl}/${commentId}`, formValue)
+    return this.http.put<Comment>(`${this.commentUrl}/${commentId}`, formValue)
   }
 
   deleteComment(commentId: string) {

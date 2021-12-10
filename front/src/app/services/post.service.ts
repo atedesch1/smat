@@ -14,13 +14,13 @@ export class PostService {
   constructor(private http: HttpClient) { }
 
   createPost(formData: any): Observable<Post> {
-    return this.http.post(`${this.postUrl}/create`, formData).pipe(
+    return this.http.post<Post>(`${this.postUrl}/create`, formData).pipe(
       map((post: any) => new Post(post))
     )
   }
 
   updatePost(postId: string, formData: any): Observable<Post> {
-    return this.http.put(`${this.postUrl}/${postId}`, formData).pipe(
+    return this.http.put<Post>(`${this.postUrl}/${postId}`, formData).pipe(
       map((post: any) => new Post(post))
     )
   }
@@ -41,7 +41,7 @@ export class PostService {
   }
 
   getPostComments(postId: string) {
-    return this.http.get(`${this.postUrl}/${postId}/comments`)
+    return this.http.get<Comment[]>(`${this.postUrl}/${postId}/comments`)
   }
 
   hasLikedPost(postId: string) {

@@ -20,7 +20,7 @@ export class UserService {
   }
 
   updateUser(formData: any) {
-    return this.http.put(`${this.userUrl}`, formData)
+    return this.http.put<User>(`${this.userUrl}`, formData)
   }
 
   deleteUser() {
