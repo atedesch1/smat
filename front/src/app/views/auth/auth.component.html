@@ -1,9 +1,11 @@
 <div class="body">
-  <nav class="nav-bar">
-    <a routerLink="/">Home</a>
-  </nav>
+  <app-nav-bar [hideSearch]="true"></app-nav-bar>
   <div class="main">
-    <img class="logo" src="../../../assets/smat-logo.svg" alt="SMAT logo" />
+    <img
+      class="logo"
+      src="../../../assets/smat-full-logo.svg"
+      alt="SMAT logo"
+    />
     <div class="auth-card">
       <div *ngIf="isSignUp; then signUpBlock; else signInBlock"></div>
 
