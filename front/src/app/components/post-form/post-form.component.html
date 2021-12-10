@@ -1,0 +1,69 @@
+<div style="padding: 0 10px 10px 10px">
+  <div class="post">
+    <header>
+      <div class="user" [routerLink]="['/main/user', user?.id]">
+        <img src="{{ user?.pictureURL }}" alt="profile picture" />
+        <h2>{{ user?.name }}</h2>
+      </div>
+    </header>
+    <main>
+      <div class="file-preview">
+        <img src="{{ user?.pictureURL }}" alt="profile picture" />
+      </div>
+      <form [formGroup]="postForm">
+        <label class="file-input">
+          <input
+            type="file"
+            [class.error-input]="file?.invalid && file?.touched"
+            (change)="onFileChange($event)"
+          />
+          Upload File
+        </label>
+        <input
+          type="text"
+          [class.error-input]="title?.invalid && title?.touched"
+          class="text-input"
+          placeholder="Title"
+          formControlName="title"
+        />
+        <input
+          type="text"
+          [class.error-input]="language?.invalid && language?.touched"
+          class="text-input"
+          placeholder="Language"
+          formControlName="language"
+        />
+        <div class="input-row">
+          <input
+            type="text"
+            [class.error-input]="subject?.invalid && subject?.touched"
+            class="text-input"
+            placeholder="Subject"
+            formControlName="subject"
+          />
+          <input
+            type="text"
+            [class.error-input]="instructor?.invalid && instructor?.touched"
+            class="text-input"
+            placeholder="Instructor"
+            formControlName="instructor"
+          />
+        </div>
+        <textarea
+          style="resize: none"
+          class="text-input"
+          [class.error-input]="description?.invalid && description?.touched"
+          cols="30"
+          rows="10"
+          placeholder="Description"
+          formControlName="description"
+        ></textarea>
+      </form>
+    </main>
+    <footer>
+      <button type="submit" class="form-button" (click)="submitHandler()">
+        Submit
+      </button>
+    </footer>
+  </div>
+</div>

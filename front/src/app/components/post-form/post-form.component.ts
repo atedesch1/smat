@@ -2,16 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Post } from 'src/app/models/post';
+import { User } from 'src/app/models/user';
 import { PostService } from 'src/app/services/post.service';
+import { UserService } from 'src/app/services/user.service';
 
 
 @Component({
-  selector: 'app-create-or-update-post-form',
-  templateUrl: './create-or-update-post-form.component.html',
-  styleUrls: ['./create-or-update-post-form.component.scss']
+  selector: 'app-post-form',
+  templateUrl: './post-form.component.html',
+  styleUrls: ['./post-form.component.scss']
 })
-export class CreateOrUpdatePostFormComponent implements OnInit {
+export class PostFormComponent implements OnInit {
 
+  user!: User
   postForm!: FormGroup
   post?: Post
 
@@ -20,9 +23,13 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
     private router: Router,
     private postService: PostService,
     private fb: FormBuilder,
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
+    this.userService.getCurrentUser().subscribe(user => {
+      this.user = user
+    })
     this.route.params.subscribe(params => {
       if (params.id) {
         const postId = params.id
@@ -115,7 +122,7 @@ export class CreateOrUpdatePostFormComponent implements OnInit {
         ? this.postService.updatePost(this.post.id, formData)
         : this.postService.createPost(formData)
 
-        call$.subscribe(post => {
+        call$.subscribe((post: Post) => {
           this.router.navigate(['/main/post', post.id])
         })
     } catch (e) {
