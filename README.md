@@ -42,7 +42,7 @@ Docker-compose should pull Node and Postgres official images from dockerhub and 
 docker ps
 ```
 
-React should now be accessible at http://localhost:3000 and Node at http://localhost:3333.<br/>
+Angular should now be accessible at http://localhost:4200 and Node at http://localhost:3333.<br/>
 
 To get logs from a container run:
 
@@ -100,7 +100,7 @@ To connect to your bucket, place the generated service account key JSON file ins
 
 Heroku pulls github repo and builds node image in Dockerfile.prod. <br/>
 
-This image contains node application that serves react aswell as the backend server.<br/>
+This image contains node application that serves angular aswell as the backend server.<br/>
 
 Postgres is managed by heroku and doesn't have to be built.
 
@@ -112,35 +112,3 @@ Postgres connection info:<br/>
 * Password: postgres<br/>
 * Database: smatdb
 * Port: 5432
-
-## Project Directory Tree
-
-* back/
-  * src/
-    * @types/
-    * controllers/
-    * database/
-      * migrations/
-    * middlewares/
-    * models/
-    * routers/
-      * client/
-    * services/
-* front/
-  * public/
-  * src/
-    * assets/
-      * images/
-      * styles/
-    * components/
-      * Auth/
-      * Form/
-      * Router/
-    * hooks/
-    * layouts/
-    * pages/
-      * CreatePost/
-      * Home/
-      * SignIn/
-      * SignUp/
-    * services/
