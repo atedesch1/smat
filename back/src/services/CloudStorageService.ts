@@ -46,8 +46,8 @@ class CloudStorageService {
             `https://storage.googleapis.com/${this.bucket.name}/${blob.name}`
           resolve(publicURL)
         })
-          .on('error', () => {
-            reject('Unable to upload file')
+          .on('error', (err) => {
+            reject(err)
           })
           .end(buffer)
       })
@@ -58,7 +58,7 @@ class CloudStorageService {
         const blob = this.bucket.file(fileURL.slice(42))
         await blob.delete() 
       } catch (err) {
-        throw new Error('Unable to delete file')
+        console.error(err)
       }
     }
 }
